@@ -1,0 +1,190 @@
+.learning-approach {
+    width: 100%;
+
+    padding: 90px 0;
+
+    background-color: var(--navy-dark);
+
+    border-top: 1px solid rgba(23, 69, 118, 0.45);
+}
+
+.learning-container {
+    width: 100%;
+    max-width: 1380px;
+
+    margin: 0 auto;
+
+    padding: 0 42px;
+}
+
+/* Heading */
+
+.learning-heading {
+    max-width: 720px;
+
+    margin-bottom: 60px;
+}
+
+.learning-heading h2 {
+    margin: 0;
+
+    color: var(--white);
+
+    font-size: clamp(32px, 4vw, 46px);
+
+    line-height: 1.1;
+
+    letter-spacing: -1.5px;
+}
+
+.learning-heading h2 span {
+    color: var(--blue);
+}
+
+.learning-heading p {
+    max-width: 620px;
+
+    margin: 18px 0 0;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+/* Steps */
+
+.learning-steps {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 0;
+}
+
+.learning-step {
+    position: relative;
+
+    padding: 0 28px;
+
+    border-left: 1px solid var(--border-blue);
+}
+
+.learning-step:first-child {
+    padding-left: 0;
+
+    border-left: none;
+}
+
+.step-top {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    min-height: 42px;
+
+    margin-bottom: 30px;
+}
+
+.step-number {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(47, 140, 255, 0.45);
+
+    border-radius: 50%;
+
+    background-color: rgba(47, 140, 255, 0.08);
+
+    color: var(--blue-bright);
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.step-line {
+    position: absolute;
+
+    left: 55px;
+    right: -28px;
+
+    height: 1px;
+
+    background-color: var(--border-blue);
+}
+
+.learning-step h3 {
+    margin: 0 0 12px;
+
+    color: var(--white);
+
+    font-size: 19px;
+}
+
+.learning-step p {
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+
+    line-height: 1.75;
+}
+
+@media (max-width: 900px) {
+    .learning-steps {
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 45px 0;
+    }
+
+    .learning-step:nth-child(3) {
+        border-left: none;
+
+        padding-left: 0;
+    }
+
+    .step-line {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .learning-approach {
+        padding: 65px 0;
+    }
+
+    .learning-container {
+        padding: 0 20px;
+    }
+
+    .learning-heading {
+        margin-bottom: 45px;
+    }
+
+    .learning-steps {
+        grid-template-columns: 1fr;
+
+        gap: 35px;
+    }
+
+    .learning-step,
+    .learning-step:nth-child(3) {
+        padding-left: 0;
+
+        border-left: none;
+    }
+
+    .step-top {
+        margin-bottom: 18px;
+    }
+}

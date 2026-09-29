@@ -1,0 +1,34 @@
+.problem-back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 22px;
+
+    padding: 9px 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+.problem-back-button span {
+    color: var(--blue-bright);
+
+    font-size: 20px;
+
+    line-height: 1;
+}
+
+.problem-back-button:hover {
+    color: var(--white);
+}

@@ -2,36 +2,30 @@ package com.algoarena.algoarena_backend.services;
 
 import com.algoarena.algoarena_backend.dto.*;
 import com.algoarena.algoarena_backend.entity.Problem;
+import com.algoarena.algoarena_backend.entity.QuizAnswer;
+import com.algoarena.algoarena_backend.entity.QuizQuestion;
 import com.algoarena.algoarena_backend.entity.UnderstandingEvaluation;
 import com.algoarena.algoarena_backend.repository.ProblemRepository;
 import com.algoarena.algoarena_backend.repository.QuizAnswerRepository;
+import com.algoarena.algoarena_backend.repository.QuizQuestionRepository;
 import com.algoarena.algoarena_backend.repository.UnderstandingEvaluationRepository;
 import org.springframework.stereotype.Service;
-import com.algoarena.algoarena_backend.dto.ConceptStatusResponse;
-import com.algoarena.algoarena_backend.dto.ConceptRecommendationResponse;
-import com.algoarena.algoarena_backend.dto.ConceptProgressStatusResponse;
-import com.algoarena.algoarena_backend.entity.QuizAnswer;
-import com.algoarena.algoarena_backend.entity.QuizQuestion;
-import com.algoarena.algoarena_backend.repository.QuizQuestionRepository;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.List;
 
 @Service
 public class UnderstandingEvaluationService {
+
     private final QuizAnswerRepository quizAnswerRepository;
     private final QuizQuestionRepository quizQuestionRepository;
     private final GeminiService geminiService;
-
-    private final UnderstandingEvaluationRepository
-            evaluationRepository;
+    private final UnderstandingEvaluationRepository evaluationRepository;
     private final ProblemRepository problemRepository;
-
 
     public UnderstandingEvaluationService(
             UnderstandingEvaluationRepository evaluationRepository,
@@ -46,6 +40,7 @@ public class UnderstandingEvaluationService {
         this.quizQuestionRepository = quizQuestionRepository;
         this.geminiService = geminiService;
     }
+
     public UnderstandingEvaluation saveEvaluation(
             UnderstandingEvaluation evaluation
     ) {
@@ -55,6 +50,53 @@ public class UnderstandingEvaluationService {
     public boolean alreadyEvaluated(Long answerId) {
         return evaluationRepository.existsByAnswerId(answerId);
     }
+
+    public UnderstandingEvaluation evaluateAnswer(Long answerId) {
+
+        if (alreadyEvaluated(answerId)) {
+            return evaluationRepository
+                    .findByAnswerId(answerId)
+                    .orElseThrow(() ->
+                            new RuntimeException(
+                                    "Evaluation already exists"
+                            )
+                    );
+        }
+
+        QuizAnswer answer =
+                quizAnswerRepository
+                        .findById(answerId)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Answer not found"
+                                )
+                        );
+
+        QuizQuestion question =
+                quizQuestionRepository
+                        .findById(answer.getQuestionId())
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Question not found"
+                                )
+                        );
+
+        Problem problem =
+                problemRepository
+                        .findById(question.getProblemId())
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Problem not found"
+                                )
+                        );
+
+        return evaluateAndSave(
+                answer,
+                question,
+                problem
+        );
+    }
+
     public int evaluateSubmission(Long submissionId) {
 
         List<QuizAnswer> answers =
@@ -64,7 +106,6 @@ public class UnderstandingEvaluationService {
 
         for (QuizAnswer answer : answers) {
 
-            // Don't evaluate the same answer twice
             if (alreadyEvaluated(answer.getId())) {
                 continue;
             }
@@ -75,7 +116,8 @@ public class UnderstandingEvaluationService {
                             .orElseThrow(() ->
                                     new RuntimeException(
                                             "Question not found"
-                                    ));
+                                    )
+                            );
 
             Problem problem =
                     problemRepository
@@ -83,28 +125,14 @@ public class UnderstandingEvaluationService {
                             .orElseThrow(() ->
                                     new RuntimeException(
                                             "Problem not found"
-                                    ));
+                                    )
+                            );
 
-            GeminiEvaluationResult result =
-                    geminiService.evaluateAnswer(
-                            problem.getDescription(),
-                            problem.getConcept(),
-                            question.getQuestion(),
-                            answer.getAnswer()
-                    );
-
-            UnderstandingEvaluation evaluation =
-                    new UnderstandingEvaluation(
-                            answer.getId(),
-                            question.getId(),
-                            answer.getSubmissionId(),
-                            answer.getUserId(),
-                            result.getUnderstandingLevel(),
-                            result.getConcept(),
-                            result.getFeedback()
-                    );
-
-            evaluationRepository.save(evaluation);
+            evaluateAndSave(
+                    answer,
+                    question,
+                    problem
+            );
 
             evaluatedCount++;
         }
@@ -112,8 +140,33 @@ public class UnderstandingEvaluationService {
         return evaluatedCount;
     }
 
+    private UnderstandingEvaluation evaluateAndSave(
+            QuizAnswer answer,
+            QuizQuestion question,
+            Problem problem
+    ) {
 
+        GeminiEvaluationResult result =
+                geminiService.evaluateAnswer(
+                        problem.getDescription(),
+                        problem.getConcept(),
+                        question.getQuestion(),
+                        answer.getAnswer()
+                );
 
+        UnderstandingEvaluation evaluation =
+                new UnderstandingEvaluation(
+                        answer.getId(),
+                        question.getId(),
+                        answer.getSubmissionId(),
+                        answer.getUserId(),
+                        result.getUnderstandingLevel(),
+                        result.getConcept(),
+                        result.getFeedback()
+                );
+
+        return evaluationRepository.save(evaluation);
+    }
 
     public List<UnderstandingEvaluation> getBySubmission(
             Long submissionId
@@ -122,10 +175,60 @@ public class UnderstandingEvaluationService {
                 .findBySubmissionId(submissionId);
     }
 
+    public FinalFeedbackResponse generateFinalFeedback(
+            Long submissionId
+    ) {
+
+        List<UnderstandingEvaluation> evaluations =
+                evaluationRepository.findBySubmissionId(
+                        submissionId
+                );
+
+        if (evaluations.isEmpty()) {
+            throw new RuntimeException(
+                    "No evaluations found for this submission."
+            );
+        }
+
+        UnderstandingEvaluation firstEvaluation =
+                evaluations.get(0);
+
+        QuizQuestion firstQuestion =
+                quizQuestionRepository
+                        .findById(firstEvaluation.getQuestionId())
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Question not found"
+                                )
+                        );
+
+        Problem problem =
+                problemRepository
+                        .findById(firstQuestion.getProblemId())
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Problem not found"
+                                )
+                        );
+
+        String feedback =
+                geminiService.generateFinalFeedback(
+                        problem.getDescription(),
+                        problem.getConcept(),
+                        evaluations
+                );
+
+        return new FinalFeedbackResponse(
+                submissionId,
+                feedback
+        );
+    }
+
     public List<UnderstandingEvaluation> getByUser(
             Long userId
     ) {
-        return evaluationRepository.findByUserIdOrderByIdAsc(userId);
+        return evaluationRepository
+                .findByUserIdOrderByIdAsc(userId);
     }
 
     public List<UserUnderstandingSummary> getUnderstandingSummary(
@@ -133,7 +236,9 @@ public class UnderstandingEvaluationService {
     ) {
 
         List<UnderstandingEvaluation> evaluations =
-                evaluationRepository.findByUserIdOrderByIdAsc(userId);
+                evaluationRepository
+                        .findByUserIdOrderByIdAsc(userId);
+
         Map<String, Integer> goodCounts = new HashMap<>();
         Map<String, Integer> partialCounts = new HashMap<>();
         Map<String, Integer> poorCounts = new HashMap<>();
@@ -224,7 +329,9 @@ public class UnderstandingEvaluationService {
     public UserProgressResponse getUserProgress(Long userId) {
 
         List<UnderstandingEvaluation> evaluations =
-                evaluationRepository.findByUserIdOrderByIdAsc(userId);
+                evaluationRepository
+                        .findByUserIdOrderByIdAsc(userId);
+
         int good = 0;
         int partial = 0;
         int poor = 0;
@@ -258,10 +365,15 @@ public class UnderstandingEvaluationService {
                 poor
         );
     }
-    public List<ConceptHistoryResponse> getUserHistory(Long userId) {
+
+    public List<ConceptHistoryResponse> getUserHistory(
+            Long userId
+    ) {
 
         List<UnderstandingEvaluation> evaluations =
-                evaluationRepository.findByUserIdOrderByIdAsc(userId);
+                evaluationRepository
+                        .findByUserIdOrderByIdAsc(userId);
+
         List<ConceptHistoryResponse> history =
                 new ArrayList<>();
 
@@ -277,14 +389,17 @@ public class UnderstandingEvaluationService {
                     )
             );
         }
+
         return history;
     }
+
     public List<ConceptProgressResponse> getConceptProgress(
             Long userId
     ) {
 
         List<UnderstandingEvaluation> evaluations =
-                evaluationRepository.findByUserIdOrderByIdAsc(userId);
+                evaluationRepository
+                        .findByUserIdOrderByIdAsc(userId);
 
         Map<String, List<String>> conceptLevels =
                 new HashMap<>();
@@ -296,7 +411,9 @@ public class UnderstandingEvaluationService {
                             evaluation.getConcept(),
                             key -> new ArrayList<>()
                     )
-                    .add(evaluation.getUnderstandingLevel());
+                    .add(
+                            evaluation.getUnderstandingLevel()
+                    );
         }
 
         List<ConceptProgressResponse> result =
@@ -327,7 +444,6 @@ public class UnderstandingEvaluationService {
         return result;
     }
 
-
     private String calculateCurrentStatus(
             List<String> levels
     ) {
@@ -354,7 +470,6 @@ public class UnderstandingEvaluationService {
         return "UNKNOWN";
     }
 
-
     private String calculateTrend(
             List<String> levels
     ) {
@@ -379,7 +494,6 @@ public class UnderstandingEvaluationService {
 
         return "STABLE";
     }
-
 
     private int getLevelScore(String level) {
 
@@ -433,7 +547,8 @@ public class UnderstandingEvaluationService {
 
         for (ConceptStatusResponse status : statuses) {
 
-            if (!"WEAK".equalsIgnoreCase(status.getStatus())) {
+            if (!"WEAK".equalsIgnoreCase(
+                    status.getStatus())) {
                 continue;
             }
 
@@ -458,9 +573,8 @@ public class UnderstandingEvaluationService {
         return recommendations;
     }
 
-    public List<ConceptRecommendationResponse> getGroupedRecommendations(
-            Long userId
-    ) {
+    public List<ConceptRecommendationResponse>
+    getGroupedRecommendations(Long userId) {
 
         List<ConceptStatusResponse> statuses =
                 getConceptStatuses(userId);
@@ -470,7 +584,8 @@ public class UnderstandingEvaluationService {
 
         for (ConceptStatusResponse status : statuses) {
 
-            if (!"WEAK".equalsIgnoreCase(status.getStatus())) {
+            if (!"WEAK".equalsIgnoreCase(
+                    status.getStatus())) {
                 continue;
             }
 
@@ -479,7 +594,8 @@ public class UnderstandingEvaluationService {
                             status.getConcept()
                     );
 
-            List<ProblemRecommendationResponse> problemResponses =
+            List<ProblemRecommendationResponse>
+                    problemResponses =
                     new ArrayList<>();
 
             for (Problem problem : problems) {
@@ -508,9 +624,8 @@ public class UnderstandingEvaluationService {
         return result;
     }
 
-    public List<ConceptProgressStatusResponse> getFinalProgress(
-            Long userId
-    ) {
+    public List<ConceptProgressStatusResponse>
+    getFinalProgress(Long userId) {
 
         List<ConceptProgressResponse> progress =
                 getConceptProgress(userId);
@@ -520,9 +635,12 @@ public class UnderstandingEvaluationService {
 
         for (ConceptProgressResponse item : progress) {
 
-            String progressStatus = item.getTrend();
+            String progressStatus =
+                    item.getTrend();
 
-            if ("DECLINING".equalsIgnoreCase(progressStatus)) {
+            if ("DECLINING".equalsIgnoreCase(
+                    progressStatus)) {
+
                 progressStatus = "LAGGING";
             }
 
@@ -536,22 +654,4 @@ public class UnderstandingEvaluationService {
 
         return result;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-

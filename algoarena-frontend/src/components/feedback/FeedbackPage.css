@@ -1,0 +1,434 @@
+/* ================================
+   FINAL FEEDBACK PAGE
+================================ */
+
+.feedback-page {
+    min-height: 100vh;
+    background: #071525;
+    color: #f8fafc;
+    padding: 60px 24px;
+    box-sizing: border-box;
+}
+
+.feedback-container {
+    width: min(1100px, 100%);
+    margin: 0 auto;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.feedback-header {
+    margin-bottom: 42px;
+}
+
+.feedback-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 8px 14px;
+
+    border: 1px solid rgba(96, 165, 250, 0.25);
+    border-radius: 999px;
+
+    background: rgba(37, 99, 235, 0.08);
+
+    color: #93c5fd;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.feedback-badge-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #60a5fa;
+    box-shadow: 0 0 10px rgba(96, 165, 250, 0.8);
+}
+
+.feedback-header h1 {
+    margin: 20px 0 10px;
+
+    font-size: clamp(36px, 5vw, 58px);
+    line-height: 1.05;
+    font-weight: 800;
+
+    letter-spacing: -1.5px;
+}
+
+.feedback-subtitle {
+    margin: 0;
+
+    color: #94a3b8;
+
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+
+/* ================================
+   SUBMISSION INFO
+================================ */
+
+.feedback-submission {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 18px 22px;
+
+    margin-bottom: 28px;
+
+    background: #0b1b2e;
+
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 14px;
+}
+
+.feedback-submission-label {
+    color: #94a3b8;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.feedback-submission-id {
+    color: #f8fafc;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+/* ================================
+   FEEDBACK CARD
+================================ */
+
+.feedback-card {
+    background: #0b1b2e;
+
+    border: 1px solid rgba(148, 163, 184, 0.14);
+
+    border-radius: 20px;
+
+    padding: 32px;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.22);
+}
+
+.feedback-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin-bottom: 26px;
+}
+
+.feedback-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 46px;
+    height: 46px;
+
+    border-radius: 12px;
+
+    background: rgba(59, 130, 246, 0.12);
+
+    color: #60a5fa;
+
+    font-size: 22px;
+}
+
+.feedback-card-header h2 {
+    margin: 0;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+
+/* ================================
+   FEEDBACK CONTENT
+================================ */
+
+.feedback-content {
+    color: #dbeafe;
+
+    font-size: 16px;
+    line-height: 1.85;
+
+    white-space: pre-wrap;
+
+    word-break: break-word;
+}
+
+.feedback-content p {
+    margin: 0 0 18px;
+}
+
+.feedback-content p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ================================
+   AI GENERATED SECTIONS
+================================ */
+
+.feedback-content strong {
+    color: #f8fafc;
+    font-weight: 700;
+}
+
+.feedback-content ul,
+.feedback-content ol {
+    margin: 14px 0 20px;
+    padding-left: 24px;
+}
+
+.feedback-content li {
+    margin-bottom: 9px;
+}
+
+.feedback-content code {
+    padding: 3px 7px;
+
+    border-radius: 6px;
+
+    background: #06111f;
+
+    color: #93c5fd;
+
+    font-family:
+        "Fira Code",
+        "Cascadia Code",
+        Consolas,
+        monospace;
+
+    font-size: 14px;
+}
+
+
+/* ================================
+   LOADING STATE
+================================ */
+
+.feedback-loading {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #071525;
+}
+
+.feedback-loading-card {
+    width: min(500px, calc(100% - 40px));
+
+    padding: 40px;
+
+    text-align: center;
+
+    background: #0b1b2e;
+
+    border: 1px solid rgba(148, 163, 184, 0.14);
+
+    border-radius: 20px;
+}
+
+.feedback-spinner {
+    width: 38px;
+    height: 38px;
+
+    margin: 0 auto 20px;
+
+    border: 3px solid rgba(148, 163, 184, 0.2);
+    border-top-color: #60a5fa;
+
+    border-radius: 50%;
+
+    animation: feedback-spin 0.8s linear infinite;
+}
+
+.feedback-loading-card h2 {
+    margin: 0 0 8px;
+
+    font-size: 22px;
+}
+
+.feedback-loading-card p {
+    margin: 0;
+
+    color: #94a3b8;
+}
+
+
+/* ================================
+   ERROR STATE
+================================ */
+
+.feedback-error {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #071525;
+
+    padding: 24px;
+}
+
+.feedback-error-card {
+    width: min(500px, 100%);
+
+    padding: 40px;
+
+    text-align: center;
+
+    background: #0b1b2e;
+
+    border: 1px solid rgba(248, 113, 113, 0.2);
+
+    border-radius: 20px;
+}
+
+.feedback-error-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 48px;
+    height: 48px;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    background: rgba(239, 68, 68, 0.12);
+
+    color: #f87171;
+
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.feedback-error-card h2 {
+    margin: 0 0 10px;
+}
+
+.feedback-error-card p {
+    margin: 0;
+
+    color: #94a3b8;
+
+    line-height: 1.6;
+}
+
+
+/* ================================
+   ACTIONS
+================================ */
+
+.feedback-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 28px;
+}
+
+.feedback-action-button {
+    padding: 12px 20px;
+
+    border: 1px solid rgba(96, 165, 250, 0.25);
+    border-radius: 10px;
+
+    background: rgba(37, 99, 235, 0.1);
+
+    color: #93c5fd;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.feedback-action-button:hover {
+    background: rgba(37, 99, 235, 0.18);
+
+    border-color: rgba(96, 165, 250, 0.45);
+
+    transform: translateY(-1px);
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 700px) {
+
+    .feedback-page {
+        padding: 36px 16px;
+    }
+
+    .feedback-header h1 {
+        font-size: 38px;
+    }
+
+    .feedback-card {
+        padding: 22px;
+        border-radius: 16px;
+    }
+
+    .feedback-card-header h2 {
+        font-size: 19px;
+    }
+
+    .feedback-content {
+        font-size: 15px;
+        line-height: 1.75;
+    }
+
+    .feedback-submission {
+        padding: 16px;
+    }
+
+}
+
+
+/* ================================
+   ANIMATION
+================================ */
+
+@keyframes feedback-spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}

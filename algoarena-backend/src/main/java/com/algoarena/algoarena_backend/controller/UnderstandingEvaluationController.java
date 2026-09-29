@@ -90,7 +90,14 @@ public class UnderstandingEvaluationController {
     ) {
         return evaluationService.getRecommendations(userId);
     }
-
+    @GetMapping("/submission/{submissionId}/final-feedback")
+    public FinalFeedbackResponse getFinalFeedback(
+            @PathVariable Long submissionId
+    ) {
+        return evaluationService.generateFinalFeedback(
+                submissionId
+        );
+    }
 
 
 

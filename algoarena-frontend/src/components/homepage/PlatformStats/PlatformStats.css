@@ -1,0 +1,142 @@
+.platform-stats {
+    width: 100%;
+
+    padding: 85px 0;
+
+    background-color: var(--navy);
+
+    border-top: 1px solid rgba(23, 69, 118, 0.45);
+}
+
+.stats-container {
+    width: 100%;
+    max-width: 1380px;
+
+    margin: 0 auto;
+
+    padding: 0 42px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1.4fr;
+
+    align-items: center;
+
+    gap: 80px;
+}
+
+.stats-intro {
+    max-width: 520px;
+}
+
+.stats-intro h2 {
+    margin: 0;
+
+    color: var(--white);
+
+    font-size: clamp(32px, 4vw, 46px);
+
+    line-height: 1.1;
+
+    letter-spacing: -1.5px;
+}
+
+.stats-intro h2 span {
+    color: var(--blue);
+}
+
+.stats-intro p {
+    margin: 20px 0 0;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+.stats-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    border: 1px solid var(--border-blue);
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    background-color: var(--navy-card);
+}
+
+.stat-item {
+    min-height: 145px;
+
+    padding: 28px;
+
+    border-right: 1px solid var(--border-blue);
+
+    border-bottom: 1px solid var(--border-blue);
+}
+
+.stat-item:nth-child(2n) {
+    border-right: none;
+}
+
+.stat-item:nth-child(3),
+.stat-item:nth-child(4) {
+    border-bottom: none;
+}
+
+.stat-item h3 {
+    margin: 0 0 10px;
+
+    color: var(--blue-bright);
+
+    font-size: 32px;
+
+    font-weight: 700;
+}
+
+.stat-item p {
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+@media (max-width: 850px) {
+    .stats-container {
+        grid-template-columns: 1fr;
+
+        gap: 40px;
+    }
+}
+
+@media (max-width: 600px) {
+    .platform-stats {
+        padding: 65px 0;
+    }
+
+    .stats-container {
+        padding: 0 20px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-item,
+    .stat-item:nth-child(3) {
+        border-right: none;
+
+        border-bottom: 1px solid var(--border-blue);
+    }
+
+    .stat-item:last-child {
+        border-bottom: none;
+    }
+}

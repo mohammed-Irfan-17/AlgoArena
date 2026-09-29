@@ -1,565 +1,127 @@
 .navbar {
-    position: relative;
-
     width: 100%;
+    height: 68px;
 
-    background-color: var(--navy-dark);
+    background: #071426;
 
-    border-bottom: 1px solid var(--border-blue);
+    border-bottom: 1px solid #17263a;
 
-    color: var(--white);
+    position: sticky;
+    top: 0;
 
-    z-index: 1000;
+    z-index: 100;
 }
 
-.navbar-container {
-    width: 100%;
-    max-width: 1380px;
 
-    height: 70px;
+.navbar-inner {
+    width: 100%;
+    max-width: 1400px;
+
+    height: 100%;
 
     margin: 0 auto;
-    padding: 0 42px;
+
+    padding: 0 32px;
 
     display: flex;
     align-items: center;
+
     justify-content: space-between;
 }
 
-/* =========================================
-   BRAND
-========================================= */
 
-.navbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+/* Logo */
 
-    flex-shrink: 0;
-}
+.navbar-logo {
+    color: #ffffff;
 
-.navbar-logo-placeholder {
-    width: 39px;
-    height: 39px;
+    text-decoration: none;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 1px solid var(--border-blue);
-    border-radius: 9px;
-
-    background-color: var(--navy-light);
-
-    color: var(--blue-bright);
-
-    font-size: 12px;
+    font-size: 24px;
     font-weight: 800;
-    letter-spacing: 1px;
 
-    box-shadow: 0 0 18px rgba(47, 140, 255, 0.08);
+    letter-spacing: -0.5px;
 }
 
-.navbar-title {
-    color: var(--white);
 
-    font-size: 21px;
-    font-weight: 700;
-    letter-spacing: -0.4px;
+.navbar-logo:hover {
+    color: #7dd3fc;
 }
 
-/* =========================================
-   DESKTOP NAVIGATION
-========================================= */
+
+/* Links */
 
 .navbar-links {
     display: flex;
-    align-items: center;
-    gap: 40px;
 
-    margin-left: auto;
-    margin-right: auto;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-left: 80px;
 }
+
 
 .navbar-link {
-    position: relative;
-
-    padding: 25px 0;
-
-    border: none;
-    outline: none;
-
-    background: transparent;
-
-    color: var(--text-secondary);
+    color: #94a3b8;
 
     text-decoration: none;
 
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
 
-    cursor: pointer;
-
-    transition: color 0.2s ease;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
 }
+
 
 .navbar-link:hover {
-    color: var(--white);
+    color: #ffffff;
 
-    background: transparent;
+    background: #102238;
 }
+
 
 .navbar-link.active {
-    color: var(--blue-bright);
+    color: #ffffff;
 
-    background: transparent;
+    background: #172d46;
 }
 
-.navbar-link.active::after {
-    content: "";
 
-    position: absolute;
+/* User */
 
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    height: 2px;
-
-    background-color: var(--blue);
-
-    box-shadow: 0 0 8px rgba(47, 140, 255, 0.6);
-}
-/* =========================================
-   DESKTOP ACTIONS
-========================================= */
-
-.navbar-actions {
+.navbar-user {
     display: flex;
-    align-items: center;
-    gap: 12px;
-
-    flex-shrink: 0;
-}
-
-.navbar-login,
-.navbar-signup {
-    height: 39px;
-
-    padding: 0 20px;
-
-    border-radius: 8px;
-
-    font-size: 13px;
-    font-weight: 600;
-
-    transition: all 0.2s ease;
-}
-
-.navbar-login {
-    border: 1px solid var(--border-blue);
-
-    background-color: transparent;
-
-    color: var(--white);
-}
-
-.navbar-login:hover {
-    border-color: var(--blue);
-
-    background-color: rgba(47, 140, 255, 0.08);
-}
-
-.navbar-signup {
-    border: 1px solid var(--blue);
-
-    background-color: var(--blue);
-
-    color: white;
-
-    box-shadow: 0 4px 16px rgba(47, 140, 255, 0.2);
-}
-
-.navbar-signup:hover {
-    background-color: var(--blue-bright);
-
-    box-shadow: 0 6px 22px rgba(47, 140, 255, 0.3);
-}
-
-/* =========================================
-   MOBILE MENU BUTTON
-========================================= */
-
-.mobile-menu-button {
-    display: none;
-
-    width: 42px;
-    height: 42px;
-
-    padding: 0;
-
-    border: 1px solid var(--border-blue);
-    border-radius: 8px;
-
-    background-color: var(--navy-light);
 
     align-items: center;
-    justify-content: center;
 
-    flex-direction: column;
+    gap: 10px;
 
-    gap: 5px;
-}
-
-.mobile-menu-button span {
-    display: block;
-
-    width: 19px;
-    height: 2px;
-
-    border-radius: 2px;
-
-    background-color: var(--blue-bright);
-
-    transition: all 0.2s ease;
-}
-
-/* Small animation when menu is open */
-
-.mobile-menu-button.open span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-}
-
-.mobile-menu-button.open span:nth-child(2) {
-    opacity: 0;
-}
-
-.mobile-menu-button.open span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
-}
-
-/* =========================================
-   MOBILE MENU
-========================================= */
-
-.mobile-menu {
-    display: none;
-
-    width: 100%;
-
-    padding: 18px 20px 22px;
-
-    border-top: 1px solid var(--border-blue);
-
-    background-color: var(--navy);
-
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
-}
-
-.mobile-menu-link {
-    display: block;
-
-    width: 100%;
-
-    padding: 14px 10px;
-
-    border: none;
-    border-bottom: 1px solid rgba(23, 69, 118, 0.5);
-    outline: none;
-
-    background: transparent;
-
-    color: var(--text-secondary);
-
-    text-align: left;
-
-    text-decoration: none;
+    color: #cbd5e1;
 
     font-size: 14px;
-    font-weight: 500;
-
-    cursor: pointer;
-
-    transition: color 0.2s ease, background-color 0.2s ease;
 }
 
-.mobile-menu-link:hover {
-    background-color: rgba(47, 140, 255, 0.06);
 
-    color: var(--blue-bright);
-}
+.navbar-avatar {
+    width: 34px;
+    height: 34px;
 
-.mobile-menu-link.active {
-    background-color: rgba(47, 140, 255, 0.08);
-
-    color: var(--blue-bright);
-}
-
-.mobile-login-button,
-.mobile-signup-button {
-    width: 100%;
-
-    height: 43px;
-
-    margin-top: 12px;
-
-    border-radius: 8px;
-
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.mobile-login-button {
-    border: 1px solid var(--border-blue);
-
-    background-color: transparent;
-
-    color: var(--white);
-}
-
-.mobile-signup-button {
-    border: 1px solid var(--blue);
-
-    background-color: var(--blue);
-
-    color: white;
-}
-
-/* =========================================
-   TABLET / MOBILE
-========================================= */
-
-@media (max-width: 900px) {
-    .navbar-container {
-        height: 66px;
-
-        padding: 0 24px;
-    }
-
-    .navbar-links,
-    .navbar-actions {
-        display: none;
-    }
-
-    .mobile-menu-button {
-        display: flex;
-    }
-
-    .mobile-menu {
-        display: block;
-    }
-}
-
-/* =========================================
-   SMALL MOBILE
-========================================= */
-
-@media (max-width: 500px) {
-    .navbar-container {
-        padding: 0 16px;
-    }
-
-    .navbar-logo-placeholder {
-        width: 36px;
-        height: 36px;
-    }
-
-    .navbar-title {
-        font-size: 19px;
-    }
-}
-/* =========================================
-   TAB OVERLAY
-========================================= */
-
-.tab-overlay {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 2000;
+    border-radius: 50%;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    padding: 30px;
-}
+    background: #1e3a5f;
 
-/* Blurred background */
+    color: #ffffff;
 
-.tab-backdrop {
-    position: absolute;
-
-    inset: 0;
-
-    background: rgba(3, 12, 25, 0.68);
-
-    backdrop-filter: blur(9px);
-
-    -webkit-backdrop-filter: blur(9px);
-}
-
-/* Main panel */
-
-.tab-panel {
-    position: relative;
-
-    width: 100%;
-    max-width: 900px;
-
-    min-height: 500px;
-
-    background-color: var(--navy);
-
-    border: 1px solid var(--border-blue);
-
-    border-radius: 16px;
-
-    box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.5),
-        0 0 35px rgba(47, 140, 255, 0.08);
-
-    overflow: hidden;
-
-    z-index: 1;
-
-    animation: tabPanelOpen 0.2s ease-out;
-}
-
-@keyframes tabPanelOpen {
-    from {
-        opacity: 0;
-        transform: translateY(15px) scale(0.98);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* Panel header */
-
-.tab-panel-header {
-    height: 70px;
-
-    padding: 0 25px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    border-bottom: 1px solid var(--border-blue);
-
-    background-color: var(--navy-dark);
-}
-
-.tab-panel-header h2 {
-    margin: 0;
-
-    color: var(--white);
-
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.tab-close-button {
-    width: 38px;
-    height: 38px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 1px solid var(--border-blue);
-    border-radius: 8px;
-
-    background-color: transparent;
-
-    color: var(--text-secondary);
-
-    font-size: 26px;
-    line-height: 1;
-
-    transition: all 0.2s ease;
-}
-
-.tab-close-button:hover {
-    border-color: var(--blue);
-
-    background-color: rgba(47, 140, 255, 0.08);
-
-    color: var(--blue-bright);
-}
-
-/* Panel content */
-
-.tab-panel-content {
-    padding: 45px;
-}
-
-.tab-label {
-    margin: 0 0 12px;
-
-    color: var(--blue-bright);
-
-    font-size: 10px;
     font-weight: 700;
-
-    letter-spacing: 2px;
-}
-
-.tab-panel-content h3 {
-    margin: 0 0 15px;
-
-    color: var(--white);
-
-    font-size: 32px;
-}
-
-.tab-panel-content p:not(.tab-label) {
-    margin: 0;
-
-    color: var(--text-secondary);
-
-    font-size: 15px;
-
-    line-height: 1.7;
-}
-
-
-/* =========================================
-   MOBILE OVERLAY
-========================================= */
-
-@media (max-width: 600px) {
-
-    .tab-overlay {
-        padding: 15px;
-    }
-
-    .tab-panel {
-        min-height: 80vh;
-
-        border-radius: 13px;
-    }
-
-    .tab-panel-header {
-        height: 62px;
-
-        padding: 0 18px;
-    }
-
-    .tab-panel-header h2 {
-        font-size: 18px;
-    }
-
-    .tab-panel-content {
-        padding: 30px 22px;
-    }
-
-    .tab-panel-content h3 {
-        font-size: 27px;
-    }
 }

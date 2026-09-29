@@ -1,4 +1,5 @@
 import "./HeroSection.css";
+import { Link } from "react-router-dom";
 
 function HeroSection() {
     return (
@@ -12,8 +13,8 @@ function HeroSection() {
                     </span>
 
                     <h1 className="hero-title">
-                        Master problem solving,
-                        <span> not just problem solving.</span>
+                        Dont just code it,
+                        <span> explain it.</span>
                     </h1>
 
                     <p className="hero-description">
@@ -23,10 +24,13 @@ function HeroSection() {
                     </p>
 
                     <div className="hero-actions">
-                        <button className="hero-primary-button">
-                            Explore Problems
-                            <span>→</span>
-                        </button>
+                         <Link
+        to="/problems"
+        className="hero-primary-button"
+    >
+        Explore Problems
+        <span>→</span>
+    </Link>
 
                         <button className="hero-secondary-button">
                             View Dashboard

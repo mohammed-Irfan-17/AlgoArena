@@ -1,5 +1,6 @@
 package com.algoarena.algoarena_backend.services;
 
+import com.algoarena.algoarena_backend.entity.UnderstandingEvaluation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.genai.Client;
@@ -7,6 +8,9 @@ import com.google.genai.errors.ServerException;
 import com.google.genai.types.GenerateContentResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class GeminiService {
@@ -163,5 +167,180 @@ public class GeminiService {
             );
         }
     }
+
+
+    public List<String> generateQuizQuestions(
+            String problemDescription,
+            String concept
+    ) {
+
+        String prompt = """
+            You are creating a short conceptual understanding quiz
+            for a coding learner.
+
+            Problem:
+            %s
+
+            Main concept:
+            %s
+
+            Generate exactly 5 questions.
+
+            The questions must test understanding, not code syntax.
+
+            Cover these areas where appropriate:
+            1. Core algorithm or approach
+            2. Why the approach works
+            3. Time or space complexity
+            4. Important reasoning or invariant
+            5. Edge cases or limitations
+
+            Return ONLY the questions.
+
+            Format:
+            1. question
+            2. question
+            3. question
+            4. question
+            5. question
+
+            Do not provide answers.
+            Do not provide explanations.
+            Do not use markdown.
+            """.formatted(
+                problemDescription,
+                concept
+        );
+
+        GenerateContentResponse response =
+                generateWithRetry(prompt);
+
+        String responseText =
+                response.text();
+
+        List<String> questions =
+                new ArrayList<>();
+
+        String[] lines =
+                responseText.split("\\R");
+
+        for (String line : lines) {
+
+            String cleaned =
+                    line.trim()
+                            .replaceFirst(
+                                    "^\\d+[.)]\\s*",
+                                    ""
+                            );
+
+            if (!cleaned.isEmpty()) {
+                questions.add(cleaned);
+            }
+        }
+
+        if (questions.size() > 5) {
+
+            questions =
+                    new ArrayList<>(
+                            questions.subList(0, 5)
+                    );
+        }
+
+        return questions;
+    }
+
+    public String generateFinalFeedback(
+            String problemDescription,
+            String concept,
+            List<UnderstandingEvaluation> evaluations
+    ) {
+
+        StringBuilder evaluationText =
+                new StringBuilder();
+
+        for (int i = 0; i < evaluations.size(); i++) {
+
+            UnderstandingEvaluation evaluation =
+                    evaluations.get(i);
+
+            evaluationText.append(
+                            "Question "
+                    ).append(i + 1)
+                    .append(":\n");
+
+            evaluationText.append(
+                    "Understanding Level: "
+            ).append(
+                    evaluation.getUnderstandingLevel()
+            ).append("\n");
+
+            evaluationText.append(
+                    "Concept: "
+            ).append(
+                    evaluation.getConcept()
+            ).append("\n");
+
+            evaluationText.append(
+                    "Evaluation Feedback: "
+            ).append(
+                    evaluation.getFeedback()
+            ).append("\n\n");
+        }
+
+        String prompt = """
+            You are an educational mentor for a coding
+            learning platform.
+
+            A student solved a coding problem and then
+            completed a conceptual understanding quiz.
+
+            Your task is to generate FINAL learning feedback
+            based on the student's complete quiz performance.
+
+            Problem:
+            %s
+
+            Main concept:
+            %s
+
+            Individual evaluation results:
+            %s
+
+            Generate concise and useful educational feedback.
+
+            Your response MUST contain these sections:
+
+            Overall Understanding:
+            Give a short assessment of what the student
+            demonstrated across the quiz.
+
+            What You Understand Well:
+            Mention the concepts or reasoning areas
+            the student demonstrated well.
+
+            What You Should Improve:
+            Mention the conceptual gaps that should be
+            revisited.
+
+            Recommended Focus:
+            Give 2 or 3 concrete things the student should
+            study or practice next.
+
+            Keep the feedback encouraging and educational.
+
+            Do not mention Gemini.
+            Do not mention internal evaluation levels
+            such as GOOD, PARTIAL, or POOR.
+            Do not expose individual question evaluations.
+            """.formatted(
+                problemDescription,
+                concept,
+                evaluationText
+        );
+
+        return generateWithRetry(prompt).text();
+    }
+
+
 }
 

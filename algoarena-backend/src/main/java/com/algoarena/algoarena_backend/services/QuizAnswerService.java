@@ -8,8 +8,8 @@ import java.util.List;
 
 @Service
 public class QuizAnswerService {
-    private final UnderstandingEvaluationService evaluationService;
 
+    private final UnderstandingEvaluationService evaluationService;
     private final QuizAnswerRepository quizAnswerRepository;
 
     public QuizAnswerService(
@@ -17,37 +17,36 @@ public class QuizAnswerService {
             UnderstandingEvaluationService evaluationService
     ) {
         this.quizAnswerRepository = quizAnswerRepository;
-        this.evaluationService=evaluationService;
+        this.evaluationService = evaluationService;
     }
 
     public QuizAnswer saveAnswer(QuizAnswer answer) {
 
+        // 1. Save the user's answer
         QuizAnswer savedAnswer =
                 quizAnswerRepository.save(answer);
 
-        List<QuizAnswer> answers =
-                quizAnswerRepository.findBySubmissionId(
-                        savedAnswer.getSubmissionId()
-                );
+        // 2. Immediately evaluate ONLY this answer
+        evaluationService.evaluateAnswer(
+                savedAnswer.getId()
+        );
 
-        if (answers.size() >= 5) {
-
-            evaluationService.evaluateSubmission(
-                    savedAnswer.getSubmissionId()
-            );
-        }
-
+        // 3. Return only the saved answer
+        // Evaluation details are NOT returned to frontend
         return savedAnswer;
     }
 
     public List<QuizAnswer> getAnswersBySubmission(
             Long submissionId
     ) {
-        return quizAnswerRepository.findBySubmissionId(submissionId);
+        return quizAnswerRepository.findBySubmissionId(
+                submissionId
+        );
     }
 
-    public List<QuizAnswer> getAnswersByUser(Long userId) {
+    public List<QuizAnswer> getAnswersByUser(
+            Long userId
+    ) {
         return quizAnswerRepository.findByUserId(userId);
     }
 }
-

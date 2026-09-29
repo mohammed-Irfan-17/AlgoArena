@@ -1,0 +1,150 @@
+.problems-page {
+    min-height: 100vh;
+
+    background-color: var(--navy);
+}
+
+.problems-main {
+    width: 100%;
+    max-width: 1380px;
+
+    margin: 0 auto;
+
+    padding: 90px 42px 100px;
+
+    box-sizing: border-box;
+}
+
+.problems-header {
+    max-width: 700px;
+
+    margin-bottom: 60px;
+}
+
+.problems-header h1 {
+    margin: 0;
+
+    color: var(--white);
+
+    font-size: clamp(38px, 5vw, 58px);
+
+    line-height: 1.05;
+
+    letter-spacing: -2px;
+}
+
+.problems-header p {
+    max-width: 600px;
+
+    margin: 20px 0 0;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+.problems-section {
+    width: 100%;
+}
+
+.problems-result-header {
+    margin-bottom: 18px;
+
+    color: #70839a;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.7px;
+}
+
+.problems-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+}
+
+.no-problems {
+    padding: 70px 20px;
+
+    border: 1px solid var(--border-blue);
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    background-color: var(--navy-card);
+}
+
+.no-problems h3 {
+    margin: 0 0 8px;
+
+    color: var(--white);
+
+    font-size: 18px;
+}
+
+.no-problems p {
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+@media (max-width: 1050px) {
+    .problems-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .problems-main {
+        padding: 65px 20px 80px;
+    }
+
+    .problems-header {
+        margin-bottom: 45px;
+    }
+
+    .problems-grid {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 600px) {
+
+    .problems-main {
+        padding: 30px 16px;
+    }
+
+    .problems-header h1 {
+        font-size: 30px;
+    }
+
+    .problems-header p {
+        font-size: 14px;
+
+        line-height: 1.7;
+    }
+
+    .problems-grid {
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+    }
+
+    .problem-card {
+        padding: 18px;
+    }
+
+    .problem-card h3 {
+        font-size: 19px;
+    }
+}

@@ -1,0 +1,213 @@
+.call-to-action {
+    width: 100%;
+
+    padding: 35px 42px 90px;
+
+    background-color: var(--navy);
+}
+
+.cta-container {
+    position: relative;
+
+    width: 100%;
+    max-width: 1296px;
+
+    min-height: 310px;
+
+    margin: 0 auto;
+
+    padding: 55px 60px;
+
+    display: flex;
+
+    align-items: center;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border-blue);
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            110deg,
+            rgba(8, 28, 53, 0.98),
+            rgba(6, 25, 49, 0.92)
+        );
+}
+
+.cta-content {
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 700px;
+}
+
+.cta-content h2 {
+    margin: 0;
+
+    color: var(--white);
+
+    font-size: clamp(30px, 4vw, 44px);
+
+    line-height: 1.15;
+
+    letter-spacing: -1.2px;
+}
+
+.cta-content h2 span {
+    color: var(--blue);
+}
+
+.cta-content p {
+    max-width: 590px;
+
+    margin: 18px 0 25px;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+.cta-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.cta-primary,
+.cta-secondary {
+    height: 44px;
+
+    padding: 0 20px;
+
+    border-radius: 7px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.cta-primary {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    border: 1px solid var(--blue);
+
+    background-color: var(--blue);
+
+    color: white;
+}
+
+.cta-primary:hover {
+    background-color: var(--blue-bright);
+
+    border-color: var(--blue-bright);
+}
+
+.cta-primary span {
+    font-size: 17px;
+}
+
+.cta-secondary {
+    border: 1px solid var(--border-blue);
+
+    background-color: transparent;
+
+    color: var(--text-secondary);
+}
+
+.cta-secondary:hover {
+    border-color: var(--blue);
+
+    color: var(--blue-bright);
+
+    background-color: rgba(47, 140, 255, 0.06);
+}
+
+/* Decorative background */
+
+.cta-decoration {
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+}
+
+.cta-circle {
+    position: absolute;
+
+    border: 1px solid rgba(47, 140, 255, 0.18);
+
+    border-radius: 50%;
+}
+
+.circle-one {
+    width: 430px;
+    height: 430px;
+
+    right: -80px;
+    top: -160px;
+}
+
+.circle-two {
+    width: 300px;
+    height: 300px;
+
+    right: 70px;
+    bottom: -190px;
+}
+
+.cta-glow {
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    right: 50px;
+    top: 20px;
+
+    border-radius: 50%;
+
+    background-color: rgba(47, 140, 255, 0.07);
+
+    filter: blur(50px);
+}
+
+@media (max-width: 650px) {
+    .call-to-action {
+        padding: 20px 20px 65px;
+    }
+
+    .cta-container {
+        padding: 40px 25px;
+
+        min-height: 350px;
+    }
+
+    .cta-actions {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .cta-primary,
+    .cta-secondary {
+        width: 100%;
+    }
+}

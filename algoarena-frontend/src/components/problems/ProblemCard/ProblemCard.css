@@ -1,0 +1,152 @@
+.problem-card {
+    width: 100%;
+
+    padding: 24px;
+
+    background-color: var(--navy-light);
+
+    border: 1px solid var(--border-blue);
+
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+    display: flex;
+    flex-direction: column;
+
+    min-height: 190px;
+}
+
+.problem-card:hover {
+    transform: translateY(-4px);
+
+    border-color: var(--blue);
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.25),
+        0 0 20px rgba(47, 140, 255, 0.08);
+}
+
+
+/* TOP */
+
+.problem-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+
+.problem-difficulty {
+    display: inline-flex;
+
+    padding: 6px 12px;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+}
+
+
+.problem-difficulty.easy {
+    color: #4ade80;
+
+    background-color: rgba(74, 222, 128, 0.08);
+
+    border: 1px solid rgba(74, 222, 128, 0.25);
+}
+
+
+.problem-difficulty.medium {
+    color: #facc15;
+
+    background-color: rgba(250, 204, 21, 0.08);
+
+    border: 1px solid rgba(250, 204, 21, 0.25);
+}
+
+
+.problem-difficulty.hard {
+    color: #f87171;
+
+    background-color: rgba(248, 113, 113, 0.08);
+
+    border: 1px solid rgba(248, 113, 113, 0.25);
+}
+
+
+/* TITLE */
+
+.problem-card h3 {
+    margin: 24px 0;
+
+    color: var(--white);
+
+    font-size: 20px;
+    font-weight: 600;
+
+    line-height: 1.4;
+}
+
+
+/* BOTTOM */
+
+.problem-card-bottom {
+    margin-top: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+
+.problem-card-bottom button {
+    border: none;
+
+    background: transparent;
+
+    color: var(--blue-bright);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    padding: 6px 0;
+}
+
+
+.problem-card-bottom button:hover {
+    color: var(--white);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .problem-card {
+        padding: 20px;
+
+        min-height: 170px;
+    }
+
+    .problem-card h3 {
+        font-size: 18px;
+
+        margin: 20px 0;
+    }
+
+}
