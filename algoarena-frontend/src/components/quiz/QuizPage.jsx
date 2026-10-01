@@ -1,37 +1,31 @@
-
-// import React, { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
 import React, {
     useEffect,
     useState
 } from "react";
 
-// import {
-//     useSearchParams,
-//     useNavigate
-// } from "react-router-dom";
+import {
+    useSearchParams,
+    useNavigate
+} from "react-router-dom";
 
 import QuizProgress from "./QuizProgress";
 import QuizQuestionCard from "./QuizQuestionCard";
 
 import "./QuizPage.css";
 
-function QuizPage({
-    onQuizComplete
-}) {
+function QuizPage() {
 
     const [searchParams] =
         useSearchParams();
-        
 
-    const navigate = useNavigate();
+    const navigate =
+        useNavigate();
 
     const submissionId =
         searchParams.get("submissionId");
 
     const userId =
         searchParams.get("userId");
-
 
     const [questions, setQuestions] =
         useState([]);
@@ -51,6 +45,12 @@ function QuizPage({
     const [error, setError] =
         useState("");
 
+
+    /*
+     * ===============================
+     * LOAD QUIZ QUESTIONS
+     * ===============================
+     */
 
     useEffect(() => {
 
@@ -83,6 +83,7 @@ function QuizPage({
                 );
 
             if (!response.ok) {
+
                 throw new Error(
                     "Failed to load quiz questions"
                 );
@@ -98,7 +99,9 @@ function QuizPage({
                         b.questionNumber
                 );
 
-            setQuestions(sortedQuestions);
+            setQuestions(
+                sortedQuestions
+            );
 
         } catch (err) {
 
@@ -111,10 +114,15 @@ function QuizPage({
         } finally {
 
             setLoading(false);
-
         }
     }
 
+
+    /*
+     * ===============================
+     * SUBMIT ANSWER
+     * ===============================
+     */
 
     async function submitAnswer() {
 
@@ -142,6 +150,7 @@ function QuizPage({
 
             const currentQuestion =
                 questions[currentIndex];
+
 
             const response =
                 await fetch(
@@ -171,6 +180,7 @@ function QuizPage({
                     }
                 );
 
+
             if (!response.ok) {
 
                 throw new Error(
@@ -178,43 +188,48 @@ function QuizPage({
                 );
             }
 
+
             /*
-             * Backend evaluates the answer privately.
-             * We intentionally do not show the
-             * individual evaluation to the user.
+             * Backend saves the answer
+             * and evaluates it privately.
              */
+
             await response.json();
 
 
-            
+            const isLastQuestion =
+                currentIndex ===
+                questions.length - 1;
 
 
-          const isLastQuestion =
-    currentIndex === questions.length - 1;
+            /*
+             * ===============================
+             * QUIZ COMPLETED
+             * ===============================
+             */
+
+            if (isLastQuestion) {
+
+                navigate(
+                    `/final-feedback?submissionId=${submissionId}&userId=${userId}`
+                );
+
+                return;
+            }
 
 
-if (isLastQuestion) {
-
-    navigate(
-        `/feedback?submissionId=${submissionId}&userId=${userId}`
-    );
-
-    return;
-}
-
-
-setCurrentIndex(
-    currentIndex + 1
-);
-
-setAnswer("");
-
+            /*
+             * ===============================
+             * NEXT QUESTION
+             * ===============================
+             */
 
             setCurrentIndex(
                 currentIndex + 1
             );
 
             setAnswer("");
+
 
         } catch (err) {
 
@@ -227,10 +242,15 @@ setAnswer("");
         } finally {
 
             setSubmitting(false);
-
         }
     }
 
+
+    /*
+     * ===============================
+     * LOADING
+     * ===============================
+     */
 
     if (loading) {
 
@@ -246,7 +266,8 @@ setAnswer("");
                     </h2>
 
                     <p>
-                        Loading your understanding questions...
+                        Loading your understanding
+                        questions...
                     </p>
 
                 </div>
@@ -255,6 +276,12 @@ setAnswer("");
         );
     }
 
+
+    /*
+     * ===============================
+     * ERROR
+     * ===============================
+     */
 
     if (
         error &&
@@ -285,6 +312,12 @@ setAnswer("");
     }
 
 
+    /*
+     * ===============================
+     * NO QUESTIONS
+     * ===============================
+     */
+
     if (questions.length === 0) {
 
         return (
@@ -297,7 +330,8 @@ setAnswer("");
                     </h2>
 
                     <p>
-                        Please return to the problem and try again.
+                        Please return to the problem
+                        and try again.
                     </p>
 
                 </div>
@@ -315,10 +349,17 @@ setAnswer("");
         questions.length - 1;
 
 
+    /*
+     * ===============================
+     * QUIZ UI
+     * ===============================
+     */
+
     return (
         <div className="quiz-page">
-
+    
             <div className="quiz-container">
+                
 
                 <header className="quiz-header">
 
@@ -398,8 +439,9 @@ setAnswer("");
                 <div className="quiz-footer">
 
                     <span>
-                        Your answers are evaluated privately
-                        to understand your learning progress.
+                        Your answers are evaluated
+                        privately to understand
+                        your learning progress.
                     </span>
 
                 </div>
@@ -411,4 +453,3 @@ setAnswer("");
 }
 
 export default QuizPage;
-

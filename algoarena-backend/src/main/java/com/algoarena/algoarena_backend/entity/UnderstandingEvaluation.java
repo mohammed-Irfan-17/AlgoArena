@@ -1,4 +1,5 @@
 package com.algoarena.algoarena_backend.entity;
+import jakarta.persistence.Column;
 
 import jakarta.persistence.*;
 
@@ -22,6 +23,7 @@ public class UnderstandingEvaluation {
 
     private String concept;
 
+    @Column(columnDefinition = "TEXT")
     private String feedback;
 
     public UnderstandingEvaluation() {

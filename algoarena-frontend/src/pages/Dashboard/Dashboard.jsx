@@ -1,90 +1,170 @@
-import React from "react";
 
-import "./Dashboard.css";
+import React, { useEffect, useState } from "react";
+
 import Navbar from "../../components/homepage/Navbar/Navbar";
 import Footer from "../../components/homepage/Footer/Footer";
 
+import "./Dashboard.css";
+
+const API_URL = "http://localhost:8080";
+
 function Dashboard() {
 
-    const stats = [
-        {
-            title: "Problems Solved",
-            value: "12",
-            subtitle: "Keep building momentum"
-        },
-        {
-            title: "Quizzes Completed",
-            value: "8",
-            subtitle: "Understanding checks"
-        },
-        {
-            title: "Concepts Learned",
-            value: "6",
-            subtitle: "Across different topics"
-        },
-        {
-            title: "Current Streak",
-            value: "4",
-            subtitle: "Days of learning"
+    const userId = 1;
+
+    const [dashboard, setDashboard] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        loadDashboard();
+    }, []);
+
+    async function loadDashboard() {
+
+        try {
+
+            setLoading(true);
+            setError("");
+
+            const response = await fetch(
+                `${API_URL}/api/dashboard/user/${userId}`
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    "Failed to load dashboard."
+                );
+            }
+
+            const data = await response.json();
+
+            setDashboard(data);
+
+        } catch (err) {
+
+            console.error(err);
+
+            setError(
+                "Unable to load your dashboard."
+            );
+
+        } finally {
+
+            setLoading(false);
+
         }
-    ];
+    }
 
 
-    const concepts = [
-        {
-            name: "Arrays",
-            status: "Strong",
-            progress: 85
-        },
-        {
-            name: "HashMap",
-            status: "Good",
-            progress: 72
-        },
-        {
-            name: "Stack",
-            status: "Improving",
-            progress: 64
-        },
-        {
-            name: "Linked List",
-            status: "Needs Practice",
-            progress: 42
-        }
-    ];
+    if (loading) {
+
+        return (
+            <div className="dashboard-state-page">
+
+                <div className="dashboard-state-card">
+
+                    <div className="dashboard-spinner"></div>
+
+                    <h2>
+                        Preparing your dashboard
+                    </h2>
+
+                    <p>
+                        Loading your learning progress...
+                    </p>
+
+                </div>
+
+            </div>
+        );
+    }
 
 
-    const recentActivity = [
-        {
-            title: "Valid Parentheses",
-            type: "Problem Solved",
-            time: "Today"
-        },
-        {
-            title: "Stack Understanding Quiz",
-            type: "Quiz Completed",
-            time: "Today"
-        },
-        {
-            title: "Two Sum",
-            type: "Problem Solved",
-            time: "Yesterday"
-        },
-        {
-            title: "HashMap Understanding Quiz",
-            type: "Quiz Completed",
-            time: "Yesterday"
-        }
-    ];
+    if (error) {
+
+        return (
+            <>
+                <Navbar />
+
+                <div className="dashboard-state-page">
+
+                    <div className="dashboard-state-card dashboard-error-card">
+
+                        <div className="dashboard-error-icon">
+                            !
+                        </div>
+
+                        <h2>
+                            Unable to load dashboard
+                        </h2>
+
+                        <p>
+                            {error}
+                        </p>
+
+                        <button
+                            onClick={loadDashboard}
+                            className="dashboard-retry-button"
+                        >
+                            Try Again
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <Footer />
+            </>
+        );
+    }
+
+
+    const progress =
+        dashboard?.progress || [];
+
+    const conceptStatuses =
+        dashboard?.conceptStatuses || [];
+
+    const recommendations =
+        dashboard?.recommendations || [];
+
+
+    const goodCount =
+        conceptStatuses.filter(
+            item =>
+                item.status?.toUpperCase() === "GOOD"
+        ).length;
+
+    const partialCount =
+        conceptStatuses.filter(
+            item =>
+                item.status?.toUpperCase() === "PARTIAL"
+        ).length;
+
+    const weakCount =
+        conceptStatuses.filter(
+            item =>
+                ["WEAK", "POOR", "NEEDS WORK"]
+                    .includes(
+                        item.status?.toUpperCase()
+                    )
+        ).length;
+
+
+    const totalConcepts =
+        conceptStatuses.length;
 
 
     return (
         <div className="dashboard-page">
-            <Navbar/>
 
-            <div className="dashboard-container">
+            <Navbar />
 
-                {/* Header */}
+
+            <main className="dashboard-container">
+
+                {/* ================= HEADER ================= */}
 
                 <header className="dashboard-header">
 
@@ -95,187 +175,353 @@ function Dashboard() {
                         </span>
 
                         <h1>
-                            Welcome back 👋
+                            Your Learning Progress
                         </h1>
 
                         <p>
-                            Track your problem-solving progress
-                            and understanding.
+                            Track your understanding
+                            across the concepts you have practiced.
                         </p>
 
                     </div>
 
-                    <div className="dashboard-date">
-                        Keep learning. Keep improving.
+                    <div className="dashboard-header-badge">
+                        <span></span>
+                        LIVE PROGRESS
                     </div>
 
                 </header>
 
 
-                {/* Stats */}
+                {/* ================= OVERVIEW ================= */}
 
-                <section className="dashboard-stats">
+                <section className="dashboard-overview">
 
-                    {stats.map((stat) => (
+                    <div className="overview-card">
 
-                        <div
-                            className="dashboard-stat-card"
-                            key={stat.title}
-                        >
+                        <div className="overview-icon">
+                            ✓
+                        </div>
 
-                            <span className="stat-title">
-                                {stat.title}
+                        <div>
+
+                            <span>
+                                GOOD
                             </span>
 
-                            <strong className="stat-value">
-                                {stat.value}
+                            <strong>
+                                {goodCount}
                             </strong>
 
-                            <span className="stat-subtitle">
-                                {stat.subtitle}
-                            </span>
+                            <small>
+                                Strong understanding
+                            </small>
 
                         </div>
 
-                    ))}
+                    </div>
+
+
+                    <div className="overview-card">
+
+                        <div className="overview-icon partial-icon">
+                            ~
+                        </div>
+
+                        <div>
+
+                            <span>
+                                PARTIAL
+                            </span>
+
+                            <strong>
+                                {partialCount}
+                            </strong>
+
+                            <small>
+                                Could be improved
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div className="overview-card">
+
+                        <div className="overview-icon weak-icon">
+                            !
+                        </div>
+
+                        <div>
+
+                            <span>
+                                NEEDS WORK
+                            </span>
+
+                            <strong>
+                                {weakCount}
+                            </strong>
+
+                            <small>
+                                Needs more practice
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div className="overview-card">
+
+                        <div className="overview-icon evaluated-icon">
+                            #
+                        </div>
+
+                        <div>
+
+                            <span>
+                                CONCEPTS
+                            </span>
+
+                            <strong>
+                                {totalConcepts}
+                            </strong>
+
+                            <small>
+                                Concepts evaluated
+                            </small>
+
+                        </div>
+
+                    </div>
 
                 </section>
 
 
-                {/* Main Grid */}
+                {/* ================= CONCEPT STATUS ================= */}
 
-                <div className="dashboard-grid">
+                <section className="dashboard-section">
 
-                    {/* Concept Progress */}
+                    <div className="section-heading">
 
-                    <section className="dashboard-card">
+                        <div>
 
-                        <div className="dashboard-card-header">
-
-                            <div>
-
-                                <h2>
-                                    Concept Progress
-                                </h2>
-
-                                <p>
-                                    Your current understanding
-                                </p>
-
-                            </div>
-
-                            <span className="dashboard-card-icon">
-                                ◈
+                            <span>
+                                UNDERSTANDING
                             </span>
+
+                            <h2>
+                                Concept Status
+                            </h2>
+
+                            <p>
+                                Your current understanding
+                                of the concepts you have practiced.
+                            </p>
 
                         </div>
 
+                        <div className="section-heading-icon">
+                            ◈
+                        </div>
 
-                        <div className="concept-list">
+                    </div>
 
-                            {concepts.map((concept) => (
 
-                                <div
-                                    className="concept-item"
-                                    key={concept.name}
-                                >
+                    {conceptStatuses.length === 0 ? (
 
-                                    <div className="concept-info">
+                        <div className="dashboard-empty">
+                            No concept evaluations available yet.
+                        </div>
 
-                                        <div>
+                    ) : (
 
-                                            <strong>
-                                                {concept.name}
-                                            </strong>
+                        <div className="concept-status-grid">
 
-                                            <span>
-                                                {concept.status}
-                                            </span>
+                            {conceptStatuses.map(
+                                (item, index) => {
+
+                                    const status =
+                                        item.status
+                                            ?.toUpperCase();
+
+                                    let statusClass =
+                                        "status-partial";
+
+                                    if (
+                                        status === "GOOD"
+                                    ) {
+                                        statusClass =
+                                            "status-good";
+                                    }
+
+                                    if (
+                                        status === "WEAK" ||
+                                        status === "POOR" ||
+                                        status === "NEEDS WORK"
+                                    ) {
+                                        statusClass =
+                                            "status-weak";
+                                    }
+
+                                    return (
+                                        <div
+                                            className="concept-status-card"
+                                            key={
+                                                `${item.concept}-${index}`
+                                            }
+                                        >
+
+                                            <div className="concept-status-top">
+
+                                                <div className="concept-status-number">
+                                                    {String(
+                                                        index + 1
+                                                    ).padStart(
+                                                        2,
+                                                        "0"
+                                                    )}
+                                                </div>
+
+                                                <span
+                                                    className={
+                                                        `concept-status-badge ${statusClass}`
+                                                    }
+                                                >
+                                                    {item.status}
+                                                </span>
+
+                                            </div>
+
+
+                                            <h3>
+                                                {item.concept}
+                                            </h3>
+
+
+                                            <div className="concept-status-line">
+
+                                                <span>
+                                                    Current understanding
+                                                </span>
+
+                                                <strong>
+                                                    {item.status}
+                                                </strong>
+
+                                            </div>
 
                                         </div>
-
-                                        <b>
-                                            {concept.progress}%
-                                        </b>
-
-                                    </div>
-
-
-                                    <div className="progress-track">
-
-                                        <div
-                                            className="progress-fill"
-                                            style={{
-                                                width:
-                                                    `${concept.progress}%`
-                                            }}
-                                        />
-
-                                    </div>
-
-                                </div>
-
-                            ))}
+                                    );
+                                }
+                            )}
 
                         </div>
 
-                    </section>
+                    )}
+
+                </section>
 
 
-                    {/* Recent Activity */}
+                {/* ================= PROGRESS ================= */}
 
-                    <section className="dashboard-card">
+                <section className="dashboard-section">
 
-                        <div className="dashboard-card-header">
+                    <div className="section-heading">
 
-                            <div>
+                        <div>
 
-                                <h2>
-                                    Recent Activity
-                                </h2>
-
-                                <p>
-                                    Your latest learning activity
-                                </p>
-
-                            </div>
-
-                            <span className="dashboard-card-icon">
-                                ↗
+                            <span>
+                                LEARNING TRAJECTORY
                             </span>
 
+                            <h2>
+                                Your Progress
+                            </h2>
+
+                            <p>
+                                How your understanding is developing
+                                across different concepts.
+                            </p>
+
                         </div>
 
+                        <div className="section-heading-icon">
+                            ↗
+                        </div>
 
-                        <div className="activity-list">
+                    </div>
 
-                            {recentActivity.map(
-                                (activity, index) => (
+
+                    {progress.length === 0 ? (
+
+                        <div className="dashboard-empty">
+                            No progress data available yet.
+                        </div>
+
+                    ) : (
+
+                        <div className="progress-list">
+
+                            {progress.map(
+                                (item, index) => (
 
                                     <div
-                                        className="activity-item"
-                                        key={index}
+                                        className="progress-item"
+                                        key={
+                                            `${item.concept}-${index}`
+                                        }
                                     >
 
-                                        <div className="activity-icon">
-                                            ✓
+                                        <div className="progress-item-info">
+
+                                            <div>
+
+                                                <strong>
+                                                    {item.concept}
+                                                </strong>
+
+                                                <span>
+                                                    {item.status}
+                                                </span>
+
+                                            </div>
+
+                                            <b>
+                                                {item.status}
+                                            </b>
+
                                         </div>
 
-                                        <div className="activity-content">
 
-                                            <strong>
-                                                {activity.title}
-                                            </strong>
+                                        <div className="progress-track">
 
-                                            <span>
-                                                {activity.type}
-                                            </span>
+                                            <div
+                                                className={
+                                                    `progress-fill ${
+                                                        item.status
+                                                            ?.toUpperCase() === "GOOD"
+                                                            ? "progress-good"
+                                                            : item.status
+                                                                ?.toUpperCase() === "WEAK"
+                                                                ? "progress-weak"
+                                                                : "progress-partial"
+                                                    }`
+                                                }
+                                                style={{
+                                                    width:
+                                                        item.status
+                                                            ?.toUpperCase() === "GOOD"
+                                                            ? "100%"
+                                                            : item.status
+                                                                ?.toUpperCase() === "PARTIAL"
+                                                                ? "65%"
+                                                                : "35%"
+                                                }}
+                                            />
 
                                         </div>
-
-                                        <time>
-                                            {activity.time}
-                                        </time>
 
                                     </div>
 
@@ -284,55 +530,207 @@ function Dashboard() {
 
                         </div>
 
-                    </section>
+                    )}
 
-                </div>
+                </section>
 
 
-                {/* Bottom Section */}
+                {/* ================= RECOMMENDATIONS ================= */}
 
-                <section className="dashboard-bottom">
+                <section className="dashboard-section">
 
-                    <div className="dashboard-learning-card">
+                    <div className="section-heading">
 
                         <div>
 
-                            <span className="dashboard-label">
-                                NEXT STEP
+                            <span>
+                                PRACTICE
                             </span>
 
                             <h2>
-                                Continue practicing
+                                Recommended Problems
                             </h2>
 
                             <p>
-                                Strengthen your weaker concepts
-                                by solving more problems and
-                                completing understanding checks.
+                                Problems grouped around concepts
+                                that need more practice.
                             </p>
 
                         </div>
 
-                        <button
-                            onClick={() =>
-                                window.location.href =
-                                    "/problems"
-                            }
-                        >
-                            Explore Problems
-                            <span>→</span>
-                        </button>
+                        <div className="section-heading-icon">
+                            →
+                        </div>
 
                     </div>
 
+
+                    {recommendations.length === 0 ? (
+
+                        <div className="dashboard-empty">
+
+                            <div className="empty-icon">
+                                ✓
+                            </div>
+
+                            <h3>
+                                You're doing well
+                            </h3>
+
+                            <p>
+                                No additional practice recommendations
+                                are available right now.
+                            </p>
+
+                        </div>
+
+                    ) : (
+
+                        <div className="recommendation-groups">
+
+                            {recommendations.map(
+                                (group, index) => (
+
+                                    <div
+                                        className="recommendation-group"
+                                        key={
+                                            `${group.concept}-${index}`
+                                        }
+                                    >
+
+                                        <div className="recommendation-group-header">
+
+                                            <div>
+
+                                                <span>
+                                                    CONCEPT
+                                                </span>
+
+                                                <h3>
+                                                    {group.concept}
+                                                </h3>
+
+                                            </div>
+
+                                            <span className="recommendation-count">
+                                                {group.problems?.length || 0}
+                                                {" "}
+                                                problems
+                                            </span>
+
+                                        </div>
+
+
+                                        <div className="recommendation-problems">
+
+                                            {(group.problems || [])
+                                                .map(
+                                                    (
+                                                        problem,
+                                                        problemIndex
+                                                    ) => (
+
+                                                        <div
+                                                            className="recommendation-problem"
+                                                            key={
+                                                                problem.id ||
+                                                                problemIndex
+                                                            }
+                                                            onClick={() =>
+                                                                window.location.href =
+                                                                    `/problems/${problem.id}`
+                                                            }
+                                                        >
+
+                                                            <div className="recommendation-problem-number">
+                                                                {String(
+                                                                    problemIndex + 1
+                                                                ).padStart(
+                                                                    2,
+                                                                    "0"
+                                                                )}
+                                                            </div>
+
+
+                                                            <div className="recommendation-problem-content">
+
+                                                                <strong>
+                                                                    {problem.title}
+                                                                </strong>
+
+                                                                <p>
+                                                                    {problem.description}
+                                                                </p>
+
+                                                            </div>
+
+
+                                                            <div className="recommendation-arrow">
+                                                                →
+                                                            </div>
+
+                                                        </div>
+
+                                                    )
+                                                )}
+
+                                        </div>
+
+                                    </div>
+
+                                )
+                            )}
+
+                        </div>
+
+                    )}
+
                 </section>
 
-            </div>
-            <Footer/>
+
+                {/* ================= NEXT STEP ================= */}
+
+                <section className="dashboard-next-step">
+
+                    <div>
+
+                        <span>
+                            NEXT STEP
+                        </span>
+
+                        <h2>
+                            Keep building your understanding.
+                        </h2>
+
+                        <p>
+                            Solve problems, complete understanding
+                            checks, and use your feedback to
+                            strengthen weaker concepts.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        onClick={() =>
+                            window.location.href =
+                                "/problems"
+                        }
+                    >
+                        Explore Problems
+                        <span>→</span>
+                    </button>
+
+                </section>
+
+            </main>
+
+
+            <Footer />
 
         </div>
-        
     );
 }
 
 export default Dashboard;
+

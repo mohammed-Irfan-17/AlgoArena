@@ -25,9 +25,8 @@ public class GeminiService {
         this.client = new Client();
         this.objectMapper = new ObjectMapper();
     }
-    private GenerateContentResponse generateWithRetry(
-            String prompt
-    ) {
+
+    private GenerateContentResponse generateWithRetry(String prompt) {
 
         int maxAttempts = 3;
 
@@ -48,7 +47,9 @@ public class GeminiService {
                 }
 
                 try {
+
                     Thread.sleep(2000L * attempt);
+
                 } catch (InterruptedException interruptedException) {
 
                     Thread.currentThread().interrupt();
@@ -74,17 +75,24 @@ public class GeminiService {
         return response.text();
     }
 
-    public GeminiEvaluationResult evaluateAnswer(
+    /*
+     * ---------------------------------------------------------
+     * CODE ANALYSIS
+     * ---------------------------------------------------------
+     */
+
+    public CodeAnalysisResult analyzeCode(
             String problemDescription,
             String concept,
-            String question,
-            String studentAnswer
+            String code,
+            String language
     ) {
 
         String prompt = """
-                You are an educational evaluator for a coding platform.
+                You are a senior coding mentor analyzing a student's
+                submitted solution for a coding learning platform.
 
-                Evaluate the student's conceptual understanding.
+                Analyze the student's ACTUAL CODE.
 
                 Problem:
                 %s
@@ -92,11 +100,149 @@ public class GeminiService {
                 Main concept:
                 %s
 
+                Programming language:
+                %s
+
+                Student code:
+                %s
+
+                Determine the actual approach used by the student.
+
+                IMPORTANT:
+                - Do NOT assume the student used the optimal approach.
+                - Analyze the code that is actually provided.
+                - Identify nested loops, hash maps, recursion,
+                  sorting, two pointers, binary search, etc. when present.
+                - Estimate realistic time and space complexity.
+                - Identify what the student's approach does well.
+                - Identify the most important improvement opportunity.
+                - Identify an appropriate optimal or more efficient
+                  approach when one exists.
+
+                Return ONLY valid JSON.
+                Do not use markdown.
+                Do not use ```.
+
+                JSON format:
+
+                {
+                  "approach": "Brute Force",
+                  "technique": "Nested Loops",
+                  "timeComplexity": "O(n^2)",
+                  "spaceComplexity": "O(1)",
+                  "strengths": "Correctly checks every possible pair.",
+                  "improvementOpportunity": "Nested loops repeatedly compare elements.",
+                  "optimalApproach": "Hash Map",
+                  "optimalTimeComplexity": "O(n)"
+                }
+
+                Be conservative.
+                Do not invent techniques that are not present in the code.
+                """.formatted(
+                problemDescription,
+                concept,
+                language,
+                code
+        );
+
+        GenerateContentResponse response =
+                generateWithRetry(prompt);
+
+        String json = response.text();
+
+        try {
+
+            JsonNode root =
+                    objectMapper.readTree(json);
+
+            return new CodeAnalysisResult(
+                    root.path("approach").asText(),
+                    root.path("technique").asText(),
+                    root.path("timeComplexity").asText(),
+                    root.path("spaceComplexity").asText(),
+                    root.path("strengths").asText(),
+                    root.path("improvementOpportunity").asText(),
+                    root.path("optimalApproach").asText(),
+                    root.path("optimalTimeComplexity").asText()
+            );
+
+        } catch (Exception e) {
+
+            throw new RuntimeException(
+                    "Could not parse Gemini code analysis: " + json,
+                    e
+            );
+        }
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * INDIVIDUAL ANSWER EVALUATION
+     * ---------------------------------------------------------
+     */
+
+    public GeminiEvaluationResult evaluateAnswer(
+            String problemDescription,
+            String concept,
+            String question,
+            String studentAnswer,
+            String studentCode,
+            CodeAnalysisResult codeAnalysis
+    ) {
+
+        String prompt = """
+                You are an educational evaluator for a coding platform.
+
+                Evaluate the student's conceptual understanding based on:
+
+                1. The problem
+                2. The student's actual submitted code
+                3. The approach detected in that code
+                4. The question
+                5. The student's answer
+
+                Problem:
+                %s
+
+                Main concept:
+                %s
+
+                Student programming language/code:
+                %s
+
+                Detected student approach:
+                %s
+
+                Detected technique:
+                %s
+
+                Detected time complexity:
+                %s
+
+                Detected space complexity:
+                %s
+
+                Improvement opportunity:
+                %s
+
                 Question:
                 %s
 
                 Student answer:
                 %s
+
+                IMPORTANT:
+                The evaluation MUST relate to the student's actual approach.
+
+                If the student used brute force, evaluate their
+                understanding of the brute-force approach and whether
+                they understand its limitations.
+
+                If the student used HashMap, evaluate their understanding
+                of the HashMap approach.
+
+                Do not assume the student used an algorithm that is not
+                present in their code.
 
                 Return ONLY valid JSON.
                 Do not use markdown.
@@ -106,8 +252,8 @@ public class GeminiService {
 
                 {
                   "understandingLevel": "GOOD",
-                  "concept": "Hash Map",
-                  "feedback": "Short educational feedback"
+                  "concept": "Brute Force",
+                  "feedback": "Short feedback directly related to the student's approach and answer."
                 }
 
                 understandingLevel must be exactly one of:
@@ -116,7 +262,8 @@ public class GeminiService {
                 POOR
 
                 GOOD:
-                The student clearly understands the concept.
+                The student clearly understands the relevant concept
+                and their actual approach.
 
                 PARTIAL:
                 The student understands some important parts but has
@@ -126,11 +273,17 @@ public class GeminiService {
                 The answer shows little understanding or contains
                 major conceptual errors.
 
-                Focus on conceptual understanding, not grammar or
-                programming style.
+                Focus on conceptual understanding, reasoning,
+                complexity and the actual approach.
                 """.formatted(
                 problemDescription,
                 concept,
+                studentCode,
+                codeAnalysis.getApproach(),
+                codeAnalysis.getTechnique(),
+                codeAnalysis.getTimeComplexity(),
+                codeAnalysis.getSpaceComplexity(),
+                codeAnalysis.getImprovementOpportunity(),
                 question,
                 studentAnswer
         );
@@ -142,7 +295,8 @@ public class GeminiService {
 
         try {
 
-            JsonNode root = objectMapper.readTree(json);
+            JsonNode root =
+                    objectMapper.readTree(json);
 
             String understandingLevel =
                     root.path("understandingLevel").asText();
@@ -168,48 +322,104 @@ public class GeminiService {
         }
     }
 
+    /*
+     * ---------------------------------------------------------
+     * QUIZ GENERATION
+     * ---------------------------------------------------------
+     */
 
     public List<String> generateQuizQuestions(
             String problemDescription,
-            String concept
+            String concept,
+            String studentCode,
+            String language,
+            CodeAnalysisResult codeAnalysis
     ) {
 
         String prompt = """
-            You are creating a short conceptual understanding quiz
-            for a coding learner.
+                You are creating a short conceptual understanding quiz
+                for a coding learner.
 
-            Problem:
-            %s
+                Problem:
+                %s
 
-            Main concept:
-            %s
+                Main concept:
+                %s
 
-            Generate exactly 5 questions.
+                Programming language:
+                %s
 
-            The questions must test understanding, not code syntax.
+                Student's actual code:
+                %s
 
-            Cover these areas where appropriate:
-            1. Core algorithm or approach
-            2. Why the approach works
-            3. Time or space complexity
-            4. Important reasoning or invariant
-            5. Edge cases or limitations
+                Student's detected approach:
+                %s
 
-            Return ONLY the questions.
+                Technique:
+                %s
 
-            Format:
-            1. question
-            2. question
-            3. question
-            4. question
-            5. question
+                Time complexity:
+                %s
 
-            Do not provide answers.
-            Do not provide explanations.
-            Do not use markdown.
-            """.formatted(
+                Space complexity:
+                %s
+
+                Improvement opportunity:
+                %s
+
+                More efficient approach, when applicable:
+                %s
+
+                Generate exactly 5 questions.
+
+                CRITICAL:
+                The questions must be related to the student's ACTUAL
+                implementation.
+
+                Do NOT assume the student used the optimal approach.
+
+                The questions should progressively explore:
+
+                1. Understanding of the student's actual approach
+                2. Why the student's approach works
+                3. Time or space complexity of the student's approach
+                4. Limitation or improvement opportunity
+                5. How a better approach could improve the solution
+
+                Example:
+
+                If the student used nested loops for Two Sum,
+                ask about O(n^2), repeated comparisons, and how
+                HashMap could improve the solution.
+
+                If the student used HashMap, ask about complement
+                lookup, O(n) complexity, space usage, and ordering.
+
+                Questions must test understanding, not code syntax.
+
+                Return ONLY the questions.
+
+                Format:
+                1. question
+                2. question
+                3. question
+                4. question
+                5. question
+
+                Do not provide answers.
+                Do not provide explanations.
+                Do not use markdown.
+                """.formatted(
                 problemDescription,
-                concept
+                concept,
+                language,
+                studentCode,
+                codeAnalysis.getApproach(),
+                codeAnalysis.getTechnique(),
+                codeAnalysis.getTimeComplexity(),
+                codeAnalysis.getSpaceComplexity(),
+                codeAnalysis.getImprovementOpportunity(),
+                codeAnalysis.getOptimalApproach()
         );
 
         GenerateContentResponse response =
@@ -249,9 +459,17 @@ public class GeminiService {
         return questions;
     }
 
+    /*
+     * ---------------------------------------------------------
+     * FINAL FEEDBACK
+     * ---------------------------------------------------------
+     */
+
     public String generateFinalFeedback(
             String problemDescription,
             String concept,
+            String studentCode,
+            CodeAnalysisResult codeAnalysis,
             List<UnderstandingEvaluation> evaluations
     ) {
 
@@ -265,82 +483,125 @@ public class GeminiService {
 
             evaluationText.append(
                             "Question "
-                    ).append(i + 1)
+                    )
+                    .append(i + 1)
                     .append(":\n");
 
             evaluationText.append(
-                    "Understanding Level: "
-            ).append(
-                    evaluation.getUnderstandingLevel()
-            ).append("\n");
+                            "Understanding Level: "
+                    )
+                    .append(
+                            evaluation.getUnderstandingLevel()
+                    )
+                    .append("\n");
 
             evaluationText.append(
-                    "Concept: "
-            ).append(
-                    evaluation.getConcept()
-            ).append("\n");
+                            "Concept: "
+                    )
+                    .append(
+                            evaluation.getConcept()
+                    )
+                    .append("\n");
 
             evaluationText.append(
-                    "Evaluation Feedback: "
-            ).append(
-                    evaluation.getFeedback()
-            ).append("\n\n");
+                            "Evaluation Feedback: "
+                    )
+                    .append(
+                            evaluation.getFeedback()
+                    )
+                    .append("\n\n");
         }
 
         String prompt = """
-            You are an educational mentor for a coding
-            learning platform.
+                You are an educational mentor for a coding
+                learning platform.
 
-            A student solved a coding problem and then
-            completed a conceptual understanding quiz.
+                Generate final learning feedback based on the
+                student's ACTUAL CODE and their conceptual quiz.
 
-            Your task is to generate FINAL learning feedback
-            based on the student's complete quiz performance.
+                Problem:
+                %s
 
-            Problem:
-            %s
+                Main concept:
+                %s
 
-            Main concept:
-            %s
+                Student code:
+                %s
 
-            Individual evaluation results:
-            %s
+                Student approach:
+                %s
 
-            Generate concise and useful educational feedback.
+                Technique:
+                %s
 
-            Your response MUST contain these sections:
+                Time complexity:
+                %s
 
-            Overall Understanding:
-            Give a short assessment of what the student
-            demonstrated across the quiz.
+                Space complexity:
+                %s
 
-            What You Understand Well:
-            Mention the concepts or reasoning areas
-            the student demonstrated well.
+                What the approach does well:
+                %s
 
-            What You Should Improve:
-            Mention the conceptual gaps that should be
-            revisited.
+                Improvement opportunity:
+                %s
 
-            Recommended Focus:
-            Give 2 or 3 concrete things the student should
-            study or practice next.
+                More efficient approach:
+                %s
 
-            Keep the feedback encouraging and educational.
+                Individual quiz evaluation results:
+                %s
 
-            Do not mention Gemini.
-            Do not mention internal evaluation levels
-            such as GOOD, PARTIAL, or POOR.
-            Do not expose individual question evaluations.
-            """.formatted(
+                Your feedback MUST be about the student's actual
+                implementation.
+
+                If the student used brute force, do not claim that
+                they used HashMap.
+
+                If the student used HashMap, discuss their HashMap
+                implementation specifically.
+
+                Generate concise educational feedback.
+
+                Return ONLY valid JSON.
+                Do not use markdown.
+                Do not use ```.
+
+                JSON format:
+
+                {
+                  "overallUnderstanding": "Short assessment of the student's actual approach.",
+                  "whatYouUnderstand": [
+                    "Point 1",
+                    "Point 2",
+                    "Point 3"
+                  ],
+                  "whatToImprove": [
+                    "Point 1",
+                    "Point 2"
+                  ],
+                  "keyTakeaway": "One important learning takeaway.",
+                  "nextFocus": "The most useful next concept to practice."
+                }
+
+                Keep each point concise.
+                Do not mention Gemini.
+                Do not mention internal evaluation levels such
+                as GOOD, PARTIAL, or POOR inside the text.
+                """.formatted(
                 problemDescription,
                 concept,
+                studentCode,
+                codeAnalysis.getApproach(),
+                codeAnalysis.getTechnique(),
+                codeAnalysis.getTimeComplexity(),
+                codeAnalysis.getSpaceComplexity(),
+                codeAnalysis.getStrengths(),
+                codeAnalysis.getImprovementOpportunity(),
+                codeAnalysis.getOptimalApproach(),
                 evaluationText
         );
 
         return generateWithRetry(prompt).text();
     }
-
-
 }
-

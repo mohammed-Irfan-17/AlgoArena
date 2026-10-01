@@ -1,14 +1,8 @@
 package com.algoarena.algoarena_backend.services;
 
 import com.algoarena.algoarena_backend.dto.*;
-import com.algoarena.algoarena_backend.entity.Problem;
-import com.algoarena.algoarena_backend.entity.QuizAnswer;
-import com.algoarena.algoarena_backend.entity.QuizQuestion;
-import com.algoarena.algoarena_backend.entity.UnderstandingEvaluation;
-import com.algoarena.algoarena_backend.repository.ProblemRepository;
-import com.algoarena.algoarena_backend.repository.QuizAnswerRepository;
-import com.algoarena.algoarena_backend.repository.QuizQuestionRepository;
-import com.algoarena.algoarena_backend.repository.UnderstandingEvaluationRepository;
+import com.algoarena.algoarena_backend.entity.*;
+import com.algoarena.algoarena_backend.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,19 +20,22 @@ public class UnderstandingEvaluationService {
     private final GeminiService geminiService;
     private final UnderstandingEvaluationRepository evaluationRepository;
     private final ProblemRepository problemRepository;
+    private final SubmissionRepository submissionRepository;
 
     public UnderstandingEvaluationService(
             UnderstandingEvaluationRepository evaluationRepository,
             ProblemRepository problemRepository,
             QuizAnswerRepository quizAnswerRepository,
             QuizQuestionRepository quizQuestionRepository,
-            GeminiService geminiService
+            GeminiService geminiService,
+         SubmissionRepository submissionRepository
     ) {
         this.evaluationRepository = evaluationRepository;
         this.problemRepository = problemRepository;
         this.quizAnswerRepository = quizAnswerRepository;
         this.quizQuestionRepository = quizQuestionRepository;
         this.geminiService = geminiService;
+        this.submissionRepository=submissionRepository;
     }
 
     public UnderstandingEvaluation saveEvaluation(
@@ -146,12 +143,31 @@ public class UnderstandingEvaluationService {
             Problem problem
     ) {
 
+        Submission submission =
+                submissionRepository.findById(
+                        answer.getSubmissionId()
+                ).orElseThrow(() ->
+                        new RuntimeException(
+                                "Submission not found"
+                        )
+                );
+
+        CodeAnalysisResult codeAnalysis =
+                geminiService.analyzeCode(
+                        problem.getDescription(),
+                        problem.getConcept(),
+                        submission.getCode(),
+                        submission.getLanguage()
+                );
+
         GeminiEvaluationResult result =
                 geminiService.evaluateAnswer(
                         problem.getDescription(),
                         problem.getConcept(),
                         question.getQuestion(),
-                        answer.getAnswer()
+                        answer.getAnswer(),
+                        submission.getCode(),
+                        codeAnalysis
                 );
 
         UnderstandingEvaluation evaluation =
@@ -190,6 +206,17 @@ public class UnderstandingEvaluationService {
             );
         }
 
+        // 1. Get the submission containing the user's actual code
+        Submission submission =
+                submissionRepository.findById(
+                        submissionId
+                ).orElseThrow(() ->
+                        new RuntimeException(
+                                "Submission not found"
+                        )
+                );
+
+        // 2. Get the first question to identify the problem
         UnderstandingEvaluation firstEvaluation =
                 evaluations.get(0);
 
@@ -202,6 +229,7 @@ public class UnderstandingEvaluationService {
                                 )
                         );
 
+        // 3. Get the problem
         Problem problem =
                 problemRepository
                         .findById(firstQuestion.getProblemId())
@@ -211,19 +239,31 @@ public class UnderstandingEvaluationService {
                                 )
                         );
 
+        // 4. Analyze the student's actual code
+        CodeAnalysisResult codeAnalysis =
+                geminiService.analyzeCode(
+                        problem.getDescription(),
+                        problem.getConcept(),
+                        submission.getCode(),
+                        submission.getLanguage()
+                );
+
+        // 5. Generate personalized final feedback
         String feedback =
                 geminiService.generateFinalFeedback(
                         problem.getDescription(),
                         problem.getConcept(),
+                        submission.getCode(),
+                        codeAnalysis,
                         evaluations
                 );
 
+        // 6. Return feedback
         return new FinalFeedbackResponse(
                 submissionId,
                 feedback
         );
     }
-
     public List<UnderstandingEvaluation> getByUser(
             Long userId
     ) {

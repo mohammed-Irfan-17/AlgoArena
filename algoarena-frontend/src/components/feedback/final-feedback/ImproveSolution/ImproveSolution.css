@@ -1,0 +1,303 @@
+.improve-solution {
+
+    width: 100%;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    border: 1px solid
+        rgba(43, 111, 171, 0.38);
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(7, 30, 53, 0.96),
+            rgba(5, 25, 46, 0.94)
+        );
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.18);
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.improve-solution-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 16px;
+}
+
+
+.improve-solution-icon {
+
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #125da5,
+            #073c73
+        );
+
+    border:
+        1px solid
+        rgba(63, 156, 255, 0.28);
+
+    color: #72b9ff;
+
+    font-size: 21px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 0 20px
+        rgba(0, 115, 255, 0.13);
+}
+
+
+.improve-solution-header span {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #5da8ed;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+}
+
+
+.improve-solution-header h2 {
+
+    margin: 0;
+
+    color: #edf5ff;
+
+    font-size: 18px;
+
+    font-weight: 750;
+}
+
+
+/* ================================
+   COMPARISON
+================================ */
+
+.solution-comparison {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        50px
+        minmax(0, 1fr);
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* ================================
+   SOLUTION CARD
+================================ */
+
+.solution-option {
+
+    min-width: 0;
+
+    padding: 16px 18px;
+
+    border-radius: 9px;
+
+    background:
+        rgba(5, 28, 50, 0.72);
+
+    border:
+        1px solid
+        rgba(47, 113, 174, 0.35);
+}
+
+
+.solution-option.optimized {
+
+    border-color:
+        rgba(32, 139, 236, 0.85);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8, 43, 76, 0.88),
+            rgba(5, 29, 53, 0.9)
+        );
+
+    box-shadow:
+        0 0 25px
+        rgba(0, 105, 220, 0.07);
+}
+
+
+/* ================================
+   CARD CONTENT
+================================ */
+
+.solution-option-label {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #6e99c1;
+
+    font-size: 8px;
+
+    font-weight: 700;
+}
+
+
+.solution-option h3 {
+
+    margin: 0 0 11px;
+
+    color: #eaf3ff;
+
+    font-size: 14px;
+
+    font-weight: 750;
+}
+
+
+.solution-complexity {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.solution-complexity span {
+
+    color: #7397b8;
+
+    font-size: 8px;
+
+    font-weight: 600;
+}
+
+
+.solution-complexity strong {
+
+    color: #b9d9fa;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+/* ================================
+   ARROW
+================================ */
+
+.solution-arrow {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #5caeff;
+
+    font-size: 26px;
+
+    text-shadow:
+        0 0 12px
+        rgba(66, 160, 255, 0.45);
+}
+
+
+/* ================================
+   HOVER
+================================ */
+
+.solution-option {
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.solution-option:hover {
+
+    transform: translateY(-2px);
+
+    border-color:
+        rgba(59, 147, 226, 0.65);
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 700px) {
+
+    .solution-comparison {
+
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+
+    .solution-arrow {
+
+        height: 25px;
+
+        transform: rotate(90deg);
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .improve-solution {
+
+        padding: 15px;
+    }
+
+    .solution-option {
+
+        padding: 14px;
+    }
+
+}

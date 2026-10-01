@@ -1,34 +1,70 @@
-
 import axios from "axios";
-import API_URL from "../../config/api";
+import API_URL from "../config/api";
 
+
+// ===============================
+// Problem API
+// ===============================
+
+const PROBLEM_URL =
+    `${API_URL}/api/problems`;
+
+
+// ===============================
+// Code Execution API
+// ===============================
 
 const CODE_EXECUTION_URL =
     `${API_URL}/api/code-execution`;
 
+
+// ===============================
+// Submission API
+// ===============================
+
 const SUBMISSION_URL =
     `${API_URL}/api/submissions`;
+
+
+// ===============================
+// Quiz Question API
+// ===============================
 
 const QUIZ_QUESTION_URL =
     `${API_URL}/api/quiz-questions`;
 
+
+// ===============================
+// Get all problems
+// ===============================
+
 export const getAllProblems = async () => {
 
     const response =
-        await axios.get(API_URL);
+        await axios.get(PROBLEM_URL);
 
     return response.data;
 };
+
+
+// ===============================
+// Get problem by ID
+// ===============================
 
 export const getProblemById = async (id) => {
 
     const response =
         await axios.get(
-            `${API_URL}/${id}`
+            `${PROBLEM_URL}/${id}`
         );
 
     return response.data;
 };
+
+
+// ===============================
+// Run code
+// ===============================
 
 export const runCode = async (
     problemId,
@@ -54,6 +90,7 @@ export const runCode = async (
  * Code execution has already happened,
  * so this method only persists the submission.
  */
+
 export const createAcceptedSubmission = async ({
     userId,
     problemId,
@@ -82,6 +119,7 @@ export const createAcceptedSubmission = async ({
  * Generate the conceptual quiz questions
  * for the accepted submission.
  */
+
 export const generateQuizQuestions = async (
     submissionId,
     problemId
@@ -104,4 +142,3 @@ export const generateQuizQuestions = async (
 
     return response.data;
 };
-
