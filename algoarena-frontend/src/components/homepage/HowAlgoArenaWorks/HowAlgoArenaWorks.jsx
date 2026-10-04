@@ -18,16 +18,16 @@ function HowAlgoArenaWorks() {
         },
         {
             number: "03",
-            title: "Test Understanding",
+            title: "Prove Your Understanding",
             description:
-                "Answer questions about your own solution and strengthen your understanding.",
+                "Answer AI-generated questions about your solution and approach.",
             icon: "?"
         },
         {
             number: "04",
-            title: "Track & Improve",
+            title: "See Your Growth",
             description:
-                "Discover your strengths, identify weak concepts, and keep improving.",
+                "Get personalized feedback and track concept-level progress.",
             icon: "↗"
         }
     ];
