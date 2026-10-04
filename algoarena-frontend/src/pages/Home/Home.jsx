@@ -5,6 +5,7 @@ import FeaturedProblems from "../../components/homepage/FeaturedProblems/Feature
 import PlatformStats from "../../components/homepage/PlatformStats/PlatformStats";
 import CallToAction from "../../components/homepage/CallToAction/CallToAction";
 import Footer from "../../components/homepage/Footer/Footer";
+import HowAlgoArenaWorks from "../../components/homepage/HowAlgoArenaWorks/HowAlgoArenaWorks";
 
 import "./Home.css";
 
@@ -18,6 +19,7 @@ function Home() {
                 <HeroSection />
                 <FeatureHighlights />
                 <FeaturedProblems />
+                <HowAlgoArenaWorks/>
                 <PlatformStats />
                 <CallToAction />
             </main>

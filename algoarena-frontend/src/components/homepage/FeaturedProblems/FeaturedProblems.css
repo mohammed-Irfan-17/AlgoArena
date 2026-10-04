@@ -17,16 +17,23 @@
     padding: 0 42px;
 }
 
-/* Heading */
+
+/* =========================================================
+   HEADING
+   ========================================================= */
 
 .problems-heading {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
 
-    gap: 30px;
+    gap: 40px;
 
     margin-bottom: 42px;
+}
+
+.problems-heading > div:first-child {
+    min-width: 0;
 }
 
 .problems-heading h2 {
@@ -57,14 +64,22 @@
     line-height: 1.7;
 }
 
+
+/* =========================================================
+   EXPLORE PROBLEMS BUTTON
+   ========================================================= */
+
 .view-problems-button {
     flex-shrink: 0;
 
-    display: flex;
+    display: inline-flex;
+
     align-items: center;
+    justify-content: center;
+
     gap: 10px;
 
-    height: 43px;
+    min-height: 43px;
 
     padding: 0 17px;
 
@@ -77,35 +92,57 @@
     color: var(--blue-bright);
 
     font-size: 13px;
+
     font-weight: 600;
+
+    line-height: 1;
+
+    text-decoration: none;
 
     cursor: pointer;
 
-    transition: all 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .view-problems-button:hover {
     border-color: var(--blue);
 
     background-color: rgba(47, 140, 255, 0.08);
+
+    transform: translateY(-1px);
 }
 
 .view-problems-button span {
     font-size: 17px;
+
+    line-height: 1;
 }
 
-/* Cards */
+
+/* =========================================================
+   PROBLEMS GRID
+   ========================================================= */
 
 .problems-grid {
     display: grid;
 
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 
     gap: 20px;
 }
 
+
+/* =========================================================
+   PROBLEM CARD
+   ========================================================= */
+
 .problem-card {
-    position: relative;
+    display: flex;
+
+    flex-direction: column;
 
     min-height: 275px;
 
@@ -133,23 +170,42 @@
         0 0 25px rgba(47, 140, 255, 0.06);
 }
 
-/* Top */
+
+/* =========================================================
+   CARD TOP
+   ========================================================= */
 
 .problem-card-top {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
+
+    gap: 15px;
 }
 
+
+/* Difficulty */
+
 .difficulty {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
     padding: 5px 9px;
 
     border-radius: 5px;
 
     font-size: 9px;
+
     font-weight: 700;
 
     letter-spacing: 1px;
+
+    line-height: 1;
 }
 
 .difficulty.easy {
@@ -168,12 +224,20 @@
     border: 1px solid rgba(226, 184, 102, 0.25);
 }
 
+
+/* Arrow */
+
 .problem-arrow {
     width: 32px;
+
     height: 32px;
 
+    flex-shrink: 0;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     border: 1px solid var(--border-blue);
@@ -183,9 +247,14 @@
     color: var(--blue-bright);
 
     font-size: 16px;
+
+    line-height: 1;
 }
 
-/* Content */
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
 
 .problem-card h3 {
     margin: 28px 0 12px;
@@ -193,6 +262,8 @@
     color: var(--white);
 
     font-size: 20px;
+
+    line-height: 1.25;
 }
 
 .problem-card > p {
@@ -205,21 +276,28 @@
     line-height: 1.7;
 }
 
-/* Bottom */
+
+/* =========================================================
+   CARD BOTTOM
+   ========================================================= */
 
 .problem-card-bottom {
-    position: absolute;
+    margin-top: auto;
 
-    left: 25px;
-    right: 25px;
-    bottom: 22px;
+    padding-top: 25px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
+
+    gap: 15px;
 }
 
 .concept-tag {
+    max-width: 75%;
+
     padding: 6px 10px;
 
     border-radius: 5px;
@@ -229,17 +307,63 @@
     color: var(--blue-soft);
 
     font-size: 10px;
+
     font-weight: 600;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
 }
 
 .solve-text {
+    flex-shrink: 0;
+
     color: var(--blue-bright);
 
     font-size: 12px;
+
     font-weight: 600;
+
+    line-height: 1;
 }
 
-/* Responsive */
+
+/* =========================================================
+   LAPTOP / SMALL DESKTOP
+   ========================================================= */
+
+@media (max-width: 1050px) {
+    .problems-container {
+        padding: 0 30px;
+    }
+
+    .problems-heading {
+        align-items: flex-start;
+
+        gap: 25px;
+    }
+
+    .problems-heading p {
+        max-width: 480px;
+    }
+
+    .problems-grid {
+        gap: 16px;
+    }
+
+    .problem-card {
+        padding: 22px;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
 
 @media (max-width: 900px) {
     .problems-grid {
@@ -251,6 +375,11 @@
     }
 }
 
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
 @media (max-width: 600px) {
     .featured-problems {
         padding: 65px 0;
@@ -261,14 +390,97 @@
     }
 
     .problems-heading {
-        align-items: flex-start;
-
         flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 25px;
+
+        margin-bottom: 32px;
+    }
+
+    .problems-heading h2 {
+        font-size: 34px;
+
+        letter-spacing: -1px;
+    }
+
+    .problems-heading p {
+        max-width: none;
+
+        margin-top: 14px;
+
+        font-size: 14px;
     }
 
     .view-problems-button {
         width: 100%;
 
-        justify-content: center;
+        min-height: 46px;
+    }
+
+    .problems-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    .problem-card {
+        min-height: 0;
+
+        padding: 22px;
+
+        border-radius: 12px;
+    }
+
+    .problem-card h3 {
+        margin-top: 24px;
+
+        font-size: 19px;
+    }
+
+    .problem-card > p {
+        font-size: 13px;
+
+        line-height: 1.65;
+    }
+
+    .problem-card-bottom {
+        padding-top: 25px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 380px) {
+    .featured-problems {
+        padding: 55px 0;
+    }
+
+    .problems-container {
+        padding: 0 16px;
+    }
+
+    .problems-heading h2 {
+        font-size: 30px;
+    }
+
+    .problem-card {
+        padding: 19px;
+    }
+
+    .problem-card h3 {
+        font-size: 18px;
+    }
+
+    .problem-card-bottom {
+        gap: 10px;
+    }
+
+    .concept-tag {
+        max-width: 65%;
     }
 }

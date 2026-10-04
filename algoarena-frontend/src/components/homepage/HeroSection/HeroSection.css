@@ -225,14 +225,18 @@
 .hero-primary-button,
 .hero-secondary-button {
     min-height: 50px;
-
     padding: 0 23px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 
     border-radius: 9px;
 
     font-size: 15px;
-
     font-weight: 650;
+    line-height: 1;
 
     text-decoration: none;
 

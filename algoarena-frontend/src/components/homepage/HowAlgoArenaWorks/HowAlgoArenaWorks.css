@@ -1,0 +1,582 @@
+/* =========================================================
+   HOW ALGOARENA WORKS
+   ========================================================= */
+
+.how-it-works {
+    width: 100%;
+    min-height: 72vh;
+
+    display: flex;
+    align-items: center;
+
+    padding: 90px 0;
+
+    background-color: var(--navy-dark);
+
+    border-top: 1px solid rgba(23, 69, 118, 0.45);
+    border-bottom: 1px solid rgba(23, 69, 118, 0.45);
+}
+
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.how-container {
+    width: 100%;
+    max-width: 1380px;
+
+    margin: 0 auto;
+
+    padding: 0 42px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.how-header {
+    max-width: 760px;
+
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+.how-label {
+    display: inline-block;
+
+    margin-bottom: 17px;
+
+    color: var(--blue-bright);
+
+    font-size: 50px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+.how-header h2 {
+    margin: 0;
+
+    color: var(--white);
+
+    font-size: clamp(34px, 4vw, 48px);
+
+    line-height: 1.1;
+
+    letter-spacing: -1.5px;
+}
+
+.how-header h2 span {
+    color: var(--blue);
+}
+
+.how-header p {
+    max-width: 100%;
+
+    margin: 18px auto 0;
+
+    color: var(--text-secondary);
+
+    font-size: 25px;
+
+    line-height: 1.75;
+}
+
+
+/* =========================================================
+   STEPS
+   ========================================================= */
+
+.steps-wrapper {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 24px;
+
+    margin-top: 65px;
+}
+
+
+/* Connecting line */
+
+.steps-line {
+    position: absolute;
+
+    top: 28px;
+
+    left: 1%;
+
+    right: 1%;
+
+    height: 1px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--border-blue),
+        var(--blue),
+        var(--border-blue),
+        transparent
+    );
+
+    opacity: 0.8;
+}
+
+
+/* =========================================================
+   STEP
+   ========================================================= */
+
+.how-step {
+    position: relative;
+
+    z-index: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+
+    padding: 0 12px;
+
+    transition:
+        transform 0.25s ease;
+}
+
+.how-step:hover {
+    transform: translateY(-5px);
+}
+
+
+/* Number */
+
+.step-number {
+    width: 56px;
+
+    height: 56px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid var(--blue);
+
+    border-radius: 50%;
+
+    background-color: var(--navy-dark);
+
+    color: var(--blue-bright);
+
+    font-size: 19px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    box-shadow:
+        0 0 0 7px var(--navy-dark),
+        0 0 25px rgba(47, 140, 255, 0.08);
+
+    transition:
+        background-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.how-step:hover .step-number {
+    background-color: rgba(47, 140, 255, 0.08);
+
+    box-shadow:
+        0 0 0 7px var(--navy-dark),
+        0 0 30px rgba(47, 140, 255, 0.2);
+
+    transform: scale(1.05);
+}
+
+
+/* Icon */
+
+.step-icon {
+    width: 48px;
+
+    height: 48px;
+
+    margin-top: 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid var(--border-blue);
+
+    border-radius: 11px;
+
+    background-color: var(--navy-card);
+
+    color: var(--blue-bright);
+
+    font-size: 19px;
+
+    font-weight: 600;
+
+    transition:
+        border-color 0.25s ease,
+        background-color 0.25s ease;
+}
+
+.how-step:hover .step-icon {
+    border-color: rgba(47, 140, 255, 0.5);
+
+    background-color: rgba(47, 140, 255, 0.07);
+}
+
+
+/* Title */
+
+.how-step h3 {
+    margin: 20px 0 0;
+
+    color: var(--white);
+
+    font-size: 22px;
+
+    line-height: 1.3;
+}
+
+
+/* Description */
+
+.how-step p {
+    max-width: 270px;
+
+    margin: 11px auto 0;
+
+    color: var(--text-secondary);
+
+    font-size: 20px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   BOTTOM MESSAGE
+   ========================================================= */
+
+.how-bottom {
+    width: fit-content;
+
+    margin: 65px auto 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 11px 17px;
+
+    border: 1px solid var(--border-blue);
+
+    border-radius: 8px;
+
+    background-color: rgba(47, 140, 255, 0.035);
+
+    color: var(--text-secondary);
+
+    font-size: 22px;
+
+    font-weight: 500;
+}
+
+.bottom-arrow {
+    color: var(--blue-bright);
+
+    font-size: 25px;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   SMALL DESKTOP / LAPTOP
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .how-it-works {
+        min-height: 70vh;
+
+        padding: 80px 0;
+    }
+
+    .how-container {
+        padding: 0 30px;
+    }
+
+    .steps-wrapper {
+        gap: 12px;
+
+        margin-top: 55px;
+    }
+
+    .how-step {
+        padding: 0 7px;
+    }
+
+    .how-step h3 {
+        font-size: 17px;
+    }
+
+    .how-step p {
+        font-size: 11.5px;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .how-it-works {
+        min-height: auto;
+
+        padding: 75px 0;
+    }
+
+    .how-container {
+        padding: 0 25px;
+    }
+
+    .how-header {
+        max-width: 650px;
+    }
+
+    .steps-wrapper {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 45px 25px;
+
+        margin-top: 55px;
+    }
+
+    .steps-line {
+        display: none;
+    }
+
+    .how-bottom {
+        margin-top: 55px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .how-it-works {
+        padding: 65px 0;
+    }
+
+    .how-container {
+        padding: 0 20px;
+    }
+
+    .how-header h2 {
+        font-size: 34px;
+
+        letter-spacing: -1px;
+    }
+
+    .how-header p {
+        margin-top: 16px;
+
+        font-size: 14px;
+
+        line-height: 1.7;
+    }
+
+    .steps-wrapper {
+        grid-template-columns: 1fr;
+
+        gap: 0;
+
+        margin-top: 50px;
+    }
+
+    .how-step {
+        position: relative;
+
+        align-items: flex-start;
+
+        text-align: left;
+
+        padding: 0 0 45px 78px;
+    }
+
+    .how-step:last-child {
+        padding-bottom: 0;
+    }
+
+
+    /* Vertical timeline */
+
+    .how-step::before {
+        content: "";
+
+        position: absolute;
+
+        left: 28px;
+
+        top: 56px;
+
+        bottom: 0;
+
+        width: 1px;
+
+        background-color: var(--border-blue);
+    }
+
+    .how-step:last-child::before {
+        display: none;
+    }
+
+
+    /* Number */
+
+    .step-number {
+        position: absolute;
+
+        left: 0;
+
+        top: 0;
+
+        width: 56px;
+
+        height: 56px;
+
+        box-shadow:
+            0 0 0 6px var(--navy-dark);
+    }
+
+
+    /* Icon */
+
+    .step-icon {
+        margin-top: 0;
+
+        width: 42px;
+
+        height: 42px;
+
+        border-radius: 9px;
+
+        font-size: 15px;
+    }
+
+    .how-step h3 {
+        margin-top: 15px;
+
+        font-size: 18px;
+    }
+
+    .how-step p {
+        max-width: 100%;
+
+        margin: 8px 0 0;
+
+        font-size: 13px;
+
+        line-height: 1.65;
+    }
+
+    .how-bottom {
+        width: 100%;
+
+        justify-content: center;
+
+        margin-top: 50px;
+
+        padding: 12px 15px;
+
+        text-align: center;
+
+        font-size: 11px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .how-it-works {
+        padding: 55px 0;
+    }
+
+    .how-container {
+        padding: 0 16px;
+    }
+
+    .how-header h2 {
+        font-size: 30px;
+    }
+
+    .how-label {
+        font-size: 9px;
+
+        letter-spacing: 1.7px;
+    }
+
+    .how-step {
+        padding-left: 70px;
+    }
+
+    .step-number {
+        width: 50px;
+
+        height: 50px;
+
+        font-size: 11px;
+    }
+
+    .how-step::before {
+        left: 25px;
+
+        top: 50px;
+    }
+
+    .step-icon {
+        width: 40px;
+
+        height: 40px;
+    }
+
+    .how-step h3 {
+        font-size: 17px;
+    }
+
+    .how-step p {
+        font-size: 12px;
+    }
+}

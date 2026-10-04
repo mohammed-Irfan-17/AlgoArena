@@ -205,9 +205,13 @@
 
         align-items: stretch;
     }
-
+   
     .cta-primary,
     .cta-secondary {
+          padding-left:20px;
         width: 100%;
+    }
+     .cta-primary{
+        padding-left:20px;
     }
 }
