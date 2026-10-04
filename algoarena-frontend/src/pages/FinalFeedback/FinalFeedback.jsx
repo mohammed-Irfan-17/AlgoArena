@@ -68,20 +68,20 @@ function FinalFeedback() {
             setError("");
 
 
-            const [
-                feedbackResponse,
-                recommendationsResponse
-            ] = await Promise.all([
+           const [
+    feedbackResponse,
+    recommendationsResponse
+] = await Promise.all([
 
-                fetch(
-                    `http://localhost:8080/api/evaluations/submission/${submissionId}/final-feedback`
-                ),
+    fetch(
+        `${import.meta.env.VITE_API_URL}/api/evaluations/submission/${submissionId}/final-feedback`
+    ),
 
-                fetch(
-                    `http://localhost:8080/api/evaluations/user/${userId}/recommendations`
-                )
+    fetch(
+        `${import.meta.env.VITE_API_URL}/api/evaluations/user/${userId}/recommendations`
+    )
 
-            ]);
+]);
 
 
             if (!feedbackResponse.ok) {

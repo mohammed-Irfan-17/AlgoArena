@@ -79,8 +79,8 @@ function QuizPage() {
 
             const response =
                 await fetch(
-                    `http://localhost:8080/api/quiz-questions/submission/${submissionId}`
-                );
+    `${import.meta.env.VITE_API_URL}/api/quiz-questions/submission/${submissionId}`
+);
 
             if (!response.ok) {
 
@@ -154,7 +154,7 @@ function QuizPage() {
 
             const response =
                 await fetch(
-                    "http://localhost:8080/api/quiz-answers",
+    `${import.meta.env.VITE_API_URL}/api/quiz-answers`,
                     {
                         method: "POST",
 

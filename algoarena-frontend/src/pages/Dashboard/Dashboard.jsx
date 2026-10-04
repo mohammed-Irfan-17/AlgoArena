@@ -27,7 +27,7 @@ import RecommendedProblems
 
 import "./Dashboard.css";
 
-const API_URL = "http://localhost:8080";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 function Dashboard() {
 
