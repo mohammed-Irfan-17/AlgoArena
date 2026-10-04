@@ -1,0 +1,309 @@
+.dashboard-overview-section {
+    width: 100%;
+}
+
+
+/* =========================
+   SECTION HEADING
+========================= */
+
+.dashboard-section-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+}
+
+.dashboard-section-heading > div:first-child {
+    max-width: 700px;
+}
+
+.dashboard-section-heading span {
+    display: block;
+
+    margin-bottom: 9px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    letter-spacing: 2.3px;
+
+    color: #3295ff;
+}
+
+.dashboard-section-heading h2 {
+    margin: 0 0 8px;
+
+    font-size: 28px;
+    font-weight: 700;
+
+    color: #f5f8ff;
+}
+
+.dashboard-section-heading p {
+    margin: 0;
+
+    font-size: 22px;
+    line-height: 1.6;
+
+    color: #8fa8c2;
+}
+
+
+/* =========================
+   SECTION ICON
+========================= */
+
+.dashboard-section-symbol {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: rgba(47, 145, 255, 0.08);
+
+    border: 1px solid rgba(47, 145, 255, 0.2);
+
+    color: #5aa8ff;
+
+    font-size: 19px;
+}
+
+
+/* =========================
+   OVERVIEW CARD
+========================= */
+
+.dashboard-overview-card {
+    width: 100%;
+    min-height: 260px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 50px;
+
+    padding: 45px 50px;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0c2d53,
+            #0a2748
+        );
+
+    border: 1px solid #1b5489;
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 18px 50px rgba(0, 0, 0, 0.25);
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* subtle card glow */
+
+.dashboard-overview-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    right: -160px;
+    bottom: -190px;
+
+    border-radius: 50%;
+
+    background: rgba(47, 145, 255, 0.08);
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   MAIN NUMBER
+========================= */
+
+.overview-main {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    position: relative;
+    z-index: 1;
+}
+
+.overview-number {
+    display: flex;
+
+    align-items: baseline;
+
+    margin-bottom: 8px;
+}
+
+.overview-number strong {
+    font-size: 68px;
+
+    line-height: 1;
+
+    color: #f5f8ff;
+
+    font-weight: 750;
+}
+h1{
+    font-size:19px;
+    letter-spacing:1.2px;
+}
+
+.overview-number span {
+    margin-left: 8px;
+
+    font-size: 25px;
+
+    color: #7795b5;
+}
+
+.overview-label {
+    margin-bottom: 14px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: #63adff;
+}
+
+.overview-main p {
+    max-width: 430px;
+
+    margin: 0;
+
+    font-size: 20px;
+    line-height: 1.7;
+
+    color: #9bb2ca;
+}
+
+
+/* =========================
+   PROGRESS
+========================= */
+
+.overview-progress-area {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    position: relative;
+    z-index: 1;
+}
+
+.overview-percentage {
+    margin-bottom: 12px;
+
+    font-size: 60px;
+
+    font-weight: 700;
+
+    color: #5eaeff;
+}
+
+.overview-progress-track {
+    width: 100%;
+
+    height: 15px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #163c61;
+}
+
+.overview-progress-fill {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2388f5,
+            #399cff
+        );
+
+    box-shadow:
+        0 0 14px rgba(47, 145, 255, 0.3);
+
+    transition: width 0.5s ease;
+}
+
+.overview-progress-area > span {
+    margin-top: 10px;
+
+    font-size: 19px;
+
+    color: #7893b0;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 800px) {
+
+    .dashboard-overview-card {
+        grid-template-columns: 1fr;
+
+        gap: 35px;
+
+        padding: 35px;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .dashboard-section-heading h2 {
+        font-size: 23px;
+    }
+
+    .dashboard-section-heading p {
+        font-size: 13px;
+    }
+
+    .dashboard-overview-card {
+        padding: 30px 24px;
+
+        border-radius: 18px;
+    }
+
+    .overview-number strong {
+        font-size: 52px;
+    }
+
+    .overview-number span {
+        font-size: 20px;
+    }
+}

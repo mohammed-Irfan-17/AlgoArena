@@ -1,0 +1,282 @@
+.concept-status-section {
+    width: 100%;
+}
+
+
+/* =========================
+   LIST
+========================= */
+
+.concept-status-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+/* =========================
+   ROW
+========================= */
+
+.concept-status-row {
+    width: 100%;
+    min-height: 90px;
+
+    display: grid;
+
+    grid-template-columns:
+        55px
+        1fr
+        auto;
+
+    align-items: center;
+
+    gap: 22px;
+
+    padding: 18px 24px;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0c2d53,
+            #0a2748
+        );
+
+    border: 1px solid #174e80;
+
+    border-radius: 16px;
+
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.concept-status-row:hover {
+    transform: translateX(3px);
+
+    border-color: #28699f;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0e3159,
+            #0b294b
+        );
+}
+
+
+/* =========================
+   NUMBER
+========================= */
+
+.concept-status-index {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: rgba(47, 145, 255, 0.09);
+
+    border: 1px solid rgba(47, 145, 255, 0.2);
+
+    color: #62adff;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+
+/* =========================
+   INFO
+========================= */
+
+.concept-status-info h3 {
+    margin: 0 0 5px;
+
+    font-size: 17px;
+
+    font-weight: 650;
+
+    color: #f5f8ff;
+}
+
+.concept-status-info p {
+    margin: 0;
+
+    font-size: 14px;
+
+    color: #7895b2;
+}
+
+
+/* =========================
+   BADGES
+========================= */
+
+.concept-status-badge {
+    min-width: 145px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 9px 15px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+}
+
+
+/* GOOD */
+
+.concept-status-good {
+    color: #55d5a5;
+
+    background: rgba(72, 213, 160, 0.08);
+
+    border: 1px solid rgba(72, 213, 160, 0.2);
+}
+
+.concept-status-good .status-dot {
+    background: #48d5a0;
+
+    box-shadow:
+        0 0 8px rgba(72, 213, 160, 0.5);
+}
+
+
+/* IMPROVING */
+
+.concept-status-improving {
+    color: #72b8ff;
+
+    background: rgba(47, 145, 255, 0.08);
+
+    border: 1px solid rgba(47, 145, 255, 0.22);
+}
+
+.concept-status-improving .status-dot {
+    background: #3295ff;
+
+    box-shadow:
+        0 0 8px rgba(47, 145, 255, 0.5);
+}
+
+
+/* NOT ATTEMPTED */
+
+.concept-status-not-attempted {
+    color: #8ca6c0;
+
+    background: rgba(116, 143, 171, 0.07);
+
+    border: 1px solid rgba(116, 143, 171, 0.16);
+}
+
+.concept-status-not-attempted .status-dot {
+    background: #718ba5;
+}
+
+
+/* =========================
+   EMPTY
+========================= */
+
+.concept-status-empty {
+    padding: 55px 30px;
+
+    text-align: center;
+
+    background: #0c2d53;
+
+    border: 1px solid #174e80;
+
+    border-radius: 19px;
+}
+
+.concept-status-empty h3 {
+    margin: 0 0 9px;
+
+    color: #f5f8ff;
+
+    font-size: 18px;
+}
+
+.concept-status-empty p {
+    max-width: 550px;
+
+    margin: 0 auto;
+
+    color: #8da6c0;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+    .concept-status-row {
+        grid-template-columns:
+            45px
+            1fr;
+
+        gap: 15px;
+
+        padding: 17px;
+    }
+
+    .concept-status-badge {
+        grid-column: 2;
+
+        justify-self: start;
+
+        min-width: auto;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .concept-status-info h3 {
+        font-size: 16px;
+    }
+
+    .concept-status-info p {
+        font-size: 13px;
+    }
+
+    .concept-status-badge {
+        font-size: 9px;
+    }
+}

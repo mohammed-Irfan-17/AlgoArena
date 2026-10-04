@@ -591,76 +591,74 @@ public class JavaCodeExecutor {
             String input
     ) {
 
+
         String values = input.trim();
 
         return """
-                public class Main {
+        public class Main {
 
-                    static class ListNode {
+            public static void main(String[] args) {
 
-                        int val;
-                        ListNode next;
+                String input = "%s";
 
-                        ListNode(int val) {
-                            this.val = val;
-                        }
-                    }
+                if (input.isEmpty()) {
+                    return;
+                }
 
-                    public static void main(String[] args) {
+                String[] values =
+                        input.split("\\\\s+");
 
-                        String input = "%s";
+                ListNode head = null;
+                ListNode tail = null;
 
-                        if (input.isEmpty()) {
-                            return;
-                        }
+                for (String value : values) {
 
-                        String[] values =
-                                input.split("\\\\s+");
+                    ListNode node =
+                            new ListNode(
+                                    Integer.parseInt(value)
+                            );
 
-                        ListNode head = null;
-                        ListNode tail = null;
+                    if (head == null) {
 
-                        for (String value : values) {
+                        head = node;
+                        tail = node;
 
-                            ListNode node =
-                                    new ListNode(
-                                            Integer.parseInt(value)
-                                    );
+                    } else {
 
-                            if (head == null) {
-                                head = node;
-                                tail = node;
-                            } else {
-                                tail.next = node;
-                                tail = node;
-                            }
-                        }
-
-                        Solution solution =
-                                new Solution();
-
-                        ListNode result =
-                                solution.reverseList(head);
-
-                        boolean first = true;
-
-                        while (result != null) {
-
-                            if (!first) {
-                                System.out.print(" ");
-                            }
-
-                            System.out.print(result.val);
-
-                            first = false;
-                            result = result.next;
-                        }
+                        tail.next = node;
+                        tail = node;
                     }
                 }
-                """.formatted(
+
+                Solution solution =
+                        new Solution();
+
+                ListNode result =
+                        solution.reverseList(head);
+
+                boolean first = true;
+
+                while (result != null) {
+
+                    if (!first) {
+                        System.out.print(" ");
+                    }
+
+                    System.out.print(result.val);
+
+                    first = false;
+
+                    result = result.next;
+                }
+            }
+        }
+        """.formatted(
                 escapeJava(values)
         );
+
+
     }
+
 
     private String convertArray(String values) {
 

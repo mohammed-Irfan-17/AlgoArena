@@ -1,0 +1,175 @@
+.dashboard-quote {
+    width: 100%;
+    min-height: 260px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 35px;
+
+    padding: 48px 55px;
+
+    box-sizing: border-box;
+
+    position: relative;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 90% 50%,
+            rgba(47, 145, 255, 0.14),
+            transparent 38%
+        ),
+        linear-gradient(
+            135deg,
+            #081a30,
+            #0b294b
+        );
+
+    border: 1px solid #174e80;
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 18px 50px rgba(0, 0, 0, 0.25);
+}
+
+.dashboard-quote::after {
+    content: "";
+
+    position: absolute;
+
+    width: 280px;
+    height: 280px;
+
+    right: -150px;
+    top: -120px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(47, 145, 255, 0.12);
+
+    box-shadow:
+        0 0 0 35px rgba(47, 145, 255, 0.025),
+        0 0 0 70px rgba(47, 145, 255, 0.018);
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   QUOTE MARK
+========================= */
+
+.dashboard-quote-mark {
+    width: 70px;
+    height: 70px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+
+    background: rgba(47, 145, 255, 0.09);
+
+    border: 1px solid rgba(47, 145, 255, 0.22);
+
+    color: #3295ff;
+
+    font-size: 52px;
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.dashboard-quote-content {
+    position: relative;
+    z-index: 1;
+
+    max-width: 760px;
+}
+
+.dashboard-quote-content span {
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 2.5px;
+
+    color: #3295ff;
+}
+
+.dashboard-quote-content h2 {
+    margin: 0 0 12px;
+
+    font-size: clamp(25px, 3vw, 34px);
+
+    line-height: 1.25;
+
+    font-weight: 700;
+
+    color: #f5f8ff;
+}
+
+.dashboard-quote-content p {
+    margin: 0;
+
+    font-size: 15px;
+
+    line-height: 1.7;
+
+    color: #9bb2ca;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 650px) {
+
+    .dashboard-quote {
+        min-height: auto;
+
+        padding: 35px 28px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 24px;
+
+        border-radius: 18px;
+    }
+
+    .dashboard-quote-mark {
+        width: 52px;
+        height: 52px;
+
+        font-size: 38px;
+    }
+
+    .dashboard-quote-content h2 {
+        font-size: 24px;
+    }
+
+    .dashboard-quote-content p {
+        font-size: 14px;
+    }
+}

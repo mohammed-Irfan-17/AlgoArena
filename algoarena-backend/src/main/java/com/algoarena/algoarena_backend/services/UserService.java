@@ -4,6 +4,7 @@ import com.algoarena.algoarena_backend.dto.LoginRequest;
 import com.algoarena.algoarena_backend.dto.LoginResponse;
 import com.algoarena.algoarena_backend.entity.User;
 import com.algoarena.algoarena_backend.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +14,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(
-            UserRepository userRepository
-    ) {
+    private final BCryptPasswordEncoder passwordEncoder =
+            new BCryptPasswordEncoder();
+
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -27,25 +29,32 @@ public class UserService {
             );
         }
 
+        // Hash password before saving
+        user.setPassword(
+                passwordEncoder.encode(user.getPassword())
+        );
+
         return userRepository.save(user);
     }
 
-    public LoginResponse login(
-            LoginRequest request
-    ) {
+    public LoginResponse login(LoginRequest request) {
 
-        User user =
-                userRepository
-                        .findByEmail(request.getEmail())
-                        .orElseThrow(() ->
-                                new RuntimeException(
-                                        "Invalid email or password."
-                                )
-                        );
+        User user = userRepository
+                .findByEmail(request.getEmail())
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Invalid email or password."
+                        )
+                );
 
-        if (!user.getPassword()
-                .equals(request.getPassword())) {
+        // Verify entered password against hashed password
+        boolean passwordMatches =
+                passwordEncoder.matches(
+                        request.getPassword(),
+                        user.getPassword()
+                );
 
+        if (!passwordMatches) {
             throw new RuntimeException(
                     "Invalid email or password."
             );
@@ -70,7 +79,6 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-
         return userRepository.findAll();
     }
 }

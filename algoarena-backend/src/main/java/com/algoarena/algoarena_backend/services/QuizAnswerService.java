@@ -22,18 +22,18 @@ public class QuizAnswerService {
 
     public QuizAnswer saveAnswer(QuizAnswer answer) {
 
-        // 1. Save the user's answer
-        QuizAnswer savedAnswer =
-                quizAnswerRepository.save(answer);
-
-        // 2. Immediately evaluate ONLY this answer
-        evaluationService.evaluateAnswer(
-                savedAnswer.getId()
-        );
-
-        // 3. Return only the saved answer
-        // Evaluation details are NOT returned to frontend
-        return savedAnswer;
+        /*
+         * Only save the answer here.
+         *
+         * We DO NOT evaluate immediately.
+         *
+         * Why?
+         *
+         * The student submits 5 answers for the same submission.
+         * The code analysis should be performed ONCE for the whole
+         * submission, not once for every answer.
+         */
+        return quizAnswerRepository.save(answer);
     }
 
     public List<QuizAnswer> getAnswersBySubmission(

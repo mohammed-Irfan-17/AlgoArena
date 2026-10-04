@@ -2,6 +2,7 @@ package com.algoarena.algoarena_backend.controller;
 
 import com.algoarena.algoarena_backend.dto.LoginRequest;
 import com.algoarena.algoarena_backend.dto.LoginResponse;
+import com.algoarena.algoarena_backend.dto.UserResponse;
 import com.algoarena.algoarena_backend.entity.User;
 import com.algoarena.algoarena_backend.services.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +16,22 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(
-            UserService userService
-    ) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/register")
-    public User register(
+    public UserResponse register(
             @RequestBody User user
     ) {
 
-        return userService.createUser(user);
+        User savedUser = userService.createUser(user);
+
+        return new UserResponse(
+                savedUser.getId(),
+                savedUser.getName(),
+                savedUser.getEmail()
+        );
     }
 
     @PostMapping("/login")
@@ -47,7 +52,6 @@ public class UserController {
 
     @GetMapping
     public List<User> getAllUsers() {
-
         return userService.getAllUsers();
     }
 }

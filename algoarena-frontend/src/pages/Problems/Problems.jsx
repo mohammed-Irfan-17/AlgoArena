@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-import Navbar from "../../components/homepage/Navbar/Navbar";
 import ProblemCard from "../../components/problems/ProblemCard/ProblemCard";
 import ProblemFilters from "../../components/problems/ProblemFilters/ProblemFilters";
 
@@ -8,7 +7,7 @@ import { getAllProblems } from "../../services/problemService";
 
 import "./Problems.css";
 
-function Problems() {
+function Problems({ onRequireLogin }) {
 
     const [search, setSearch] = useState("");
     const [difficulty, setDifficulty] = useState("ALL");
@@ -18,6 +17,7 @@ function Problems() {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+
 
     useEffect(() => {
 
@@ -34,7 +34,10 @@ function Problems() {
 
             } catch (err) {
 
-                console.error("Error fetching problems:", err);
+                console.error(
+                    "Error fetching problems:",
+                    err
+                );
 
                 setError(
                     "Unable to load problems."
@@ -52,33 +55,36 @@ function Problems() {
     }, []);
 
 
-    const filteredProblems = problems.filter((problem) => {
+    const filteredProblems =
+        problems.filter((problem) => {
 
-        const matchesSearch =
-            problem.title
-                .toLowerCase()
-                .includes(search.toLowerCase());
+            const matchesSearch =
+                problem.title
+                    .toLowerCase()
+                    .includes(
+                        search.toLowerCase()
+                    );
 
-        const matchesDifficulty =
-            difficulty === "ALL" ||
-            problem.difficulty === difficulty;
+            const matchesDifficulty =
+                difficulty === "ALL" ||
+                problem.difficulty === difficulty;
 
-        const matchesConcept =
-            concept === "ALL" ||
-            problem.concept === concept;
+            const matchesConcept =
+                concept === "ALL" ||
+                problem.concept === concept;
 
-        return (
-            matchesSearch &&
-            matchesDifficulty &&
-            matchesConcept
-        );
-    });
+            return (
+                matchesSearch &&
+                matchesDifficulty &&
+                matchesConcept
+            );
+
+        });
 
 
     return (
-        <div className="problems-page">
 
-            <Navbar />
+        <div className="problems-page">
 
             <main className="problems-main">
 
@@ -153,14 +159,19 @@ function Problems() {
 
                                 <div className="problems-grid">
 
-                                    {filteredProblems.map((problem) => (
+                                    {filteredProblems.map(
+                                        (problem) => (
 
-                                        <ProblemCard
-                                            key={problem.id}
-                                            problem={problem}
-                                        />
+                                            <ProblemCard
+                                                key={problem.id}
+                                                problem={problem}
+                                                onRequireLogin={
+                                                    onRequireLogin
+                                                }
+                                            />
 
-                                    ))}
+                                        )
+                                    )}
 
                                 </div>
 

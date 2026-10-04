@@ -133,7 +133,8 @@ public class GeminiService {
                   "strengths": "Correctly checks every possible pair.",
                   "improvementOpportunity": "Nested loops repeatedly compare elements.",
                   "optimalApproach": "Hash Map",
-                  "optimalTimeComplexity": "O(n)"
+                  "optimalTimeComplexity": "O(n)",
+                  "optimalSpaceComplexity": "O(n) 
                 }
 
                 Be conservative.
@@ -163,7 +164,8 @@ public class GeminiService {
                     root.path("strengths").asText(),
                     root.path("improvementOpportunity").asText(),
                     root.path("optimalApproach").asText(),
-                    root.path("optimalTimeComplexity").asText()
+                    root.path("optimalTimeComplexity").asText(),
+                    root.path("optimalSpaceComplexity").asText()
             );
 
         } catch (Exception e) {

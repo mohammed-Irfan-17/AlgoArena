@@ -3,6 +3,8 @@ package com.algoarena.algoarena_backend.services;
 import com.algoarena.algoarena_backend.dto.*;
 import com.algoarena.algoarena_backend.entity.*;
 import com.algoarena.algoarena_backend.repository.*;
+import com.fasterxml.jackson.databind.JsonNode;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,20 +24,23 @@ public class UnderstandingEvaluationService {
     private final ProblemRepository problemRepository;
     private final SubmissionRepository submissionRepository;
 
+
     public UnderstandingEvaluationService(
             UnderstandingEvaluationRepository evaluationRepository,
             ProblemRepository problemRepository,
             QuizAnswerRepository quizAnswerRepository,
             QuizQuestionRepository quizQuestionRepository,
             GeminiService geminiService,
-         SubmissionRepository submissionRepository
+            SubmissionRepository submissionRepository
+
     ) {
         this.evaluationRepository = evaluationRepository;
         this.problemRepository = problemRepository;
         this.quizAnswerRepository = quizAnswerRepository;
         this.quizQuestionRepository = quizQuestionRepository;
         this.geminiService = geminiService;
-        this.submissionRepository=submissionRepository;
+        this.submissionRepository = submissionRepository;
+
     }
 
     public UnderstandingEvaluation saveEvaluation(
@@ -48,6 +53,16 @@ public class UnderstandingEvaluationService {
         return evaluationRepository.existsByAnswerId(answerId);
     }
 
+    /*
+     * ---------------------------------------------------------
+     * SINGLE ANSWER EVALUATION
+     * ---------------------------------------------------------
+     *
+     * Kept for compatibility.
+     *
+     * This method is still useful if a single answer needs to
+     * be evaluated independently.
+     */
     public UnderstandingEvaluation evaluateAnswer(Long answerId) {
 
         if (alreadyEvaluated(answerId)) {
@@ -87,20 +102,110 @@ public class UnderstandingEvaluationService {
                                 )
                         );
 
+        Submission submission =
+                submissionRepository
+                        .findById(answer.getSubmissionId())
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Submission not found"
+                                )
+                        );
+
+        /*
+         * Analyze code only once for this individual fallback call.
+         */
+        CodeAnalysisResult codeAnalysis =
+                geminiService.analyzeCode(
+                        problem.getDescription(),
+                        problem.getConcept(),
+                        submission.getCode(),
+                        submission.getLanguage()
+                );
+
         return evaluateAndSave(
                 answer,
                 question,
-                problem
+                problem,
+                codeAnalysis
         );
     }
 
+    /*
+     * ---------------------------------------------------------
+     * EVALUATE ENTIRE QUIZ SUBMISSION
+     * ---------------------------------------------------------
+     *
+     * IMPORTANT:
+     *
+     * Code analysis happens ONCE.
+     *
+     * The same analysis is then used for all quiz questions.
+     */
     public int evaluateSubmission(Long submissionId) {
 
         List<QuizAnswer> answers =
-                quizAnswerRepository.findBySubmissionId(submissionId);
+                quizAnswerRepository.findBySubmissionId(
+                        submissionId
+                );
+
+        if (answers.isEmpty()) {
+            return 0;
+        }
+
+        Submission submission =
+                submissionRepository.findById(
+                        submissionId
+                ).orElseThrow(() ->
+                        new RuntimeException(
+                                "Submission not found"
+                        )
+                );
+
+        /*
+         * Find the problem using the first quiz question.
+         */
+        QuizQuestion firstQuestion =
+                quizQuestionRepository
+                        .findById(
+                                answers.get(0).getQuestionId()
+                        )
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Question not found"
+                                )
+                        );
+
+        Problem problem =
+                problemRepository
+                        .findById(
+                                firstQuestion.getProblemId()
+                        )
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Problem not found"
+                                )
+                        );
+
+        /*
+         * -----------------------------------------------------
+         * ANALYZE THE STUDENT CODE ONLY ONCE
+         * -----------------------------------------------------
+         */
+        CodeAnalysisResult codeAnalysis =
+                geminiService.analyzeCode(
+                        problem.getDescription(),
+                        problem.getConcept(),
+                        submission.getCode(),
+                        submission.getLanguage()
+                );
 
         int evaluatedCount = 0;
 
+        /*
+         * -----------------------------------------------------
+         * EVALUATE EACH QUESTION USING THE SAME ANALYSIS
+         * -----------------------------------------------------
+         */
         for (QuizAnswer answer : answers) {
 
             if (alreadyEvaluated(answer.getId())) {
@@ -116,19 +221,20 @@ public class UnderstandingEvaluationService {
                                     )
                             );
 
-            Problem problem =
-                    problemRepository
-                            .findById(question.getProblemId())
-                            .orElseThrow(() ->
-                                    new RuntimeException(
-                                            "Problem not found"
-                                    )
-                            );
+            /*
+             * Make sure this answer belongs to this submission.
+             */
+            if (!submissionId.equals(
+                    answer.getSubmissionId()
+            )) {
+                continue;
+            }
 
             evaluateAndSave(
                     answer,
                     question,
-                    problem
+                    problem,
+                    codeAnalysis
             );
 
             evaluatedCount++;
@@ -137,10 +243,16 @@ public class UnderstandingEvaluationService {
         return evaluatedCount;
     }
 
+    /*
+     * ---------------------------------------------------------
+     * EVALUATE + SAVE
+     * ---------------------------------------------------------
+     */
     private UnderstandingEvaluation evaluateAndSave(
             QuizAnswer answer,
             QuizQuestion question,
-            Problem problem
+            Problem problem,
+            CodeAnalysisResult codeAnalysis
     ) {
 
         Submission submission =
@@ -150,14 +262,6 @@ public class UnderstandingEvaluationService {
                         new RuntimeException(
                                 "Submission not found"
                         )
-                );
-
-        CodeAnalysisResult codeAnalysis =
-                geminiService.analyzeCode(
-                        problem.getDescription(),
-                        problem.getConcept(),
-                        submission.getCode(),
-                        submission.getLanguage()
                 );
 
         GeminiEvaluationResult result =
@@ -191,55 +295,119 @@ public class UnderstandingEvaluationService {
                 .findBySubmissionId(submissionId);
     }
 
+    /*
+     * ---------------------------------------------------------
+     * FINAL FEEDBACK
+     * ---------------------------------------------------------
+     */
+
+
     public FinalFeedbackResponse generateFinalFeedback(
             Long submissionId
     ) {
 
+        /*
+         * ---------------------------------------------------------
+         * GET EXISTING EVALUATIONS
+         * ---------------------------------------------------------
+         */
         List<UnderstandingEvaluation> evaluations =
                 evaluationRepository.findBySubmissionId(
                         submissionId
                 );
 
+
+        /*
+         * ---------------------------------------------------------
+         * IF EVALUATIONS DO NOT EXIST, EVALUATE THE QUIZ
+         * ---------------------------------------------------------
+         */
         if (evaluations.isEmpty()) {
-            throw new RuntimeException(
-                    "No evaluations found for this submission."
-            );
+
+            int evaluatedCount =
+                    evaluateSubmission(submissionId);
+
+            /*
+             * Reload evaluations after evaluation.
+             */
+            evaluations =
+                    evaluationRepository.findBySubmissionId(
+                            submissionId
+                    );
+
+            /*
+             * Still nothing means the quiz answers were not
+             * evaluated/saved correctly.
+             */
+            if (evaluations.isEmpty()) {
+
+                throw new RuntimeException(
+                        "No evaluations found for submission "
+                                + submissionId
+                                + ". Evaluated answers: "
+                                + evaluatedCount
+                );
+            }
         }
 
-        // 1. Get the submission containing the user's actual code
+
+        /*
+         * ---------------------------------------------------------
+         * GET SUBMISSION
+         * ---------------------------------------------------------
+         */
         Submission submission =
                 submissionRepository.findById(
                         submissionId
                 ).orElseThrow(() ->
                         new RuntimeException(
-                                "Submission not found"
+                                "Submission not found: "
+                                        + submissionId
                         )
                 );
 
-        // 2. Get the first question to identify the problem
+
+        /*
+         * ---------------------------------------------------------
+         * GET FIRST QUESTION
+         * ---------------------------------------------------------
+         */
         UnderstandingEvaluation firstEvaluation =
                 evaluations.get(0);
 
+
         QuizQuestion firstQuestion =
-                quizQuestionRepository
-                        .findById(firstEvaluation.getQuestionId())
-                        .orElseThrow(() ->
-                                new RuntimeException(
-                                        "Question not found"
-                                )
-                        );
+                quizQuestionRepository.findById(
+                        firstEvaluation.getQuestionId()
+                ).orElseThrow(() ->
+                        new RuntimeException(
+                                "Question not found: "
+                                        + firstEvaluation.getQuestionId()
+                        )
+                );
 
-        // 3. Get the problem
+
+        /*
+         * ---------------------------------------------------------
+         * GET PROBLEM
+         * ---------------------------------------------------------
+         */
         Problem problem =
-                problemRepository
-                        .findById(firstQuestion.getProblemId())
-                        .orElseThrow(() ->
-                                new RuntimeException(
-                                        "Problem not found"
-                                )
-                        );
+                problemRepository.findById(
+                        firstQuestion.getProblemId()
+                ).orElseThrow(() ->
+                        new RuntimeException(
+                                "Problem not found: "
+                                        + firstQuestion.getProblemId()
+                        )
+                );
 
-        // 4. Analyze the student's actual code
+
+        /*
+         * ---------------------------------------------------------
+         * ANALYZE ACTUAL SUBMITTED CODE
+         * ---------------------------------------------------------
+         */
         CodeAnalysisResult codeAnalysis =
                 geminiService.analyzeCode(
                         problem.getDescription(),
@@ -248,7 +416,12 @@ public class UnderstandingEvaluationService {
                         submission.getLanguage()
                 );
 
-        // 5. Generate personalized final feedback
+
+        /*
+         * ---------------------------------------------------------
+         * GENERATE FINAL GEMINI FEEDBACK
+         * ---------------------------------------------------------
+         */
         String feedback =
                 geminiService.generateFinalFeedback(
                         problem.getDescription(),
@@ -258,12 +431,83 @@ public class UnderstandingEvaluationService {
                         evaluations
                 );
 
-        // 6. Return feedback
-        return new FinalFeedbackResponse(
-                submissionId,
-                feedback
-        );
+
+        /*
+         * ---------------------------------------------------------
+         * PARSE GEMINI JSON
+         * ---------------------------------------------------------
+         *
+         * ObjectMapper is created locally.
+         * Therefore NO ObjectMapper constructor dependency
+         * is required in this service.
+         */
+        try {
+
+            com.fasterxml.jackson.databind.ObjectMapper objectMapper =
+                    new com.fasterxml.jackson.databind.ObjectMapper();
+
+            JsonNode root =
+                    objectMapper.readTree(feedback);
+
+
+            /*
+             * -----------------------------------------------------
+             * RETURN FINAL FEEDBACK RESPONSE
+             * -----------------------------------------------------
+             */
+            return new FinalFeedbackResponse(
+
+                    submissionId,
+                    feedback,
+
+                    // Actual solution analysis
+                    codeAnalysis.getApproach(),
+                    codeAnalysis.getTechnique(),
+                    codeAnalysis.getTimeComplexity(),
+                    codeAnalysis.getSpaceComplexity(),
+                    codeAnalysis.getStrengths(),
+                    codeAnalysis.getImprovementOpportunity(),
+
+                    // Optimal solution analysis
+                    codeAnalysis.getOptimalApproach(),
+                    codeAnalysis.getOptimalTimeComplexity(),
+                    codeAnalysis.getOptimalSpaceComplexity(),
+
+                    // Gemini learning analysis
+                    root.path("overallUnderstanding")
+                            .asText(),
+
+                    objectMapper.convertValue(
+                            root.path("whatYouUnderstand"),
+                            new com.fasterxml.jackson.core.type.TypeReference<List<String>>() {}
+                    ),
+
+                    objectMapper.convertValue(
+                            root.path("whatToImprove"),
+                            new com.fasterxml.jackson.core.type.TypeReference<List<String>>() {}
+                    ),
+
+                    root.path("keyTakeaway")
+                            .asText(),
+
+                    root.path("nextFocus")
+                            .asText()
+            );
+
+        } catch (Exception e) {
+
+            throw new RuntimeException(
+                    "Could not parse final feedback: "
+                            + feedback,
+                    e
+            );
+        }
     }
+
+
+
+
+
     public List<UnderstandingEvaluation> getByUser(
             Long userId
     ) {

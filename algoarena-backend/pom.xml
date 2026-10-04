@@ -75,6 +75,12 @@
 			<artifactId>google-genai</artifactId>
 			<version>1.67.0</version>
 		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

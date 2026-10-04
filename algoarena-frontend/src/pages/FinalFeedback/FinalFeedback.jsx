@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import {
+    useSearchParams,
+    useNavigate
+} from "react-router-dom";
 
 import FeedbackHeader from "../../components/feedback/final-feedback/FeedbackHeader/FeedbackHeader";
 import AILearningFeedback from "../../components/feedback/final-feedback/AILearningFeedback/AILearningFeedback";
@@ -7,12 +10,13 @@ import YourApproach from "../../components/feedback/final-feedback/YourApproach/
 import ImproveSolution from "../../components/feedback/final-feedback/ImproveSolution/ImproveSolution";
 import NextFocus from "../../components/feedback/final-feedback/NextFocus/NextFocus";
 import PracticeQuestions from "../../components/feedback/final-feedback/PracticeQuestions/PracticeQuestions";
-
-import Navbar from "../../components/homepage/Navbar/Navbar";
+import FeedbackActions
+    from "../../components/feedback/final-feedback/FeedbackActions/FeedbackActions";
 
 import "./FinalFeedback.css";
 
 function FinalFeedback() {
+    const navigate = useNavigate();
 
     const [searchParams] = useSearchParams();
 
@@ -25,6 +29,8 @@ function FinalFeedback() {
 
     const [feedback, setFeedback] =
         useState("");
+        const [feedbackData, setFeedbackData] =
+    useState(null);
 
     const [recommendations, setRecommendations] =
         useState([]);
@@ -102,10 +108,13 @@ function FinalFeedback() {
             }
 
 
-            setFeedback(
-                feedbackData.feedback || ""
-            );
+           setFeedback(
+    feedbackData.feedback || ""
+);
 
+setFeedbackData(
+    feedbackData
+);
             setRecommendations(
                 recommendationsData
             );
@@ -188,7 +197,7 @@ function FinalFeedback() {
     return (
 
         <main className="final-feedback-page">
-            <Navbar/>
+           
 
             <div className="final-feedback-container">
 
@@ -240,10 +249,20 @@ function FinalFeedback() {
 
                 <section className="final-feedback-section">
 
-                    <AILearningFeedback
-                        feedback={feedback}
-                    />
-
+                   <AILearningFeedback
+    overallUnderstanding={
+        feedbackData?.overallUnderstanding
+    }
+    whatYouUnderstand={
+        feedbackData?.whatYouUnderstand || []
+    }
+    whatYouShouldImprove={
+        feedbackData?.whatYouShouldImprove || []
+    }
+    keyTakeaway={
+        feedbackData?.keyTakeaway
+    }
+/>
                 </section>
 
 
@@ -253,9 +272,16 @@ function FinalFeedback() {
 
                 <section className="final-feedback-section">
 
-                    <YourApproach
-                        feedback={feedback}
-                    />
+                   <YourApproach
+    approach={feedbackData?.approach}
+    explanation={feedbackData?.strengths}
+    timeComplexity={
+        feedbackData?.timeComplexity
+    }
+    spaceComplexity={
+        feedbackData?.spaceComplexity
+    }
+/>
 
                 </section>
 
@@ -266,9 +292,26 @@ function FinalFeedback() {
 
                 <section className="final-feedback-section">
 
-                    <ImproveSolution
-                        feedback={feedback}
-                    />
+                  <ImproveSolution
+    currentApproach={
+        feedbackData?.approach
+    }
+    currentTime={
+        feedbackData?.timeComplexity
+    }
+    currentSpace={
+        feedbackData?.spaceComplexity
+    }
+    optimizedApproach={
+        feedbackData?.optimalApproach
+    }
+    optimizedTime={
+        feedbackData?.optimalTimeComplexity
+    }
+    optimizedSpace={
+        feedbackData?.optimalSpaceComplexity
+    }
+/>
 
                 </section>
 
@@ -279,9 +322,9 @@ function FinalFeedback() {
 
                 <section className="final-feedback-section">
 
-                    <NextFocus
-                        feedback={feedback}
-                    />
+                   <NextFocus
+    feedback={feedbackData?.nextFocus}
+/>
 
                 </section>
 
@@ -299,6 +342,25 @@ function FinalFeedback() {
                     />
 
                 </section>
+                {/* =================================
+    NEXT ACTIONS
+================================= */}
+
+<FeedbackActions
+
+    onViewProgress={() => {
+
+        navigate("/dashboard");
+
+    }}
+
+    onContinue={() => {
+
+        navigate("/problems");
+
+    }}
+
+/>
 
 
                 {/* =================================

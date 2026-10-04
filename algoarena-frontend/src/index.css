@@ -1,4 +1,8 @@
 :root {
+    /* =================================
+       BLUE THEME
+    ================================= */
+
     --navy-dark: #061426;
     --navy: #081d36;
     --navy-light: #0d2f56;
@@ -20,25 +24,137 @@
     --warning: #e2b866;
 
     --shadow-blue: rgba(15, 103, 210, 0.18);
+
+
+    /* =================================
+       GLOBAL TYPOGRAPHY
+    ================================= */
+
+    --font-body: 16px;
+    --font-body-small: 14px;
+
+    --font-page-title: 44px;
+    --font-section-title: 30px;
+    --font-card-title: 20px;
+
+    --line-body: 1.7;
+    --line-heading: 1.2;
 }
+
+
+/* =================================
+   GLOBAL RESET
+================================= */
 
 * {
     box-sizing: border-box;
 }
 
+
 html {
     scroll-behavior: smooth;
 }
 
+
 body {
     margin: 0;
 
-    font-family: Arial, sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
     background-color: var(--navy-dark);
 
     color: var(--text-primary);
+
+    font-size: var(--font-body);
+
+    line-height: var(--line-body);
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
+
+
+/* =================================
+   HEADINGS
+================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+
+    color: var(--text-primary);
+
+    line-height: var(--line-heading);
+
+    font-weight: 700;
+}
+
+
+h1 {
+    font-size: var(--font-page-title);
+}
+
+
+h2 {
+    font-size: var(--font-section-title);
+}
+
+
+h3 {
+    font-size: var(--font-card-title);
+}
+
+
+/* =================================
+   PARAGRAPHS
+================================= */
+
+p {
+    margin-top: 0;
+
+    margin-bottom: 1rem;
+
+    color: var(--text-secondary);
+
+    font-size: var(--font-body);
+
+    line-height: var(--line-body);
+}
+
+
+/* =================================
+   SPANS
+================================= */
+
+/*
+ * Do NOT force a large size on every span.
+ *
+ * Many spans are used for:
+ * badges,
+ * labels,
+ * difficulty,
+ * navigation,
+ * status indicators.
+ *
+ * They should be controlled by their
+ * component classes.
+ */
+
+span {
+    line-height: 1.5;
+}
+
+
+/* =================================
+   BUTTONS / FORMS
+================================= */
 
 button,
 input,
@@ -47,10 +163,91 @@ select {
     font: inherit;
 }
 
+
 button {
     cursor: pointer;
 }
 
+
+/* =================================
+   LINKS
+================================= */
+
 a {
     color: inherit;
+}
+
+
+/* =================================
+   IMAGES
+================================= */
+
+img {
+    max-width: 100%;
+
+    display: block;
+}
+
+
+/* =================================
+   MOBILE TYPOGRAPHY
+================================= */
+
+@media (max-width: 768px) {
+
+    body {
+        font-size: 15px;
+    }
+
+
+    p {
+        font-size: 15px;
+
+        line-height: 1.65;
+    }
+
+
+    h1 {
+        font-size: 34px;
+    }
+
+
+    h2 {
+        font-size: 26px;
+    }
+
+
+    h3 {
+        font-size: 19px;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    body {
+        font-size: 15px;
+    }
+
+
+    p {
+        font-size: 15px;
+
+        line-height: 1.6;
+    }
+
+
+    h1 {
+        font-size: 30px;
+    }
+
+
+    h2 {
+        font-size: 24px;
+    }
+
+
+    h3 {
+        font-size: 18px;
+    }
 }

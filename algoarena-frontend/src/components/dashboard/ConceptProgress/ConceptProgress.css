@@ -1,0 +1,245 @@
+.concept-progress-section {
+    width: 100%;
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.concept-progress-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.concept-progress-card {
+    min-height: 220px;
+
+    padding: 28px;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0c2d53,
+            #0a2748
+        );
+
+    border: 1px solid #174e80;
+
+    border-radius: 19px;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.2);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.concept-progress-card:hover {
+    transform: translateY(-3px);
+
+    border-color: #28699f;
+
+    box-shadow:
+        0 18px 42px rgba(0, 0, 0, 0.3);
+}
+
+
+/* =========================
+   TOP
+========================= */
+
+.concept-card-top {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+}
+
+.concept-card-number {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: rgba(47, 145, 255, 0.1);
+
+    border: 1px solid rgba(47, 145, 255, 0.2);
+
+    color: #6eb5ff;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.concept-card-top > span {
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: #5eaeff;
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.concept-progress-card h3 {
+    margin: 0 0 8px;
+
+    font-size: 21px;
+
+    font-weight: 700;
+
+    color: #f5f8ff;
+}
+
+.concept-progress-card > p {
+    margin: 0 0 22px;
+
+    font-size: 13px;
+
+    color: #89a5c1;
+}
+
+
+/* =========================
+   PROGRESS BAR
+========================= */
+
+.concept-progress-track {
+    width: 100%;
+
+    height: 8px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #163b5e;
+}
+
+.concept-progress-fill {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2388f5,
+            #399cff
+        );
+
+    box-shadow:
+        0 0 12px rgba(47, 145, 255, 0.25);
+
+    transition: width 0.5s ease;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.concept-progress-footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 12px;
+}
+
+.concept-progress-footer span {
+    font-size: 11px;
+
+    color: #6f8ca9;
+}
+
+.concept-progress-footer strong {
+    font-size: 12px;
+
+    color: #8fc5ff;
+}
+
+
+/* =========================
+   EMPTY
+========================= */
+
+.concept-progress-empty {
+    padding: 60px 30px;
+
+    text-align: center;
+
+    background: #0c2d53;
+
+    border: 1px solid #174e80;
+
+    border-radius: 20px;
+}
+
+.concept-progress-empty h3 {
+    margin: 0 0 8px;
+
+    color: #f5f8ff;
+    font-size:30px;
+}
+
+.concept-progress-empty p {
+    margin: 0;
+
+    color: #8da6c0;
+
+    font-size: 19px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+    .concept-progress-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .concept-progress-card {
+        padding: 24px;
+
+        min-height: 200px;
+
+        border-radius: 18px;
+    }
+}

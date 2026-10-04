@@ -1,10 +1,17 @@
+
 import "./HeroSection.css";
 import { Link } from "react-router-dom";
 
 function HeroSection() {
+
     return (
         <section className="hero-section">
+
             <div className="hero-container">
+
+                {/* =========================
+                    LEFT CONTENT
+                ========================= */}
 
                 <div className="hero-content">
 
@@ -13,113 +20,206 @@ function HeroSection() {
                     </span>
 
                     <h1 className="hero-title">
-                        Dont just code it,
+                        Don't just code it,
                         <span> explain it.</span>
                     </h1>
 
                     <p className="hero-description">
-                        AlgoArena helps you solve coding problems, understand
-                        the concepts behind your solutions, and improve where
-                        you need it most.
+                        AlgoArena helps you solve coding problems,
+                        understand the concepts behind your solutions,
+                        and improve where you need it most.
                     </p>
 
-                    <div className="hero-actions">
-                         <Link
-        to="/problems"
-        className="hero-primary-button"
-    >
-        Explore Problems
-        <span>→</span>
-    </Link>
 
-                        <button className="hero-secondary-button">
-                            View Dashboard
-                        </button>
+                    {/* ACTIONS */}
+
+                    <div className="hero-actions">
+
+                        <Link
+                            to="/problems"
+                            className="hero-primary-button"
+                        >
+                            Explore Problems
+                            <span>→</span>
+                        </Link>
+
+                        <Link
+    to="/dashboard"
+    className="hero-secondary-button"
+>
+    View Dashboard
+</Link>
+
                     </div>
+
+
+                    {/* STATS */}
 
                     <div className="hero-stats">
 
                         <div className="hero-stat">
-                            <strong>Practice</strong>
-                            <span>Real coding problems</span>
+
+                            <strong>
+                                Practice
+                            </strong>
+
+                            <span>
+                                Real coding problems
+                            </span>
+
                         </div>
+
 
                         <div className="hero-stat-divider"></div>
 
+
                         <div className="hero-stat">
-                            <strong>Understand</strong>
-                            <span>Concept-based learning</span>
+
+                            <strong>
+                                Understand
+                            </strong>
+
+                            <span>
+                                Concept-based learning
+                            </span>
+
                         </div>
+
 
                         <div className="hero-stat-divider"></div>
 
+
                         <div className="hero-stat">
-                            <strong>Improve</strong>
-                            <span>Personal recommendations</span>
+
+                            <strong>
+                                Improve
+                            </strong>
+
+                            <span>
+                                Personal recommendations
+                            </span>
+
                         </div>
 
                     </div>
 
                 </div>
 
+
+                {/* =========================
+                    RIGHT LEARNING CARD
+                ========================= */}
+
                 <div className="hero-visual">
 
                     <div className="hero-card">
 
                         <div className="hero-card-header">
-                            <span>Your Learning</span>
+
+                            <span>
+                                Your Learning
+                            </span>
+
                             <span className="hero-card-status">
                                 ● Active
                             </span>
+
                         </div>
+
 
                         <div className="hero-card-title">
                             Concept Progress
                         </div>
 
+
                         <div className="progress-item">
+
                             <div className="progress-info">
-                                <span>Arrays</span>
-                                <span>82%</span>
+
+                                <span>
+                                    Arrays
+                                </span>
+
+                                <span>
+                                    82%
+                                </span>
+
                             </div>
 
                             <div className="progress-track">
+
                                 <div
                                     className="progress-fill"
-                                    style={{ width: "82%" }}
+                                    style={{
+                                        width: "82%"
+                                    }}
                                 ></div>
+
                             </div>
+
                         </div>
 
+
                         <div className="progress-item">
+
                             <div className="progress-info">
-                                <span>Binary Search</span>
-                                <span>61%</span>
+
+                                <span>
+                                    Binary Search
+                                </span>
+
+                                <span>
+                                    61%
+                                </span>
+
                             </div>
 
                             <div className="progress-track">
+
                                 <div
                                     className="progress-fill"
-                                    style={{ width: "61%" }}
+                                    style={{
+                                        width: "61%"
+                                    }}
                                 ></div>
+
                             </div>
+
                         </div>
 
+
                         <div className="progress-item">
+
                             <div className="progress-info">
-                                <span>Hash Map</span>
-                                <span>43%</span>
+
+                                <span>
+                                    Hash Map
+                                </span>
+
+                                <span>
+                                    43%
+                                </span>
+
                             </div>
 
                             <div className="progress-track">
+
                                 <div
                                     className="progress-fill weak"
-                                    style={{ width: "43%" }}
+                                    style={{
+                                        width: "43%"
+                                    }}
                                 ></div>
+
                             </div>
+
                         </div>
 
+
+                        {/* RECOMMENDATION */}
+
                         <div className="hero-recommendation">
+
                             <span className="recommendation-label">
                                 RECOMMENDED
                             </span>
@@ -131,6 +231,7 @@ function HeroSection() {
                             <span>
                                 3 problems selected for you →
                             </span>
+
                         </div>
 
                     </div>
@@ -138,8 +239,10 @@ function HeroSection() {
                 </div>
 
             </div>
+
         </section>
     );
 }
 
 export default HeroSection;
+

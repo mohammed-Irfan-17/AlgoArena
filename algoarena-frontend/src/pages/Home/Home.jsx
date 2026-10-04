@@ -1,4 +1,4 @@
-import Navbar from "../../components/homepage/Navbar/Navbar";
+// import Navbar from "../../components/homepage/Navbar/Navbar";
 import HeroSection from "../../components/homepage/HeroSection/HeroSection";
 import FeatureHighlights from "../../components/homepage/FeatureHighlights/FeatureHighlights";
 import FeaturedProblems from "../../components/homepage/FeaturedProblems/FeaturedProblems";
@@ -12,7 +12,7 @@ function Home() {
     return (
         <div className="home-page">
 
-            <Navbar />
+            {/* <Navbar /> */}
 
             <main>
                 <HeroSection />

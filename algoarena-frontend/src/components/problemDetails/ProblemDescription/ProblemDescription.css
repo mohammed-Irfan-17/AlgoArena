@@ -10,11 +10,15 @@
     overflow: hidden;
 }
 
+
+/* =========================
+   HEADER
+========================= */
+
 .problem-description-header {
     display: flex;
 
     align-items: flex-start;
-
     justify-content: space-between;
 
     gap: 20px;
@@ -29,12 +33,11 @@
 .problem-details-label {
     display: block;
 
-    margin-bottom: 9px;
+    margin-bottom: 10px;
 
     color: var(--blue-bright);
 
-    font-size: 9px;
-
+    font-size: 11px;
     font-weight: 700;
 
     letter-spacing: 2px;
@@ -45,17 +48,24 @@
 
     color: var(--white);
 
-    font-size: 28px;
+    font-size: 30px;
 
     line-height: 1.2;
+
+    font-weight: 700;
 }
 
+
+/* =========================
+   DIFFICULTY
+========================= */
+
 .problem-details-difficulty {
-    padding: 6px 10px;
+    padding: 7px 11px;
 
-    border-radius: 5px;
+    border-radius: 6px;
 
-    font-size: 10px;
+    font-size: 11px;
 
     font-weight: 700;
 
@@ -86,30 +96,49 @@
     border: 1px solid rgba(239, 116, 116, 0.18);
 }
 
+
+/* =========================
+   CONTENT
+========================= */
+
 .problem-description-content {
-    padding: 30px;
+    padding: 32px 30px;
 }
 
+
+/* =========================
+   MAIN DESCRIPTION
+========================= */
+
 .problem-description-text {
-    margin: 0 0 32px;
+    margin: 0 0 34px;
 
     color: var(--text-secondary);
 
-    font-size: 14px;
+    font-size: 17px;
 
-    line-height: 1.8;
+    line-height: 1.85;
+
+    font-weight: 400;
 }
 
+
+/* =========================
+   INPUT / OUTPUT / EXPLANATION
+========================= */
+
 .problem-info-block {
-    margin-bottom: 30px;
+    margin-bottom: 32px;
 }
 
 .problem-info-block h3 {
-    margin: 0 0 10px;
+    margin: 0 0 11px;
 
     color: var(--white);
 
-    font-size: 14px;
+    font-size: 16px;
+
+    font-weight: 700;
 }
 
 .problem-info-block p {
@@ -117,17 +146,22 @@
 
     color: var(--text-secondary);
 
-    font-size: 12px;
+    font-size: 15px;
 
-    line-height: 1.7;
+    line-height: 1.8;
 }
 
+
+/* =========================
+   EXAMPLE
+========================= */
+
 .problem-example {
-    padding: 18px;
+    padding: 20px;
 
     border: 1px solid rgba(23, 69, 118, 0.65);
 
-    border-radius: 8px;
+    border-radius: 9px;
 
     background-color: var(--navy-dark);
 }
@@ -137,59 +171,94 @@
 
     flex-direction: column;
 
-    gap: 7px;
+    gap: 8px;
 }
 
 .problem-example > div + div {
-    margin-top: 16px;
+    margin-top: 18px;
 }
 
 .problem-example span {
     color: #71859c;
 
-    font-size: 10px;
+    font-size: 11px;
 
-    font-weight: 600;
+    font-weight: 700;
 
     text-transform: uppercase;
 
-    letter-spacing: 0.5px;
+    letter-spacing: 0.6px;
 }
 
 .problem-example code {
     color: #b9d8ff;
 
-    font-family: monospace;
+    font-family:
+        "Cascadia Code",
+        "Consolas",
+        "Courier New",
+        monospace;
 
-    font-size: 12px;
+    font-size: 14px;
+
+    line-height: 1.6;
 
     white-space: pre-wrap;
 }
 
+
+/* =========================
+   CONCEPT
+========================= */
+
 .problem-concept-tag {
-    padding-top: 20px;
+    padding-top: 21px;
 
     border-top: 1px solid rgba(23, 69, 118, 0.5);
 
     color: #71859c;
 
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .problem-concept-tag strong {
     color: var(--blue-bright);
 }
 
+
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 600px) {
+
     .problem-description-header {
         padding: 22px;
     }
 
     .problem-description-header h1 {
-        font-size: 23px;
+        font-size: 25px;
     }
 
     .problem-description-content {
-        padding: 22px;
+        padding: 24px 22px;
+    }
+
+    .problem-description-text {
+        font-size: 16px;
+
+        line-height: 1.75;
+    }
+
+    .problem-info-block h3 {
+        font-size: 15px;
+    }
+
+    .problem-info-block p {
+        font-size: 14px;
+    }
+
+    .problem-example code {
+        font-size: 13px;
     }
 }

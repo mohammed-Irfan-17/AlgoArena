@@ -10,6 +10,7 @@ public class CodeAnalysisResult {
     private String improvementOpportunity;
     private String optimalApproach;
     private String optimalTimeComplexity;
+    private String optimalSpaceComplexity;
 
     public CodeAnalysisResult() {
     }
@@ -22,7 +23,8 @@ public class CodeAnalysisResult {
             String strengths,
             String improvementOpportunity,
             String optimalApproach,
-            String optimalTimeComplexity
+            String optimalTimeComplexity,
+            String optimalSpaceComplexity
     ) {
         this.approach = approach;
         this.technique = technique;
@@ -32,6 +34,7 @@ public class CodeAnalysisResult {
         this.improvementOpportunity = improvementOpportunity;
         this.optimalApproach = optimalApproach;
         this.optimalTimeComplexity = optimalTimeComplexity;
+        this.optimalSpaceComplexity = optimalSpaceComplexity;
     }
 
     public String getApproach() {
@@ -64,5 +67,9 @@ public class CodeAnalysisResult {
 
     public String getOptimalTimeComplexity() {
         return optimalTimeComplexity;
+    }
+
+    public String getOptimalSpaceComplexity() {
+        return optimalSpaceComplexity;
     }
 }

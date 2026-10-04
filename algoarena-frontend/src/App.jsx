@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import Navbar from "./components/homepage/Navbar/Navbar";
+
 import Home from "./pages/Home/Home";
 import Problems from "./pages/Problems/Problems";
 import ProblemDetails from "./pages/ProblemDetails/ProblemDetails";
@@ -13,6 +15,13 @@ function App() {
 
     return (
         <BrowserRouter>
+
+            {/* 
+             * GLOBAL NAVBAR
+             *
+             * This stays visible on every route.
+             */}
+            <Navbar />
 
             <Routes>
 
@@ -51,14 +60,25 @@ function App() {
                     path="/feedback"
                     element={<FinalFeedbackPage />}
                 />
+
+                {/* Keep this because your current QuizPage
+                    navigates to /final-feedback */}
                 <Route
-    path="/login"
-    element={<Login />}
-/>
-<Route
-    path="/register"
-    element={<Register />}
-/>
+                    path="/final-feedback"
+                    element={<FinalFeedbackPage />}
+                />
+
+                {/* Existing login page */}
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
+
+                {/* Existing register page */}
+                <Route
+                    path="/register"
+                    element={<Register />}
+                />
 
             </Routes>
 
