@@ -1,23 +1,24 @@
+
 package com.algoarena.algoarena_backend.dto;
 
 public class UserResponse {
 
-    private Long id;
-    private String name;
-    private String email;
+    private final Long userId;
+    private final String name;
+    private final String email;
 
     public UserResponse(
-            Long id,
+            Long userId,
             String name,
             String email
     ) {
-        this.id = id;
+        this.userId = userId;
         this.name = name;
         this.email = email;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
     public String getName() {
@@ -28,3 +29,4 @@ public class UserResponse {
         return email;
     }
 }
+

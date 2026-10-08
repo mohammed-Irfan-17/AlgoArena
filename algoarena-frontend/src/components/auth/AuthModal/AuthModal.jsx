@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import "./AuthModal.css";
 import { loginUser, registerUser } from "../../../services/authService";
@@ -51,56 +52,78 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
         setLoading(true);
 
         try {
+            let response;
+
             if (activeTab === "register") {
-                const response = await registerUser({
+                response = await registerUser({
                     name: formData.name,
                     email: formData.email,
                     password: formData.password,
                 });
 
-                setSuccess(
-                    `Account created successfully, ${response.name}!`
+                console.log("REGISTER RESPONSE:", response);
+
+                // Register response becomes the logged-in user
+                localStorage.setItem(
+                    "algoarenaUser",
+                    JSON.stringify(response)
                 );
 
-                setTimeout(() => {
-                    setActiveTab("login");
-
-                    setFormData({
-                        name: "",
-                        email: formData.email,
-                        password: "",
-                    });
-
-                    setSuccess("");
-                }, 1200);
+                console.log(
+                    "SAVED USER:",
+                    localStorage.getItem("algoarenaUser")
+                );
 
             } else {
-                const response = await loginUser({
-    email: formData.email,
-    password: formData.password,
-});
+                response = await loginUser({
+                    email: formData.email,
+                    password: formData.password,
+                });
 
-console.log("LOGIN RESPONSE:", response);
+                console.log("LOGIN RESPONSE:", response);
 
-// Save logged-in user
-localStorage.setItem(
-    "algoarenaUser",
-    JSON.stringify(response)
-);
+                // Login response becomes the logged-in user
+                localStorage.setItem(
+                    "algoarenaUser",
+                    JSON.stringify(response)
+                );
 
-console.log(
-    "SAVED USER:",
-    localStorage.getItem("algoarenaUser")
-);
+                console.log(
+                    "SAVED USER:",
+                    localStorage.getItem("algoarenaUser")
+                );
             }
+
+            /*
+             * Tell Navbar that authentication succeeded.
+             *
+             * Navbar will:
+             * 1. Update the visible user immediately
+             * 2. Close the popup
+             * 3. Update mobile authentication state
+             * 4. Notify other components
+             */
+            onLoginSuccess(response);
+
+            setSuccess(
+                activeTab === "register"
+                    ? `Account created successfully, ${response.name}!`
+                    : `Welcome back, ${response.name}!`
+            );
+
+            /*
+             * No setTimeout.
+             * No switching to Login tab.
+             * No refresh required.
+             *
+             * Navbar closes the modal immediately through
+             * onLoginSuccess().
+             */
 
         } catch (error) {
             console.error("Authentication error:", error);
 
-            if (
-                error.response &&
-                error.response.data
-            ) {
+            if (error.response && error.response.data) {
                 if (typeof error.response.data === "string") {
                     setError(error.response.data);
                 } else if (error.response.data.message) {
@@ -109,9 +132,7 @@ console.log(
                     setError("Authentication failed.");
                 }
             } else {
-                setError(
-                    "Unable to connect to the server."
-                );
+                setError("Unable to connect to the server.");
             }
         } finally {
             setLoading(false);
@@ -125,9 +146,7 @@ console.log(
         >
             <div
                 className="auth-modal"
-                onClick={(event) =>
-                    event.stopPropagation()
-                }
+                onClick={(event) => event.stopPropagation()}
             >
                 <button
                     className="auth-close"
@@ -163,9 +182,7 @@ console.log(
                                 ? "auth-tab active"
                                 : "auth-tab"
                         }
-                        onClick={() =>
-                            switchTab("login")
-                        }
+                        onClick={() => switchTab("login")}
                     >
                         Login
                     </button>
@@ -177,9 +194,7 @@ console.log(
                                 ? "auth-tab active"
                                 : "auth-tab"
                         }
-                        onClick={() =>
-                            switchTab("register")
-                        }
+                        onClick={() => switchTab("register")}
                     >
                         Register
                     </button>
@@ -261,3 +276,4 @@ console.log(
 };
 
 export default AuthModal;
+
