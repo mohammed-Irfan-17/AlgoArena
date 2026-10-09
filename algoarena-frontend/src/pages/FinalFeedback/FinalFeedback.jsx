@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-    useSearchParams,
+    useLocation,
     useNavigate
 } from "react-router-dom";
 
@@ -17,14 +17,13 @@ import "./FinalFeedback.css";
 
 function FinalFeedback() {
     const navigate = useNavigate();
+const location = useLocation();
 
-    const [searchParams] = useSearchParams();
+const submissionId =
+    location.state?.submissionId;
 
-    const submissionId =
-        searchParams.get("submissionId");
-
-    const userId =
-        searchParams.get("userId");
+const userId =
+    location.state?.userId;
 
 
     const [feedback, setFeedback] =
@@ -60,81 +59,68 @@ function FinalFeedback() {
     }, [submissionId, userId]);
 
 
-    async function loadFeedback() {
+   
+async function loadFeedback() {
+    try {
+        setLoading(true);
+        setError("");
 
-        try {
+        const API_URL =
+            import.meta.env.VITE_API_URL || "http://localhost:8080";
 
-            setLoading(true);
-            setError("");
+        const [
+            feedbackResponse,
+            recommendationsResponse
+        ] = await Promise.all([
+            fetch(
+                `${API_URL}/api/evaluations/submission/${submissionId}/final-feedback`
+            ),
+            fetch(
+                `${API_URL}/api/evaluations/user/${userId}/recommendations`
+            )
+        ]);
 
-
-           const [
-    feedbackResponse,
-    recommendationsResponse
-] = await Promise.all([
-
-    fetch(
-        `${import.meta.env.VITE_API_URL}/api/evaluations/submission/${submissionId}/final-feedback`
-    ),
-
-    fetch(
-        `${import.meta.env.VITE_API_URL}/api/evaluations/user/${userId}/recommendations`
-    )
-
-]);
-
-
-            if (!feedbackResponse.ok) {
-
-                throw new Error(
-                    "Failed to load final feedback."
-                );
-
-            }
-
-
-            const feedbackData =
-                await feedbackResponse.json();
-
-
-            let recommendationsData = [];
-
-
-            if (recommendationsResponse.ok) {
-
-                recommendationsData =
-                    await recommendationsResponse.json();
-
-            }
-
-
-           setFeedback(
-    feedbackData.feedback || ""
-);
-
-setFeedbackData(
-    feedbackData
-);
-            setRecommendations(
-                recommendationsData
-            );
-
-
-        } catch (err) {
-
-            console.error(err);
-
-            setError(
-                "Unable to load your feedback report."
-            );
-
-        } finally {
-
-            setLoading(false);
-
+        if (!feedbackResponse.ok) {
+            throw new Error("Failed to load final feedback.");
         }
 
+        const feedbackResult = await feedbackResponse.json();
+
+        let recommendationsResult = [];
+
+        if (recommendationsResponse.ok) {
+            recommendationsResult = await recommendationsResponse.json();
+        } else {
+            console.error(
+                "Recommendations API failed:",
+                recommendationsResponse.status,
+                await recommendationsResponse.text()
+            );
+        }
+
+        // Handle common API response formats.
+        const recommendationList = Array.isArray(recommendationsResult)
+            ? recommendationsResult
+            : Array.isArray(recommendationsResult?.recommendations)
+                ? recommendationsResult.recommendations
+                : Array.isArray(recommendationsResult?.problems)
+                    ? recommendationsResult.problems
+                    : [];
+
+        console.log("Recommendations API response:", recommendationsResult);
+        console.log("Extracted recommendation list:", recommendationList);
+
+        setFeedback(feedbackResult.feedback || "");
+        setFeedbackData(feedbackResult);
+        setRecommendations(recommendationList);
+
+    } catch (err) {
+        console.error("Failed to load feedback:", err);
+        setError("Unable to load your feedback report.");
+    } finally {
+        setLoading(false);
     }
+}
 
 
     if (loading) {
@@ -214,7 +200,7 @@ setFeedbackData(
                 {/* =================================
                     SUBMISSION STATUS
                 ================================= */}
-
+{/* 
                 <div className="final-feedback-submission">
 
                     <div>
@@ -240,7 +226,7 @@ setFeedbackData(
 
                     </div>
 
-                </div>
+                </div> */}
 
 
                 {/* =================================
@@ -373,9 +359,9 @@ setFeedbackData(
                         AlgoArena Learning Report
                     </span>
 
-                    <span>
+                    {/* <span>
                         Submission #{submissionId}
-                    </span>
+                    </span> */}
 
                 </footer>
 

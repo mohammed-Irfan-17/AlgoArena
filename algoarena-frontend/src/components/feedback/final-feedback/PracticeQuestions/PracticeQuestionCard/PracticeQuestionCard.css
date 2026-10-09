@@ -1,19 +1,27 @@
-.practice-question-card {
-    display: grid;
-    grid-template-columns: 44px 1fr auto;
+/* =========================================
+   PRACTICE QUESTION CARD
+========================================= */
 
+.practice-question-card {
+    min-width: 0;
+    min-height: 112px;
+    box-sizing: border-box;
+
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
     align-items: center;
 
     gap: 16px;
+    padding: 20px;
 
-    padding: 17px 18px;
+    color: #f5f8ff;
+    background: linear-gradient(135deg, #0a2038, #081a2d);
 
-    background: #fdf8f1;
-
-    border: 1px solid #e9dece;
-    border-radius: 15px;
+    border: 1px solid rgba(59, 130, 246, 0.32);
+    border-radius: 14px;
 
     cursor: pointer;
+    outline: none;
 
     transition:
         transform 0.2s ease,
@@ -23,37 +31,50 @@
 }
 
 .practice-question-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
 
-    background: #fffaf3;
+    background: linear-gradient(135deg, #102b49, #0b2038);
 
-    border-color: #c9a77f;
+    border-color: rgba(77, 162, 255, 0.8);
 
-    box-shadow: 0 8px 22px rgba(69, 45, 25, 0.08);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.22);
+}
+
+.practice-question-card:active {
+    transform: translateY(-1px);
 }
 
 .practice-question-card:focus-visible {
-    outline: 2px solid #9b7048;
-    outline-offset: 2px;
+    outline: 2px solid #60a5fa;
+    outline-offset: 4px;
 }
 
+/* =========================================
+   NUMBER
+========================================= */
+
 .practice-number {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: 40px;
-    height: 40px;
+    color: #82bdff;
+    background: rgba(37, 99, 235, 0.16);
 
-    border-radius: 11px;
+    border: 1px solid rgba(77, 162, 255, 0.28);
+    border-radius: 12px;
 
-    background: #eee0cd;
-
-    color: #76502f;
-
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 800;
 }
+
+/* =========================================
+   CARD CONTENT
+========================================= */
 
 .practice-question-content {
     min-width: 0;
@@ -62,98 +83,188 @@
 .practice-question-top {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+
     gap: 10px;
+    margin-bottom: 8px;
 }
 
 .practice-question-top h3 {
+    min-width: 0;
     margin: 0;
 
-    color: #40291b;
+    color: #f5f8ff;
 
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 750;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
 }
 
-.practice-question-top span {
-    padding: 4px 8px;
+.practice-concept {
+    display: inline-block;
+    flex-shrink: 0;
 
-    border-radius: 999px;
+    max-width: 100%;
+    padding: 5px 9px;
 
-    background: #efe3d4;
+    color: #93c5fd;
+    background: rgba(37, 99, 235, 0.13);
 
-    color: #856746;
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    border-radius: 6px;
 
     font-size: 10px;
-    font-weight: 700;
+    font-weight: 750;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+
+    overflow-wrap: anywhere;
 }
 
 .practice-question-content p {
-    margin: 5px 0 0;
+    margin: 0;
+
+    color: #9bb2cc;
+
+    font-size: 14px;
+    line-height: 1.7;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 
     overflow: hidden;
-
-    color: #897563;
-
-    font-size: 12px;
-    line-height: 1.5;
-
-    white-space: nowrap;
-    text-overflow: ellipsis;
 }
+
+/* =========================================
+   SOLVE ACTION
+========================================= */
 
 .practice-solve {
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
 
-    color: #704a2b;
+    gap: 9px;
+    flex-shrink: 0;
 
-    font-size: 12px;
+    padding: 10px 12px;
+
+    color: #82bdff;
+    background: rgba(37, 99, 235, 0.1);
+
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 9px;
+
+    font-size: 13px;
     font-weight: 750;
-
     white-space: nowrap;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
 }
 
-.practice-solve strong {
-    font-size: 17px;
-
+.practice-solve svg {
+    flex-shrink: 0;
     transition: transform 0.2s ease;
 }
 
-.practice-question-card:hover .practice-solve strong {
+.practice-question-card:hover .practice-solve {
+    color: #ffffff;
+    background: #174e80;
+    border-color: #347fc0;
+}
+
+.practice-question-card:hover .practice-solve svg {
     transform: translateX(4px);
 }
 
-@media (max-width: 650px) {
+/* =========================================
+   TABLET
+========================================= */
 
+@media (max-width: 700px) {
     .practice-question-card {
-        grid-template-columns: 38px 1fr auto;
+        grid-template-columns: 42px minmax(0, 1fr) auto;
+        gap: 12px;
+        padding: 16px;
+    }
 
-        gap: 11px;
+    .practice-number {
+        width: 40px;
+        height: 40px;
+    }
 
-        padding: 14px;
+    .practice-question-top h3 {
+        font-size: 15px;
+    }
+
+    .practice-question-content p {
+        font-size: 13px;
+    }
+
+    .practice-solve {
+        padding: 9px;
+    }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+    .practice-question-card {
+        grid-template-columns: 36px minmax(0, 1fr) auto;
+        gap: 10px;
+        padding: 13px;
+        min-height: 96px;
     }
 
     .practice-number {
         width: 34px;
         height: 34px;
+        border-radius: 9px;
+
+        font-size: 12px;
     }
 
     .practice-question-top {
-        display: block;
+        gap: 6px;
+        margin-bottom: 5px;
     }
 
-    .practice-question-top span {
-        display: inline-block;
+    .practice-question-top h3 {
+        font-size: 14px;
+        line-height: 1.5;
+    }
 
-        margin-top: 5px;
+    .practice-concept {
+        padding: 4px 6px;
+        font-size: 9px;
     }
 
     .practice-question-content p {
-        display: none;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .practice-solve {
+        gap: 0;
+        padding: 8px;
+
+        border-radius: 8px;
     }
 
     .practice-solve span {
         display: none;
+    }
+
+    .practice-solve svg {
+        width: 17px;
+        height: 17px;
     }
 }

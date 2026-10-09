@@ -1,204 +1,167 @@
-.your-approach {
+/* =========================================
+   YOUR APPROACH — MAIN CONTAINER
+========================================= */
 
+.your-approach {
     width: 100%;
+    max-width: none;
+    min-width: 0;
 
     display: grid;
-
     grid-template-columns:
-        minmax(0, 1.25fr)
-        minmax(390px, 1fr);
+        minmax(0, 1.15fr)
+        minmax(0, 1fr);
+    align-items: stretch;
+    gap: 32px;
 
-    gap: 20px;
-
-    padding: 20px;
-
+    padding: 34px;
     box-sizing: border-box;
 
-    border: 1px solid rgba(43, 111, 171, 0.38);
+    background: linear-gradient(
+        135deg,
+        rgba(7, 30, 53, 0.98),
+        rgba(5, 25, 46, 0.96)
+    );
 
-    border-radius: 12px;
+    border: 1px solid rgba(43, 111, 171, 0.4);
+    border-radius: 18px;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(7, 30, 53, 0.96),
-            rgba(5, 25, 46, 0.94)
-        );
-
-    box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.2);
 }
 
-
-/* ================================
+/* =========================================
    MAIN APPROACH
-================================ */
+========================================= */
 
 .your-approach-main {
-
     display: flex;
-
-    gap: 15px;
+    align-items: flex-start;
+    gap: 20px;
 
     min-width: 0;
 }
 
-
 .your-approach-icon {
-
-    width: 40px;
-    height: 40px;
-
+    width: 58px;
+    height: 58px;
     flex-shrink: 0;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 9px;
+    border-radius: 14px;
 
-    background:
-        linear-gradient(
-            145deg,
-            #125da5,
-            #073c73
-        );
+    background: linear-gradient(
+        145deg,
+        #125da5,
+        #073c73
+    );
 
-    border: 1px solid
-        rgba(63, 156, 255, 0.28);
+    border: 1px solid rgba(63, 156, 255, 0.35);
 
-    color: #72b9ff;
+    color: #82bdff;
 
-    font-family:
-        "Fira Code",
-        "Cascadia Code",
-        monospace;
-
-    font-size: 15px;
-
+    font-family: "Fira Code", "Cascadia Code", monospace;
+    font-size: 22px;
     font-weight: 700;
 
-    box-shadow:
-        0 0 20px rgba(0, 115, 255, 0.13);
+    box-shadow: 0 8px 24px rgba(0, 91, 173, 0.2);
 }
 
-
-/* ================================
-   HEADING
-================================ */
+/* =========================================
+   HEADING AND DESCRIPTION
+========================================= */
 
 .your-approach-heading {
-
     min-width: 0;
+    flex: 1;
 }
-
 
 .your-approach-heading > span {
-
     display: block;
-
-    margin-bottom: 3px;
-
-    color: #5da8ed;
-
-    font-size: 8px;
-
-    font-weight: 800;
-
-    letter-spacing: 1.2px;
-}
-
-
-.your-approach-heading h2 {
-
-    margin: 0 0 8px;
-
-    color: #edf5ff;
-
-    font-size: 18px;
-
-    font-weight: 750;
-}
-
-
-/* ================================
-   APPROACH BADGE
-================================ */
-
-.your-approach-badge {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    padding: 4px 9px;
-
     margin-bottom: 8px;
 
-    border-radius: 5px;
-
-    background:
-        rgba(42, 124, 211, 0.2);
-
-    border: 1px solid
-        rgba(65, 153, 231, 0.3);
-
-    color: #73b8ff;
-
-    font-size: 9px;
-
-    font-weight: 750;
+    color: #65b2ff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
 }
 
+.your-approach-heading h2 {
+    margin: 0 0 16px;
+
+    color: #f5f8ff;
+    font-size: 28px;
+    font-weight: 750;
+    line-height: 1.3;
+    letter-spacing: -0.4px;
+}
+
+/* APPROACH BADGE */
+
+.your-approach-badge {
+    display: inline-flex;
+    align-items: center;
+
+    max-width: 100%;
+    padding: 9px 14px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+
+    border-radius: 8px;
+
+    background: rgba(42, 124, 211, 0.16);
+    border: 1px solid rgba(65, 153, 231, 0.35);
+
+    color: #82bdff;
+    font-size: 13px;
+    font-weight: 750;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
 
 .your-approach-heading p {
-
-    max-width: 560px;
-
+    max-width: 720px;
     margin: 0;
 
-    color: #8baaca;
+    color: #a0bad7;
+    font-size: 15px;
+    line-height: 1.85;
 
-    font-size: 10px;
-
-    line-height: 1.65;
+    overflow-wrap: anywhere;
 }
 
-
-/* ================================
+/* =========================================
    COMPLEXITY AREA
-================================ */
+========================================= */
 
 .your-approach-complexity {
-
     display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: stretch;
+    gap: 16px;
 
     min-width: 0;
 }
 
+/* COMPLEXITY CARD */
 
 .complexity-card {
+    min-width: 0;
 
     display: flex;
-
     align-items: flex-start;
+    gap: 14px;
 
-    gap: 11px;
+    padding: 24px 20px;
+    box-sizing: border-box;
 
-    padding: 15px;
+    background: rgba(5, 27, 48, 0.8);
 
-    border: 1px solid
-        rgba(47, 113, 174, 0.34);
-
-    border-radius: 9px;
-
-    background:
-        rgba(5, 27, 48, 0.72);
+    border: 1px solid rgba(47, 113, 174, 0.38);
+    border-radius: 14px;
 
     transition:
         border-color 0.2s ease,
@@ -206,119 +169,207 @@
         background 0.2s ease;
 }
 
-
 .complexity-card:hover {
-
-    border-color:
-        rgba(53, 147, 229, 0.55);
-
-    background:
-        rgba(7, 34, 60, 0.8);
-
-    transform: translateY(-2px);
+    border-color: rgba(77, 162, 255, 0.65);
+    background: rgba(7, 34, 60, 0.95);
+    transform: translateY(-3px);
 }
 
-
-/* ================================
-   COMPLEXITY ICON
-================================ */
+/* COMPLEXITY ICON */
 
 .complexity-icon {
-
-    width: 30px;
-    height: 30px;
-
+    width: 42px;
+    height: 42px;
     flex-shrink: 0;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 8px;
+    border-radius: 11px;
 
-    background:
-        rgba(24, 109, 194, 0.16);
+    background: rgba(24, 109, 194, 0.16);
+    border: 1px solid rgba(46, 139, 226, 0.3);
 
-    border: 1px solid
-        rgba(46, 139, 226, 0.25);
-
-    color: #54aaff;
-
-    font-size: 15px;
+    color: #65b2ff;
+    font-size: 21px;
 }
 
+/* COMPLEXITY TEXT */
 
-/* ================================
-   COMPLEXITY TEXT
-================================ */
+.complexity-card > div:last-child {
+    min-width: 0;
+}
 
 .complexity-card span {
-
     display: block;
+    margin-bottom: 10px;
 
-    margin-bottom: 5px;
-
-    color: #6e95bb;
-
-    font-size: 7px;
-
+    color: #78a9d6;
+    font-size: 11px;
     font-weight: 800;
-
-    letter-spacing: 0.9px;
-}
-
-
-.complexity-card strong {
-
-    display: block;
-
-    margin-bottom: 5px;
-
-    color: #e7f2ff;
-
-    font-size: 16px;
-
-    font-weight: 750;
-}
-
-
-.complexity-card p {
-
-    margin: 0;
-
-    color: #708eac;
-
-    font-size: 8px;
-
+    letter-spacing: 1px;
     line-height: 1.5;
 }
 
+.complexity-card strong {
+    display: block;
+    margin-bottom: 12px;
 
-/* ================================
-   RESPONSIVE
-================================ */
+    color: #f0f6ff;
+    font-size: 24px;
+    font-weight: 750;
+    line-height: 1.3;
 
-@media (max-width: 950px) {
-
-    .your-approach {
-
-        grid-template-columns: 1fr;
-    }
-
+    overflow-wrap: anywhere;
 }
 
+.complexity-card p {
+    margin: 0;
 
-@media (max-width: 600px) {
+    color: #91afd0;
+    font-size: 13px;
+    line-height: 1.7;
+}
 
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1100px) {
     .your-approach {
+        grid-template-columns: 1fr;
+        gap: 26px;
+        padding: 28px;
+    }
 
-        padding: 15px;
-
+    .your-approach-heading h2 {
+        font-size: 26px;
     }
 
     .your-approach-complexity {
-
-        grid-template-columns: 1fr;
+        gap: 18px;
     }
 
+    .complexity-card {
+        padding: 22px;
+    }
 }
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 650px) {
+    .your-approach {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+
+        padding: 22px;
+        border-radius: 15px;
+    }
+
+    .your-approach-main {
+        gap: 14px;
+    }
+
+    .your-approach-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 11px;
+        font-size: 19px;
+    }
+
+    .your-approach-heading > span {
+        font-size: 10px;
+        letter-spacing: 1.3px;
+    }
+
+    .your-approach-heading h2 {
+        margin-bottom: 13px;
+        font-size: 23px;
+    }
+
+    .your-approach-badge {
+        padding: 8px 11px;
+        font-size: 12px;
+    }
+
+    .your-approach-heading p {
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .your-approach-complexity {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 13px;
+    }
+
+    .complexity-card {
+        padding: 20px;
+        gap: 14px;
+    }
+
+    .complexity-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 19px;
+    }
+
+    .complexity-card span {
+        font-size: 10px;
+    }
+
+    .complexity-card strong {
+        font-size: 22px;
+    }
+
+    .complexity-card p {
+        font-size: 13px;
+    }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+    .your-approach {
+        padding: 16px;
+    }
+
+    .your-approach-main {
+        gap: 11px;
+    }
+
+    .your-approach-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 17px;
+    }
+
+    .your-approach-heading h2 {
+        font-size: 20px;
+    }
+
+    .complexity-card {
+        padding: 16px;
+    }
+
+    .complexity-card strong {
+        font-size: 20px;
+    }
+}
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+    .complexity-card {
+        transition: none;
+    }
+
+    .complexity-card:hover {
+        transform: none;
+    }
+}
+

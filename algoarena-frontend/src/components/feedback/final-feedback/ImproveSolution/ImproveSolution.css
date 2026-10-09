@@ -1,303 +1,405 @@
+
+/* =========================================
+   IMPROVE SOLUTION — MAIN CONTAINER
+========================================= */
+
 .improve-solution {
-
     width: 100%;
+    max-width: none;
+    min-width: 0;
 
-    padding: 20px;
-
+    padding: 34px;
     box-sizing: border-box;
 
-    border: 1px solid
-        rgba(43, 111, 171, 0.38);
+    background: linear-gradient(
+        135deg,
+        rgba(7, 30, 53, 0.98),
+        rgba(5, 25, 46, 0.96)
+    );
 
-    border-radius: 12px;
+    border: 1px solid rgba(43, 111, 171, 0.4);
+    border-radius: 18px;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(7, 30, 53, 0.96),
-            rgba(5, 25, 46, 0.94)
-        );
-
-    box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.2);
 }
 
-
-/* ================================
+/* =========================================
    HEADER
-================================ */
+========================================= */
 
 .improve-solution-header {
-
     display: flex;
-
     align-items: center;
+    gap: 20px;
 
-    gap: 15px;
-
-    margin-bottom: 16px;
+    margin-bottom: 30px;
 }
 
-
 .improve-solution-icon {
-
-    width: 40px;
-    height: 40px;
-
+    width: 58px;
+    height: 58px;
     flex-shrink: 0;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 9px;
+    border-radius: 14px;
 
-    background:
-        linear-gradient(
-            145deg,
-            #125da5,
-            #073c73
-        );
+    background: linear-gradient(
+        145deg,
+        #125da5,
+        #073c73
+    );
 
-    border:
-        1px solid
-        rgba(63, 156, 255, 0.28);
+    border: 1px solid rgba(63, 156, 255, 0.35);
 
-    color: #72b9ff;
-
-    font-size: 21px;
-
+    color: #82bdff;
+    font-size: 28px;
     font-weight: 700;
 
-    box-shadow:
-        0 0 20px
-        rgba(0, 115, 255, 0.13);
+    box-shadow: 0 8px 24px rgba(0, 91, 173, 0.2);
 }
-
 
 .improve-solution-header span {
-
     display: block;
+    margin-bottom: 8px;
 
-    margin-bottom: 3px;
-
-    color: #5da8ed;
-
-    font-size: 8px;
-
+    color: #65b2ff;
+    font-size: 12px;
     font-weight: 800;
-
-    letter-spacing: 1.2px;
+    letter-spacing: 1.6px;
 }
-
 
 .improve-solution-header h2 {
-
     margin: 0;
 
-    color: #edf5ff;
-
-    font-size: 18px;
-
+    color: #f5f8ff;
+    font-size: 28px;
     font-weight: 750;
+    line-height: 1.3;
+    letter-spacing: -0.4px;
 }
 
-
-/* ================================
-   COMPARISON
-================================ */
+/* =========================================
+   COMPARISON LAYOUT
+========================================= */
 
 .solution-comparison {
-
     display: grid;
 
     grid-template-columns:
         minmax(0, 1fr)
-        50px
+        64px
         minmax(0, 1fr);
 
-    align-items: center;
-
-    gap: 10px;
-}
-
-
-/* ================================
-   SOLUTION CARD
-================================ */
-
-.solution-option {
+    align-items: stretch;
+    gap: 20px;
 
     min-width: 0;
-
-    padding: 16px 18px;
-
-    border-radius: 9px;
-
-    background:
-        rgba(5, 28, 50, 0.72);
-
-    border:
-        1px solid
-        rgba(47, 113, 174, 0.35);
 }
 
-
-.solution-option.optimized {
-
-    border-color:
-        rgba(32, 139, 236, 0.85);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(8, 43, 76, 0.88),
-            rgba(5, 29, 53, 0.9)
-        );
-
-    box-shadow:
-        0 0 25px
-        rgba(0, 105, 220, 0.07);
-}
-
-
-/* ================================
-   CARD CONTENT
-================================ */
-
-.solution-option-label {
-
-    display: block;
-
-    margin-bottom: 6px;
-
-    color: #6e99c1;
-
-    font-size: 8px;
-
-    font-weight: 700;
-}
-
-
-.solution-option h3 {
-
-    margin: 0 0 11px;
-
-    color: #eaf3ff;
-
-    font-size: 14px;
-
-    font-weight: 750;
-}
-
-
-.solution-complexity {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 3px;
-}
-
-
-.solution-complexity span {
-
-    color: #7397b8;
-
-    font-size: 8px;
-
-    font-weight: 600;
-}
-
-
-.solution-complexity strong {
-
-    color: #b9d9fa;
-
-    font-size: 10px;
-
-    font-weight: 700;
-}
-
-
-/* ================================
-   ARROW
-================================ */
-
-.solution-arrow {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    color: #5caeff;
-
-    font-size: 26px;
-
-    text-shadow:
-        0 0 12px
-        rgba(66, 160, 255, 0.45);
-}
-
-
-/* ================================
-   HOVER
-================================ */
+/* =========================================
+   SOLUTION CARDS
+========================================= */
 
 .solution-option {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 30px;
+    box-sizing: border-box;
+
+    border-radius: 15px;
+
+    background: rgba(5, 28, 50, 0.8);
+    border: 1px solid rgba(47, 113, 174, 0.38);
 
     transition:
         transform 0.2s ease,
-        border-color 0.2s ease;
+        border-color 0.2s ease,
+        background 0.2s ease;
 }
-
 
 .solution-option:hover {
-
-    transform: translateY(-2px);
-
-    border-color:
-        rgba(59, 147, 226, 0.65);
+    transform: translateY(-3px);
+    border-color: rgba(77, 162, 255, 0.6);
 }
 
+/* CURRENT APPROACH */
 
-/* ================================
-   RESPONSIVE
-================================ */
+.solution-option.current {
+    background: linear-gradient(
+        135deg,
+        rgba(5, 28, 50, 0.95),
+        rgba(7, 35, 60, 0.85)
+    );
 
-@media (max-width: 700px) {
+    border-color: rgba(47, 113, 174, 0.45);
+}
+
+/* OPTIMIZED APPROACH */
+
+.solution-option.optimized {
+    background: linear-gradient(
+        135deg,
+        rgba(8, 43, 76, 0.95),
+        rgba(5, 29, 53, 0.98)
+    );
+
+    border-color: rgba(32, 139, 236, 0.85);
+
+    box-shadow:
+        inset 0 0 30px rgba(0, 105, 220, 0.04),
+        0 0 25px rgba(0, 105, 220, 0.07);
+}
+
+.solution-option.optimized:hover {
+    border-color: #4da2ff;
+    box-shadow: 0 8px 30px rgba(0, 105, 220, 0.12);
+}
+
+/* =========================================
+   CARD CONTENT
+========================================= */
+
+.solution-option-label {
+    display: block;
+    margin-bottom: 12px;
+
+    color: #78a9d6;
+    font-size: 13px;
+    font-weight: 750;
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+}
+
+.solution-option h3 {
+    margin: 0 0 26px;
+
+    color: #f0f6ff;
+    font-size: 23px;
+    font-weight: 750;
+    line-height: 1.4;
+
+    overflow-wrap: anywhere;
+}
+
+/* =========================================
+   COMPLEXITY DETAILS
+========================================= */
+
+.solution-complexity {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(67, 112, 150, 0.28);
+}
+
+.solution-complexity span {
+    color: #91afd0;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.solution-complexity strong {
+    color: #b9d9fa;
+    font-size: 19px;
+    font-weight: 750;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+.solution-option.optimized .solution-complexity strong {
+    color: #82bdff;
+}
+
+/* =========================================
+   TRANSFORMATION ARROW
+========================================= */
+
+.solution-arrow {
+    align-self: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 64px;
+    height: 64px;
+
+    border-radius: 50%;
+
+    background: rgba(24, 109, 194, 0.13);
+    border: 1px solid rgba(46, 139, 226, 0.3);
+
+    color: #65b2ff;
+    font-size: 36px;
+    line-height: 1;
+
+    text-shadow: 0 0 15px rgba(66, 160, 255, 0.4);
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1000px) {
+    .improve-solution {
+        padding: 28px;
+    }
 
     .solution-comparison {
+        grid-template-columns:
+            minmax(0, 1fr)
+            48px
+            minmax(0, 1fr);
 
-        grid-template-columns: 1fr;
-
-        gap: 10px;
-    }
-
-
-    .solution-arrow {
-
-        height: 25px;
-
-        transform: rotate(90deg);
-    }
-
-}
-
-
-@media (max-width: 500px) {
-
-    .improve-solution {
-
-        padding: 15px;
+        gap: 14px;
     }
 
     .solution-option {
-
-        padding: 14px;
+        padding: 24px;
     }
 
+    .solution-option h3 {
+        font-size: 21px;
+    }
+
+    .solution-arrow {
+        width: 48px;
+        height: 48px;
+        font-size: 29px;
+    }
 }
+
+/* =========================================
+   MOBILE / STACKED COMPARISON
+========================================= */
+
+@media (max-width: 700px) {
+    .improve-solution {
+        padding: 22px;
+        border-radius: 15px;
+    }
+
+    .improve-solution-header {
+        gap: 14px;
+        margin-bottom: 24px;
+    }
+
+    .improve-solution-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 11px;
+        font-size: 23px;
+    }
+
+    .improve-solution-header span {
+        font-size: 10px;
+        letter-spacing: 1.3px;
+    }
+
+    .improve-solution-header h2 {
+        font-size: 23px;
+    }
+
+    .solution-comparison {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .solution-option {
+        padding: 23px;
+    }
+
+    .solution-option-label {
+        font-size: 12px;
+    }
+
+    .solution-option h3 {
+        margin-bottom: 20px;
+        font-size: 21px;
+    }
+
+    .solution-complexity {
+        padding-top: 16px;
+    }
+
+    .solution-complexity span {
+        font-size: 12px;
+    }
+
+    .solution-complexity strong {
+        font-size: 17px;
+    }
+
+    .solution-arrow {
+        justify-self: center;
+
+        width: 46px;
+        height: 46px;
+
+        font-size: 28px;
+        transform: rotate(90deg);
+    }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+    .improve-solution {
+        padding: 16px;
+    }
+
+    .improve-solution-header {
+        gap: 11px;
+    }
+
+    .improve-solution-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .improve-solution-header h2 {
+        font-size: 20px;
+    }
+
+    .solution-option {
+        padding: 18px;
+    }
+
+    .solution-option h3 {
+        font-size: 19px;
+    }
+
+    .solution-complexity strong {
+        font-size: 16px;
+    }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .solution-option {
+        transition: none;
+    }
+
+    .solution-option:hover {
+        transform: none;
+    }
+}
+

@@ -1,249 +1,208 @@
-.final-feedback-header {
+/* =========================================
+   FEEDBACK HEADER
+========================================= */
+
+.feedback-header {
     width: 100%;
-    text-align: center;
-    padding: 34px 0 28px;
-}
+    max-width: none;
+    box-sizing: border-box;
 
+    position: relative;
+    overflow: hidden;
 
-/* ================================
-   BADGE
-================================ */
-
-.final-feedback-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-
-    padding: 8px 15px;
-
-    border: 1px solid rgba(45, 145, 255, 0.55);
-    border-radius: 999px;
-
-    background: rgba(20, 93, 170, 0.16);
-
-    color: #70b7ff;
-
-    font-size: 11px;
-    font-weight: 800;
-
-    letter-spacing: 1px;
-    text-transform: uppercase;
-
-    box-shadow:
-        0 0 18px rgba(20, 116, 255, 0.08);
-}
-
-
-.final-feedback-badge-dot {
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-
-    background: #3d9cff;
-
-    box-shadow:
-        0 0 10px rgba(61, 156, 255, 0.9);
-}
-
-
-/* ================================
-   TITLE
-================================ */
-
-.final-feedback-header h1 {
-    margin: 14px 0 7px;
-
-    color: #f4f8ff;
-
-    font-size: clamp(34px, 4vw, 48px);
-
-    font-weight: 800;
-
-    letter-spacing: -1.4px;
-
-    line-height: 1.1;
-}
-
-
-.final-feedback-subtitle {
-    max-width: 650px;
-
-    margin: 0 auto;
-
-    color: #91a9c5;
-
-    font-size: 14px;
-
-    line-height: 1.6;
-}
-
-
-/* ================================
-   META BAR
-================================ */
-
-.final-feedback-meta {
-
-    width: min(740px, 100%);
-
-    margin: 22px auto 0;
-
-    display: flex;
-    align-items: center;
-
-    border: 1px solid rgba(49, 119, 185, 0.38);
-
-    border-radius: 10px;
+    padding: 44px 40px;
+    margin: 0 0 28px;
 
     background:
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(35, 119, 205, 0.18),
+            transparent 35%
+        ),
         linear-gradient(
             135deg,
-            rgba(8, 30, 54, 0.96),
-            rgba(6, 25, 45, 0.92)
+            #0b2b4f 0%,
+            #071b32 55%,
+            #061426 100%
         );
 
-    box-shadow:
-        0 15px 35px rgba(0, 0, 0, 0.18);
+    border: 1px solid #174e80;
+    border-radius: 20px;
 
-    overflow: hidden;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
 }
 
+/* Subtle decorative glow */
 
-/* ================================
-   META ITEM
-================================ */
+.feedback-header::before {
+    content: "";
+    position: absolute;
 
-.feedback-meta-item {
-    flex: 1;
+    width: 220px;
+    height: 220px;
+
+    top: -130px;
+    right: 10%;
+
+    background: rgba(77, 162, 255, 0.12);
+    border-radius: 50%;
+    filter: blur(8px);
+
+    pointer-events: none;
+}
+
+/* =========================================
+   HEADER CONTENT
+========================================= */
+
+.feedback-header-content {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
 
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* =========================================
+   BADGE
+========================================= */
+
+.feedback-header-badge {
+    display: inline-flex;
     align-items: center;
+    gap: 10px;
 
-    gap: 11px;
+    padding: 10px 16px;
+    margin-bottom: 24px;
 
-    padding: 12px 18px;
+    color: #82bdff;
+    background: rgba(43, 126, 207, 0.14);
 
-    text-align: left;
+    border: 1px solid rgba(77, 162, 255, 0.35);
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    line-height: 1.4;
 }
 
-
-.feedback-meta-item span {
-    display: block;
-
-    margin-bottom: 3px;
-
-    color: #6d91b7;
-
-    font-size: 8px;
-
-    font-weight: 700;
-
-    letter-spacing: 0.9px;
-
-    text-transform: uppercase;
+.feedback-header-badge-icon {
+    color: #65b2ff;
+    font-size: 17px;
+    line-height: 1;
 }
 
+/* =========================================
+   TITLE
+========================================= */
 
-.feedback-meta-item strong {
-    display: block;
+.feedback-header-title {
+    margin: 0 0 18px;
 
-    color: #dceaff;
+    color: #f5f8ff;
 
-    font-size: 11px;
+    font-size: clamp(32px, 4vw, 46px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -1.2px;
 
-    font-weight: 700;
+    overflow-wrap: anywhere;
 }
 
+/* =========================================
+   SUBTITLE
+========================================= */
 
-/* ================================
-   ICONS
-================================ */
+.feedback-header-subtitle {
+    max-width: 850px;
+    margin: 0;
 
-.feedback-meta-icon,
-.feedback-meta-check {
+    color: #a9c2df;
 
-    width: 30px;
-    height: 30px;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.9;
 
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 8px;
-
-    background: rgba(23, 105, 194, 0.18);
-
-    border: 1px solid rgba(43, 135, 224, 0.2);
-
-    color: #4fa7ff;
-
-    font-size: 15px;
+    overflow-wrap: anywhere;
 }
 
+/* =========================================
+   TABLET
+========================================= */
 
-.feedback-meta-check {
-
-    background: rgba(45, 190, 144, 0.14);
-
-    border-color: rgba(45, 190, 144, 0.22);
-
-    color: #45d39f;
-}
-
-
-/* ================================
-   DIVIDERS
-================================ */
-
-.feedback-meta-divider {
-
-    width: 1px;
-    height: 30px;
-
-    background:
-        rgba(82, 126, 166, 0.24);
-}
-
-
-/* ================================
-   RESPONSIVE
-================================ */
-
-@media (max-width: 700px) {
-
-    .final-feedback-header {
-        padding: 25px 0 22px;
+@media (max-width: 900px) {
+    .feedback-header {
+        padding: 36px 30px;
     }
 
-
-    .final-feedback-header h1 {
-        font-size: 34px;
+    .feedback-header-title {
+        font-size: 36px;
     }
 
+    .feedback-header-subtitle {
+        font-size: 16px;
+        line-height: 1.8;
+    }
+}
 
-    .final-feedback-subtitle {
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+    .feedback-header {
+        padding: 28px 22px;
+        margin-bottom: 22px;
+        border-radius: 16px;
+    }
+
+    .feedback-header-badge {
+        gap: 8px;
+        padding: 8px 12px;
+        margin-bottom: 20px;
+
+        font-size: 10px;
+        letter-spacing: 1.1px;
+    }
+
+    .feedback-header-badge-icon {
+        font-size: 15px;
+    }
+
+    .feedback-header-title {
+        margin-bottom: 14px;
+
+        font-size: 29px;
+        line-height: 1.3;
+        letter-spacing: -0.6px;
+    }
+
+    .feedback-header-subtitle {
+        font-size: 14px;
+        line-height: 1.8;
+    }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 380px) {
+    .feedback-header {
+        padding: 22px 16px;
+    }
+
+    .feedback-header-title {
+        font-size: 25px;
+    }
+
+    .feedback-header-subtitle {
         font-size: 13px;
     }
-
-
-    .final-feedback-meta {
-        flex-direction: column;
-
-        align-items: stretch;
-    }
-
-
-    .feedback-meta-item {
-        padding: 12px 15px;
-    }
-
-
-    .feedback-meta-divider {
-        width: 100%;
-        height: 1px;
-    }
-
 }

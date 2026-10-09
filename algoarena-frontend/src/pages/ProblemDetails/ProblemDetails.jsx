@@ -321,10 +321,12 @@ function ProblemDetails() {
              * ======================================
              */
 
-            navigate(
-                `/quiz?submissionId=${submissionId}&userId=${userId}`
-            );
-
+           navigate("/quiz", {
+    state: {
+        submissionId,
+        userId: Number(userId)
+    }
+});
 
         } catch (err) {
 

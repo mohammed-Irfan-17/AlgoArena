@@ -4,7 +4,7 @@ import React, {
 } from "react";
 
 import {
-    useSearchParams,
+    useLocation,
     useNavigate
 } from "react-router-dom";
 
@@ -15,17 +15,14 @@ import "./QuizPage.css";
 
 function QuizPage() {
 
-    const [searchParams] =
-        useSearchParams();
+   const location = useLocation();
+const navigate = useNavigate();
 
-    const navigate =
-        useNavigate();
+const submissionId =
+    location.state?.submissionId;
 
-    const submissionId =
-        searchParams.get("submissionId");
-
-    const userId =
-        searchParams.get("userId");
+const userId =
+    location.state?.userId;
 
     const [questions, setQuestions] =
         useState([]);
@@ -210,9 +207,12 @@ function QuizPage() {
 
             if (isLastQuestion) {
 
-                navigate(
-                    `/final-feedback?submissionId=${submissionId}&userId=${userId}`
-                );
+              navigate("/final-feedback", {
+    state: {
+        submissionId,
+        userId
+    }
+});
 
                 return;
             }
