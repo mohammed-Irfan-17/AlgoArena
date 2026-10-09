@@ -1,5 +1,4 @@
-
-        package com.algoarena.algoarena_backend.services;
+package com.algoarena.algoarena_backend.services;
 
 import com.algoarena.algoarena_backend.entity.Problem;
 import com.algoarena.algoarena_backend.repository.ProblemRepository;
@@ -12,16 +11,36 @@ public class ProblemService {
 
     private final ProblemRepository problemRepository;
 
+    private volatile List<Problem> cachedProblems;
+
     public ProblemService(ProblemRepository problemRepository) {
         this.problemRepository = problemRepository;
     }
 
     public Problem createProblem(Problem problem) {
-        return problemRepository.save(problem);
+        Problem savedProblem = problemRepository.save(problem);
+
+        // Refresh cache after creating a new problem
+        cachedProblems = problemRepository.findAll();
+
+        return savedProblem;
     }
 
     public List<Problem> getAllProblems() {
-        return problemRepository.findAll();
+
+        // Return cached problems if already loaded
+        if (cachedProblems != null) {
+            return cachedProblems;
+        }
+
+        // Load from database only once
+        synchronized (this) {
+            if (cachedProblems == null) {
+                cachedProblems = problemRepository.findAll();
+            }
+        }
+
+        return cachedProblems;
     }
 
     public Problem getProblemById(Long id) {
@@ -29,4 +48,3 @@ public class ProblemService {
                 .orElseThrow(() -> new RuntimeException("Problem not found"));
     }
 }
-
